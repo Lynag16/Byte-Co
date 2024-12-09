@@ -34,19 +34,33 @@ public class PersonnelController {
 
     // Endpoint pour authentifier un personnel
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Map<String, String> loginDetails) {
+    public ResponseEntity<?> login(@RequestBody Map<String, String> loginDetails) {
         String emailpersonnel = loginDetails.get("emailpersonnel");
         String motdepassepersonnel = loginDetails.get("motdepassepersonnel");
 
         try {
-            boolean isAuthenticated = personnelService.authenticatePersonnel(emailpersonnel, motdepassepersonnel);
-            if (isAuthenticated) {
-                return ResponseEntity.ok("Connexion réussie");
+            Personnel authenticatedPersonnel = personnelService.authenticatePersonnelAndGetPersonnel(emailpersonnel, motdepassepersonnel);
+            if (authenticatedPersonnel != null) {
+                return ResponseEntity.ok(authenticatedPersonnel);  // Retourne l'objet complet Personnel, y compris le mot de passe
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Échec de la connexion : identifiants invalides");
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de l'authentification : " + e.getMessage());
         }
+    }
+    
+    
+    // Endpoint pour réinitialiser le mot de passe
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> resetDetails) {
+        String email = resetDetails.get("email");
+        String newPassword = resetDetails.get("newPassword");
+
+        boolean isReset = personnelService.resetPassword(email, newPassword);
+        if (isReset) {
+            return ResponseEntity.ok("Mot de passe réinitialisé avec succès");
+        }
+        return ResponseEntity.status(400).body("Échec de la réinitialisation du mot de passe");
     }
 }

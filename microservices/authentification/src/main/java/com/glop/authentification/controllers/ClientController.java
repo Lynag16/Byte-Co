@@ -35,4 +35,17 @@ public class ClientController {
         }
         return ResponseEntity.status(401).body("Échec de la connexion");
     }
+    
+    // Endpoint pour réinitialiser le mot de passe
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> resetDetails) {
+        String email = resetDetails.get("email");
+        String newPassword = resetDetails.get("newPassword");
+
+        boolean isReset = clientService.resetPassword(email, newPassword);
+        if (isReset) {
+            return ResponseEntity.ok("Mot de passe réinitialisé avec succès");
+        }
+        return ResponseEntity.status(400).body("Échec de la réinitialisation du mot de passe");
+    }
 }
