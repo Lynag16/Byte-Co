@@ -28,9 +28,15 @@ public class ContractController {
         return contractService.getAllContracts();
     }
 
+    @GetMapping("/getAllByUser/{client_id}")
+    public ResponseEntity<List<Contract>> getAllContractsByUser(@PathParam("client_id") int id) {
+        List <Contract> contracts = contractService.getAllContractsByUser(id);
+        return ResponseEntity.ok(contracts);
+    }
+
     //recuperer un contrat par son id
     @GetMapping("/get/{id}")
-    public ResponseEntity<Contract> getContractById(@PathParam("id") long id) {
+    public ResponseEntity<Contract> getContractById(@PathParam("id") int id) {
         return ResponseEntity.ok(contractService.getContractById(id));
     }
 
@@ -48,7 +54,7 @@ public class ContractController {
 
     //supprimer un contrat
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteContract(@PathParam("id") long id) {
+    public ResponseEntity<Void> deleteContract(@PathParam("id") int id) {
         contractService.deleteContract(id);
         return ResponseEntity.noContent().build();
     }
