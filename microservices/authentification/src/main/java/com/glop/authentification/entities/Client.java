@@ -20,6 +20,7 @@ public class Client {
     private Date dateInscription;
     private String languePreference;
     private String monnaiePreference;
+    private String adresseclient;
     private int badge;
 	public int getIdClient() {
 		return idClient;
@@ -80,6 +81,12 @@ public class Client {
 	}
 	public void setBadge(int badge) {
 		this.badge = badge;
+	}
+	public String getAdresseclient() {
+		return adresseclient;
+	}
+	public void setAdresseclient(String adresseclient) {
+		this.adresseclient = adresseclient;
 	}
     
     

@@ -1,4 +1,5 @@
 package com.glop.authentification.controllers;
+
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +25,14 @@ public class ClientController {
 
     // Endpoint pour authentifier un client
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Map<String, String> loginDetails) {
+    public ResponseEntity<?> login(@RequestBody Map<String, String> loginDetails) {
         String email = loginDetails.get("email");
         String motdepasse = loginDetails.get("motdepasse");
 
-        boolean isAuthenticated = clientService.authenticateClient(email, motdepasse);
-        if (isAuthenticated) {
-            return ResponseEntity.ok("Connexion réussie");
+        Client authenticatedClient = clientService.authenticateClientAndGetClient(email, motdepasse);
+        if (authenticatedClient != null) {
+            return ResponseEntity.ok(authenticatedClient);
         }
         return ResponseEntity.status(401).body("Échec de la connexion");
     }
-
 }
