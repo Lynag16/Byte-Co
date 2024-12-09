@@ -17,18 +17,24 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(AbstractHttpConfigurer::disable) 
-            .cors() // Active la configuration CORS
-            .and()
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/clients/register", "/api/clients/login","/api/clients/reset-password", "/api/partenaires/register", "/api/partenaires/login", "/api/partenaires/reset-password","/api/personnels/register", "/api/personnels/login","/api/personnels/reset-password") 
-                .permitAll() 
-                .anyRequest() 
-                .authenticated()
-            )
-            .formLogin(withDefaults()) // Utilise le formulaire de login standard
-            .logout(withDefaults()); // Utilise la déconnexion standard
+    	http
+        .csrf(AbstractHttpConfigurer::disable) 
+        .cors() // Active la configuration CORS
+        .and()
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/api/clients/register", "/api/clients/login","/api/clients/reset-password", 
+                             "/api/partenaires/register", "/api/partenaires/login", "/api/partenaires/reset-password",
+                             "/api/personnels/register", "/api/personnels/login","/api/personnels/reset-password") 
+            .permitAll() 
+            .anyRequest() 
+            .authenticated()
+        )
+        .formLogin(withDefaults()) // Utilise le formulaire de login standard
+        .logout(logout -> logout
+            .logoutUrl("/api/logout")  // Définir une URL personnalisée pour la déconnexion
+            .permitAll()
+        );
+
         return http.build();
     }
 
