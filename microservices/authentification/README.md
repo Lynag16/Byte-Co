@@ -18,6 +18,8 @@ Microservice de connexion et d'inscription
 
 ---
 
+
+
 ### PartenaireController Endpoints
 
 | **Method** | **Endpoint**           | **Description**               | **Request Body**                                                                                                                                                                                                                      | **Response**                                                                                                                                              |
@@ -26,5 +28,3 @@ Microservice de connexion et d'inscription
 | POST       | `/partenaires/login`   | Authenticate a partner        | `{ "emailPartenaire": "string", "motdepassePartenaire": "string" }`                                                                                                                                                                  | `200 OK` - `"Connexion réussie"` <br> `401 Unauthorized` - `"Échec de la connexion"`                                                                    |
 
 --- 
-
-Copiez et collez ce tableau dans votre fichier `README.md` sur GitHub pour une présentation claire des endpoints de votre API.
