@@ -28,4 +28,13 @@ public class ClientService {
         }
         return false; // Échec de la connexion
     }
+
+    // Méthode pour authentifier un client et retourner l'objet Client en cas de succès
+    public Client authenticateClientAndGetClient(String email, String motdepasse) {
+        Client client = clientRepository.findByEmail(email);
+        if (client != null && motdepasse.equals(client.getMotdepasse())) {
+            return client; // Retourne l'objet Client si l'authentification réussie
+        }
+        return null; // Retourne null si l'authentification échoue
+    }
 }
