@@ -40,5 +40,3 @@ Microservice de connexion et d'inscription
 | POST       | `/api/personnels/login`   | Authenticate a personal        | `{ "emailpersonnel": "string", "motdepassepersonnel": "string" }`                                                                                                                                                                  | `200 OK` - `"Connexion réussie"` <br> `401 Unauthorized` - `"Échec de la connexion"`                                                                    |
 
 --- 
-
-
