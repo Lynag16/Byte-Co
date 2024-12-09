@@ -18,6 +18,8 @@ Microservice de connexion et d'inscription
 
 ---
 
+
+
 ### PartenaireController Endpoints
 
 | **Method** | **Endpoint**           | **Description**               | **Request Body**                                                                                                                                                                                                                      | **Response**                                                                                                                                              |
