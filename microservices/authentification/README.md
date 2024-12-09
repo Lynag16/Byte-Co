@@ -30,8 +30,6 @@ Microservice de connexion et d'inscription
 --- 
 
 
-
-
 ### PersonnelController Endpoints
 
 | **Method** | **Endpoint**           | **Description**               | **Request Body**                                                                                                                                                                                                                      | **Response**                                                                                                                                              |
