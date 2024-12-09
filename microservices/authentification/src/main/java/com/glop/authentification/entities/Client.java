@@ -22,6 +22,7 @@ public class Client {
     private String monnaiePreference;
     private String adresseclient;
     private int badge;
+    
 	public int getIdClient() {
 		return idClient;
 	}

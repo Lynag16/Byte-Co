@@ -9,7 +9,7 @@ import com.glop.authentification.entities.Personnel;
 
 @Repository
 	public interface PersonnelRepository extends JpaRepository<Personnel, Long> {
-	    Optional<Personnel> findByEmailpersonnel(String emailpersonnel);
+	Personnel findByEmailpersonnel(String emailpersonnel);
 	}
 
 	

@@ -37,4 +37,15 @@ public class ClientService {
         }
         return null; // Retourne null si l'authentification échoue
     }
+    
+    // Méthode pour réinitialiser le mot de passe d'un client
+    public boolean resetPassword(String email, String newPassword) {
+        Client client = clientRepository.findByEmail(email);
+        if (client != null) {
+            client.setMotdepasse(newPassword); // Met à jour le mot de passe
+            clientRepository.save(client); // Sauvegarde le client avec le nouveau mot de passe
+            return true;
+        }
+        return false;
+    }
 }
