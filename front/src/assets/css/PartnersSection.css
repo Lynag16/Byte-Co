@@ -1,0 +1,37 @@
+/* Animation pour le fade-in */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 1s ease-out forwards;
+}
+
+.img-hover-zoom {
+    transition: transform 0.3s ease;
+}
+
+.img-hover-zoom:hover {
+    transform: scale(1.1);
+}
+
+.title:hover {
+    cursor: pointer;
+}
+
+.description {
+    color: #6c757d;
+    transition: color 0.3s ease;
+}
+
+.description:hover {
+    color: #6c757d;
+}
