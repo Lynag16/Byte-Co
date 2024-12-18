@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import DashboardPage from './pages/DashboardPage';
+import { AuthProvider, useAuth } from './components/auth/AuthContext';
+import NavBar from './components/NavBar';
+import Footer from './components/Footer';
+
+const ProtectedRoute = ({ children }) => {
+    const Auth = useAuth();
+    return Auth.user ? children : <Navigate to="/login" />;
+};
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <Router>
+        <NavBar />
+        <div className="d-flex flex-column min-vh-100">
+          <main className="flex-grow-1">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
