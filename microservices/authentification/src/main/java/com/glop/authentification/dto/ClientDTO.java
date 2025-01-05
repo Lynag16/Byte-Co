@@ -1,28 +1,19 @@
-package com.glop.authentification.entities;
+package com.glop.authentification.dto;
 
-import java.util.Date;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
-@Entity
-public class Client {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ClientDTO {
     private int idClient;
     private String nom;
     private String prenom;
     private String email;
     private String telephone;
-    private String motdepasse; 
-    private Date dateInscription;
     private String languePreference;
     private String monnaiePreference;
     private String adresseclient;
     private String badge;
     private String statut;
+    private String motdepasse;
     
 	public int getIdClient() {
 		return idClient;
@@ -54,18 +45,6 @@ public class Client {
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
-	public String getMotdepasse() {
-		return motdepasse;
-	}
-	public void setMotdepasse(String motdepasse) {
-		this.motdepasse = motdepasse;
-	}
-	public Date getDateInscription() {
-		return dateInscription;
-	}
-	public void setDateInscription(Date dateInscription) {
-		this.dateInscription = dateInscription;
-	}
 	public String getLanguePreference() {
 		return languePreference;
 	}
@@ -78,17 +57,17 @@ public class Client {
 	public void setMonnaiePreference(String monnaiePreference) {
 		this.monnaiePreference = monnaiePreference;
 	}
-	public String getBadge() {
-		return badge;
-	}
-	public void setBadge(String badge) {
-		this.badge = badge;
-	}
 	public String getAdresseclient() {
 		return adresseclient;
 	}
 	public void setAdresseclient(String adresseclient) {
 		this.adresseclient = adresseclient;
+	}
+	public String getBadge() {
+		return badge;
+	}
+	public void setBadge(String badge) {
+		this.badge = badge;
 	}
 	public String getStatut() {
 		return statut;
@@ -96,6 +75,13 @@ public class Client {
 	public void setStatut(String statut) {
 		this.statut = statut;
 	}
-    
+	public String getMotdepasse() {
+		return motdepasse;
+	}
+	public void setMotdepasse(String motdepasse) {
+		this.motdepasse = motdepasse;
+	}  
+	
+	
     
 }
