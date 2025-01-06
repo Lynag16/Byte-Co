@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.glop.authentification.entities.Personnel;
+import com.glop.authentification.dto.PersonnelDTO;
 import com.glop.authentification.services.PersonnelService;
 
 @RestController
@@ -22,11 +22,11 @@ public class PersonnelController {
 
     // Endpoint pour enregistrer un nouveau personnel
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody Personnel personnel) {
+    public ResponseEntity<String> register(@RequestBody PersonnelDTO personnelDTO) {
         try {
-            Personnel savedPersonnel = personnelService.registerPersonnel(personnel);
+            PersonnelDTO savedPersonnelDTO = personnelService.registerPersonnel(personnelDTO);
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body("Personnel inscrit avec succès, ID: " + savedPersonnel.getIdpersonnel());
+                    .body("Personnel inscrit avec succès, ID: " + savedPersonnelDTO.getIdpersonnel());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erreur lors de l'inscription : " + e.getMessage());
         }
@@ -39,9 +39,9 @@ public class PersonnelController {
         String motdepassepersonnel = loginDetails.get("motdepassepersonnel");
 
         try {
-            Personnel authenticatedPersonnel = personnelService.authenticatePersonnelAndGetPersonnel(emailpersonnel, motdepassepersonnel);
-            if (authenticatedPersonnel != null) {
-                return ResponseEntity.ok(authenticatedPersonnel);  // Retourne l'objet complet Personnel, y compris le mot de passe
+            PersonnelDTO authenticatedPersonnelDTO = personnelService.authenticatePersonnelAndGetPersonnel(emailpersonnel, motdepassepersonnel);
+            if (authenticatedPersonnelDTO != null) {
+                return ResponseEntity.ok(authenticatedPersonnelDTO);  // Retourner le DTO du Personnel
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Échec de la connexion : identifiants invalides");
             }
@@ -49,7 +49,6 @@ public class PersonnelController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de l'authentification : " + e.getMessage());
         }
     }
-    
     
     // Endpoint pour réinitialiser le mot de passe
     @PostMapping("/reset-password")
