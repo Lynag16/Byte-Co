@@ -5,6 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class GestioncontratsApplication {
+	public GestioncontratsApplication() {
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(GestioncontratsApplication.class, args);
