@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../auth/AuthContext';
+import GestionOffres from '../GestionOffres/GestionOffres';
 import './Dashboard.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,7 +19,8 @@ const Dashboard = () => {
             gestionnaire: [
                 { key: 'tableauDeBord', label: 'Tableau de Bord' },
                 { key: 'utilisateurs', label: 'Utilisateurs' },
-                { key: 'contrats', label: 'Contrats' }
+                { key: 'contrats', label: 'Contrats' },
+                { key: 'gestionOffres', label: 'Gestion des Offres' }
             ],
             medecin: [
                 { key: 'tableauDeBord', label: 'Tableau de Bord' },
@@ -46,6 +48,8 @@ const Dashboard = () => {
                     return <h2>Cas assignés aux médecins</h2>;
                 case 'interventions':
                     return <h2>Interventions des partenaires</h2>;
+                case 'gestionOffres':
+                    return <GestionOffres />;
                 default:
                     return <h2>Contenu non disponible</h2>;
             }
