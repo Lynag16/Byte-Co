@@ -14,7 +14,9 @@ class AuthService {
             throw new Error('Invalid email or password');
         }
 
-        return await response.json();
+        const data = await response.json();
+                console.log('Login Response:', data);
+                return data;
     }
 
     async logout() {
