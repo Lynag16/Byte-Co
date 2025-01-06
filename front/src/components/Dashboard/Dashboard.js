@@ -9,45 +9,47 @@ const Dashboard = () => {
     const navigate = useNavigate();
     const [activeMenu, setActiveMenu] = useState('tableauDeBord');
 
-    // Menu dynamique basé sur le rôle de l'utilisateur
     const menuItems = {
-        admin: [
-            { key: 'tableauDeBord', label: 'Tableau de Bord' },
-            { key: 'utilisateurs', label: 'Utilisateurs' },
-            { key: 'contrats', label: 'Contrats d’Assurance' },
-            { key: 'reclamations', label: 'Réclamations' },
-            { key: 'partenaires', label: 'Partenaires Assureurs' },
-            { key: 'finances', label: 'Finances et Facturation' },
-            { key: 'rapports', label: 'Rapports et Analyses' },
-            { key: 'support', label: 'Support Client' },
-            { key: 'parametres', label: 'Paramètres' },
-        ],
-        user: [
-            { key: 'tableauDeBord', label: 'Tableau de Bord' },
-            { key: 'reclamations', label: 'Réclamations' },
-            { key: 'contrats', label: 'Mes Contrats' },
-            { key: 'support', label: 'Support Client' },
-        ],
-    };
+            client: [
+                { key: 'tableauDeBord', label: 'Tableau de Bord' },
+                { key: 'reclamations', label: 'Réclamations' },
+                { key: 'contrats', label: 'Mes Contrats' }
+            ],
+            gestionnaire: [
+                { key: 'tableauDeBord', label: 'Tableau de Bord' },
+                { key: 'utilisateurs', label: 'Utilisateurs' },
+                { key: 'contrats', label: 'Contrats' }
+            ],
+            medecin: [
+                { key: 'tableauDeBord', label: 'Tableau de Bord' },
+                { key: 'casAssignes', label: 'Cas Assignés' }
+            ],
+            partenaire: [
+                { key: 'tableauDeBord', label: 'Tableau de Bord' },
+                { key: 'interventions', label: 'Mes Interventions' }
+            ]
+        };
+    const userRole = Auth.user?.roles[0];
+        const menus = menuItems[userRole];
 
-    const userRole = Auth.user?.roles?.includes('admin') ? 'admin' : 'user';
-    const menus = menuItems[userRole];
-
-    // Contenu dynamique
     const renderContent = () => {
-        switch (activeMenu) {
-            case 'tableauDeBord':
-                return <h2>Bienvenue sur votre tableau de bord</h2>;
-            case 'utilisateurs':
-                return <h2>Gestion des utilisateurs</h2>;
-            case 'contrats':
-                return <h2>Gestion des contrats</h2>;
-            case 'reclamations':
-                return <h2>Gestion des réclamations</h2>;
-            default:
-                return <h2>Contenu non disponible</h2>;
-        }
-    };
+            switch (activeMenu) {
+                case 'tableauDeBord':
+                    return <h2>Bienvenue sur votre tableau de bord</h2>;
+                case 'utilisateurs':
+                    return <h2>Gestion des utilisateurs</h2>;
+                case 'contrats':
+                    return <h2>Gestion des contrats</h2>;
+                case 'reclamations':
+                    return <h2>Gestion des réclamations</h2>;
+                case 'casAssignes':
+                    return <h2>Cas assignés aux médecins</h2>;
+                case 'interventions':
+                    return <h2>Interventions des partenaires</h2>;
+                default:
+                    return <h2>Contenu non disponible</h2>;
+            }
+        };
 const handleLogout = () => {
     Auth.userLogout();
     navigate('/login');
