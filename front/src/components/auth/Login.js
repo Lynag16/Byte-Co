@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import AuthService from '../../services/AuthService';
-import '../../assets/css/Login.css';
+import LoginImg from '../../assets/images/login.png';
+import './Login.css';
 
 const Login = () => {
     const Auth = useAuth();
@@ -27,7 +28,7 @@ const Login = () => {
         <div className="login-container">
             <div className="login-card">
                 <div className="login-image">
-                    <img src="https://byte-co.fr/wp-content/uploads/2024/11/undraw_Developer_activity_re_39tg.png" alt="Welcome" />
+                    <img src={LoginImg} alt="Welcome" />
                 </div>
                 <form onSubmit={handleLogin} className="login-form">
                     <h2>WELCOME</h2>
