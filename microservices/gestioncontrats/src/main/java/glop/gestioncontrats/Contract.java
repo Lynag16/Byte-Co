@@ -14,7 +14,7 @@ public class Contract {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     private String contractType;
     private DateTimeFormatter startDate;
@@ -44,7 +44,7 @@ public class Contract {
         this.amount = amount;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -76,7 +76,7 @@ public class Contract {
         return amount;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

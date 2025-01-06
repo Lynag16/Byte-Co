@@ -5,13 +5,15 @@ import java.util.List;
 public interface ContractService {
 
     List<Contract> getAllContracts();
+
+    List<Contract> getAllContractsByUser(int id);
     
-    Contract getContractById(long id);
+    Contract getContractById(int id);
 
     Contract addContract(Contract contract);
 
     Contract updateContract(Contract contract);
 
-    void deleteContract(long id);
+    void deleteContract(int id);
 
 }
