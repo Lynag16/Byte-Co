@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import HomePage from './pages/HomePage';
-import LoginPage from './pages/LoginPage';
 import Dashboard from './components/Dashboard/Dashboard';
+import Login from './components/auth/Login';
 import { AuthProvider, useAuth } from './components/auth/AuthContext';
-import NavBar from './components/NavBar';
-import Footer from './components/Footer';
+import NavBar from './components/Shared/NavBar';
+import Footer from './components/Shared/Footer';
 
 const ProtectedRoute = ({ children }) => {
     const Auth = useAuth();
@@ -36,7 +36,7 @@ function App() {
                 <AppLayout>
                     <Routes>
                         <Route path="/" element={<HomePage />} />
-                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/login" element={<Login />} />
                         <Route
                             path="/dashboard"
                             element={

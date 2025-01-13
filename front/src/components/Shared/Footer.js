@@ -1,6 +1,5 @@
 import React from "react";
-import Logo from '../assets/images/Logo.png';
-//import 'bootstrap-icons/font/bootstrap-icons.css';
+import Logo from '../../assets/images/Logo.png';
 
 const Footer = () => {
   return (
@@ -19,16 +18,16 @@ const Footer = () => {
             <p className="small mb-0">Copyright © 2024 Byte&Co ltd.</p>
             <p className="small">All rights reserved</p>
             <div className="d-flex justify-content-center justify-content-md-start gap-2">
-              <a href="#" className="text-light">
+              <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="text-light">
                 <i className="bi bi-instagram fs-5"></i>
               </a>
-              <a href="#" className="text-light">
+              <a href="https://www.assurmob.com" target="_blank" rel="noopener noreferrer" className="text-light">
                 <i className="bi bi-globe fs-5"></i>
               </a>
-              <a href="#" className="text-light">
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-light">
                 <i className="bi bi-twitter fs-5"></i>
               </a>
-              <a href="#" className="text-light">
+              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="text-light">
                 <i className="bi bi-youtube fs-5"></i>
               </a>
             </div>
@@ -38,11 +37,11 @@ const Footer = () => {
           <div className="col-6 col-md-2 mb-4 mb-md-0">
             <h5 className="mb-3">Entreprise</h5>
             <ul className="list-unstyled">
-              <li><a href="#" className="text-light text-decoration-none">À propos</a></li>
-              <li><a href="#" className="text-light text-decoration-none">Blog</a></li>
-              <li><a href="#" className="text-light text-decoration-none">Contact</a></li>
-              <li><a href="#" className="text-light text-decoration-none">Politique de Confidentialité</a></li>
-              <li><a href="#" className="text-light text-decoration-none">Mentions Légales</a></li>
+              <li><a href="/about" className="text-light text-decoration-none">À propos</a></li>
+              <li><a href="/blog" className="text-light text-decoration-none">Blog</a></li>
+              <li><a href="/contact" className="text-light text-decoration-none">Contact</a></li>
+              <li><a href="/privacy-policy" className="text-light text-decoration-none">Politique de Confidentialité</a></li>
+              <li><a href="/legal-notice" className="text-light text-decoration-none">Mentions Légales</a></li>
             </ul>
           </div>
 
@@ -62,12 +61,13 @@ const Footer = () => {
 
           {/* Newsletter */}
           <div className="col-12 col-md-3 text-center text-md-start">
-            <h5 className="mb-3">Stay up to date</h5>
+            <h5 className="mb-3">Restez informé</h5>
             <form className="d-flex">
               <input
                 type="email"
                 className="form-control me-2"
                 placeholder="Entrez votre adresse email"
+                required
               />
               <button className="btn btn-secondary" type="submit">
                 <i className="bi bi-send"></i>

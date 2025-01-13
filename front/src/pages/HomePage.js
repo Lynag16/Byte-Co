@@ -6,8 +6,10 @@ import AchievementsSection from '../components/Home/AchievementsSection';
 import ContactSection from '../components/Home/ContactSection';
 import HowSection from '../components/Home/HowSection';
 import WhySection from '../components/Home/WhySection';
+import OffersSection from '../components/Home/OffersSection';
 import TestimonialsSection from '../components/Home/TestimonialsSection';
 import '../assets/css/main.css';
+import './HomePage.css';
 
 const HomePage = () => {
   useEffect(() => {
@@ -24,6 +26,7 @@ const HomePage = () => {
       <HowSection />
       <WhySection />
       <TestimonialsSection />
+      <OffersSection />
     </div>
   );
 };
