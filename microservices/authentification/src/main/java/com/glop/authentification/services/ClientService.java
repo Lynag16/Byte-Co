@@ -1,5 +1,6 @@
 package com.glop.authentification.services;
 
+
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.glop.authentification.entities.Client;
 import com.glop.authentification.repositories.ClientRepository;
 
@@ -21,7 +23,9 @@ public class ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
+
     private static final Logger logger = LoggerFactory.getLogger(ClientService.class);
+
 
     // Méthode pour enregistrer un nouveau client
 //    public ClientDTO registerClient(ClientDTO clientDTO) {
@@ -31,6 +35,7 @@ public class ClientService {
 //        Client savedClient = clientRepository.save(client);
 //        return ClientMapper.toDTO(savedClient);
 //    }
+
 
 @Transactional
 public ClientDTO registerClient(ClientDTO clientDTO) {
@@ -70,6 +75,7 @@ public ClientDTO registerClient(ClientDTO clientDTO) {
             System.out.println("Mot de passe envoyé : " + motdepasse);
             System.out.println("Mot de passe en base : " + client.getMotdepasse());
             
+
             // Check if the password matches (plain text comparison)
             if (motdepasse != null && motdepasse.equals(client.getMotdepasse())) {
                 System.out.println("Mot de passe valide.");
@@ -82,7 +88,7 @@ public ClientDTO registerClient(ClientDTO clientDTO) {
         }
         return null;
     }
-    
+
 
 
     // Méthode pour réinitialiser le mot de passe d'un client
@@ -99,5 +105,5 @@ public ClientDTO registerClient(ClientDTO clientDTO) {
     public boolean clientExists(String email) {
         return clientRepository.existsByEmail(email);  // Assuming clientRepository is your JPA repository
     }
-    
+
 }

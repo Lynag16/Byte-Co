@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.glop.authentification.dto.PersonnelDTO;
+
 import com.glop.authentification.services.PersonnelService;
 
 @RestController
@@ -22,11 +23,13 @@ public class PersonnelController {
 
     // Endpoint pour enregistrer un nouveau personnel
     @PostMapping("/register")
+
     public ResponseEntity<String> register(@RequestBody PersonnelDTO personnelDTO) {
         try {
             PersonnelDTO savedPersonnelDTO = personnelService.registerPersonnel(personnelDTO);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body("Personnel inscrit avec succès, ID: " + savedPersonnelDTO.getIdpersonnel());
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erreur lors de l'inscription : " + e.getMessage());
         }
@@ -39,9 +42,11 @@ public class PersonnelController {
         String motdepassepersonnel = loginDetails.get("motdepassepersonnel");
 
         try {
+
             PersonnelDTO authenticatedPersonnelDTO = personnelService.authenticatePersonnelAndGetPersonnel(emailpersonnel, motdepassepersonnel);
             if (authenticatedPersonnelDTO != null) {
                 return ResponseEntity.ok(authenticatedPersonnelDTO);  // Retourner le DTO du Personnel
+
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Échec de la connexion : identifiants invalides");
             }

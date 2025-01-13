@@ -1,5 +1,6 @@
 package com.glop.authentification.controllers;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,8 @@ import com.glop.authentification.services.PartenaireService;
 
 import java.util.Map;
 
+
+
 @RestController
 @RequestMapping("/api/partenaires")
 public class PartenaireController {
@@ -21,6 +24,7 @@ public class PartenaireController {
     // Endpoint pour enregistrer un nouveau partenaire
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody Partenaire partenaire) {
+
         try {
             // Appel au service pour enregistrer le partenaire et récupérer le DTO
             PartenaireDTO savedPartenaire = partenaireService.registerPartenaire(partenaire);
@@ -32,6 +36,7 @@ public class PartenaireController {
     }
 
     // Endpoint pour authentifier un partenaire
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> loginDetails) {
         String emailPartenaire = loginDetails.get("emailPartenaire");
@@ -49,6 +54,7 @@ public class PartenaireController {
         }
     }
 
+
     // Endpoint pour réinitialiser le mot de passe
     @PostMapping("/reset-password")
     public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> resetDetails) {
@@ -59,6 +65,8 @@ public class PartenaireController {
         if (isReset) {
             return ResponseEntity.ok("Mot de passe réinitialisé avec succès");
         }
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Échec de la réinitialisation du mot de passe");
+
     }
 }

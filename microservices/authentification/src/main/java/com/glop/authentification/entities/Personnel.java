@@ -1,6 +1,7 @@
 package com.glop.authentification.entities;
 
 import jakarta.persistence.Column;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,6 +16,7 @@ public class Personnel {
     private String nompersonnel;
     private String prenompersonnel;
 	@Column(unique = true)
+
     private String emailpersonnel;
     private String telephonepersonnel;
     private String rolepersonnel;

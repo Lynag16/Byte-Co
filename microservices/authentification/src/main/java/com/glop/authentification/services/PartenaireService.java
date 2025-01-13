@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.glop.authentification.entities.Partenaire;
+
 import com.glop.authentification.dto.PartenaireDTO;
 import com.glop.authentification.mappers.PartenaireMapper;
+
 import com.glop.authentification.repositories.PartenaireRepository;
 
 @Service
@@ -15,6 +17,7 @@ public class PartenaireService {
     private PartenaireRepository partenaireRepository;
 
     // Méthode pour enregistrer un nouveau partenaire
+
     public PartenaireDTO registerPartenaire(Partenaire partenaire) {
         // Enregistrement du partenaire dans la base de données
         Partenaire savedPartenaire = partenaireRepository.save(partenaire);
@@ -39,8 +42,10 @@ public class PartenaireService {
         if (partenaire != null) {
             partenaire.setMotdepassePartenaire(newPassword); // Mise à jour du mot de passe
             partenaireRepository.save(partenaire); // Sauvegarde du partenaire avec le nouveau mot de passe
+
             return true;
         }
         return false;
     }
+
 }

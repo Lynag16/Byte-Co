@@ -27,6 +27,7 @@ public class ClientController {
         // If not, proceed to register the client
         ClientDTO savedClient = clientService.registerClient(clientDTO);
         return ResponseEntity.ok("Client registered successfully, ID: " + savedClient.getIdClient());
+
     }
 
     // Endpoint pour authentifier un client

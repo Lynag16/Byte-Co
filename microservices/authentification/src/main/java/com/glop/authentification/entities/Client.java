@@ -3,6 +3,7 @@ package com.glop.authentification.entities;
 import java.util.Date;
 
 import jakarta.persistence.Column;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,9 +17,11 @@ public class Client {
     private String nom;
     private String prenom;
 
+
 	@Column(unique = true)
     private String email;
 	
+
     private String telephone;
     private String motdepasse; 
     private Date dateInscription;

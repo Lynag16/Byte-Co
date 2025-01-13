@@ -1,11 +1,15 @@
 package com.glop.authentification.services;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.glop.authentification.entities.Personnel;
+
 import com.glop.authentification.dto.PersonnelDTO;
 import com.glop.authentification.mappers.PersonnelMapper;
+
 import com.glop.authentification.repositories.PersonnelRepository;
 
 @Service
@@ -36,6 +40,7 @@ public class PersonnelService {
         if (personnel != null) {
             personnel.setmotdepassepersonnel(newPassword); // Met à jour le mot de passe
             personnelRepository.save(personnel); // Sauvegarde le Personnel avec le nouveau mot de passe
+
             return true;
         }
         return false;
