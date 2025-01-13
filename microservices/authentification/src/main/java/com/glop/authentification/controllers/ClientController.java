@@ -19,8 +19,15 @@ public class ClientController {
     // Endpoint pour enregistrer un nouveau client
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody ClientDTO clientDTO) {
+        // Check if client already exists
+        if (clientService.clientExists(clientDTO.getEmail())) {
+            return ResponseEntity.status(400).body("Client already exists with this email.");
+        }
+        
+        // If not, proceed to register the client
         ClientDTO savedClient = clientService.registerClient(clientDTO);
-        return ResponseEntity.ok("Client inscrit avec succès, ID: " + savedClient.getIdClient());
+        return ResponseEntity.ok("Client registered successfully, ID: " + savedClient.getIdClient());
+
     }
 
     // Endpoint pour authentifier un client
