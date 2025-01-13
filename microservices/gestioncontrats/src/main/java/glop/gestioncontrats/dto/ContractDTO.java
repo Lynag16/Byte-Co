@@ -14,12 +14,17 @@ public class ContractDTO {
     private float empreinteCalculee;
     private float compensationCarbone;
 
+    //information sur le client
+    private ClientDTO client;
+    private int clientId;
+
     // Constructeurs
     public ContractDTO() {
     }
 
     public ContractDTO(int id, int offerId, String typeAssurance, LocalDateTime dateSouscription, LocalDateTime dateExpiration,
-                       String statut, float montantContrat, float empreinteCalculee, float compensationCarbone) {
+                       String statut, float montantContrat, float empreinteCalculee, float compensationCarbone,
+                       ClientDTO client, int clientId) {
         this.id = id;
         this.offerId = offerId;
         this.typeAssurance = typeAssurance;
@@ -29,6 +34,8 @@ public class ContractDTO {
         this.montantContrat = montantContrat;
         this.empreinteCalculee = empreinteCalculee;
         this.compensationCarbone = compensationCarbone;
+        this.client = client;
+        this.clientId = clientId;
     }
 
     // Getters et Setters
@@ -102,5 +109,21 @@ public class ContractDTO {
 
     public void setCompensationCarbone(float compensationCarbone) {
         this.compensationCarbone = compensationCarbone;
+    }
+
+    public ClientDTO getClient() {
+        return client;
+    }
+
+    public void setClient(ClientDTO client) {
+        this.client = client;
+    }
+
+    public int getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(int clientId) {
+        this.clientId = clientId;
     }
 }
