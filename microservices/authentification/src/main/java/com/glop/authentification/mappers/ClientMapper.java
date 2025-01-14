@@ -1,4 +1,4 @@
-package  com.glop.authentification.mappers;
+package com.glop.authentification.mappers;
 
 import com.glop.authentification.entities.Client;
 
@@ -21,6 +21,8 @@ public class ClientMapper {
         clientDTO.setAdresseclient(client.getAdresseclient());
         clientDTO.setBadge(client.getBadge());
         clientDTO.setStatut(client.getStatut());
+        clientDTO.setMotdepasse(client.getMotdepasse()); // Add this line to map the motdepasse
+
         return clientDTO;
     }
 
@@ -39,6 +41,8 @@ public class ClientMapper {
         client.setAdresseclient(clientDTO.getAdresseclient());
         client.setBadge(clientDTO.getBadge());
         client.setStatut(clientDTO.getStatut());
+        client.setMotdepasse(clientDTO.getMotdepasse()); // Add this line to map the motdepasse
+
         return client;
     }
 }

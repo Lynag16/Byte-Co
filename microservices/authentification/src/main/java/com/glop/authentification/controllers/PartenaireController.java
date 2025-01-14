@@ -1,16 +1,18 @@
 package com.glop.authentification.controllers;
 
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import com.glop.authentification.dto.PartenaireDTO;
 import com.glop.authentification.entities.Partenaire;
 import com.glop.authentification.services.PartenaireService;
+
+import java.util.Map;
+
+
 
 @RestController
 @RequestMapping("/api/partenaires")
@@ -22,23 +24,37 @@ public class PartenaireController {
     // Endpoint pour enregistrer un nouveau partenaire
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody Partenaire partenaire) {
-        Partenaire savedPartenaire = partenaireService.registerpartenaire(partenaire);
-        return ResponseEntity.ok("Partenaire inscrit avec succès, ID: " + savedPartenaire.getIdPartenaire());
+
+        try {
+            // Appel au service pour enregistrer le partenaire et récupérer le DTO
+            PartenaireDTO savedPartenaire = partenaireService.registerPartenaire(partenaire);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("Partenaire inscrit avec succès, ID: " + savedPartenaire.getIdPartenaire());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erreur lors de l'inscription : " + e.getMessage());
+        }
     }
 
-    // Endpoint pour authentifier un client
+    // Endpoint pour authentifier un partenaire
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> loginDetails) {
         String emailPartenaire = loginDetails.get("emailPartenaire");
         String motdepassePartenaire = loginDetails.get("motdepassePartenaire");
 
-        Partenaire authenticatedPartenaire = partenaireService.authenticatePartenaireAndGetPartenaire(emailPartenaire, motdepassePartenaire);
-        if (authenticatedPartenaire != null) {
-            return ResponseEntity.ok(authenticatedPartenaire); // Retourne l'objet Partenaire si authentification réussie
+        try {
+            PartenaireDTO authenticatedPartenaire = partenaireService.authenticatePartenaireAndGetPartenaire(emailPartenaire, motdepassePartenaire);
+            if (authenticatedPartenaire != null) {
+                return ResponseEntity.ok(authenticatedPartenaire); // Retourne le PartenaireDTO en cas de succès
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Échec de la connexion : identifiants invalides");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de l'authentification : " + e.getMessage());
         }
-        return ResponseEntity.status(401).body("Échec de la connexion");
     }
-    
+
+
     // Endpoint pour réinitialiser le mot de passe
     @PostMapping("/reset-password")
     public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> resetDetails) {
@@ -49,6 +65,8 @@ public class PartenaireController {
         if (isReset) {
             return ResponseEntity.ok("Mot de passe réinitialisé avec succès");
         }
-        return ResponseEntity.status(400).body("Échec de la réinitialisation du mot de passe");
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Échec de la réinitialisation du mot de passe");
+
     }
 }
