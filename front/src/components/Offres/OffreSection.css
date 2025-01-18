@@ -1,0 +1,162 @@
+.offre-section {
+  padding: 80px 20px;
+  background: linear-gradient(to bottom, #f4f7f9, #e9ecef);
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto 80px auto;
+  border-radius: 10px;
+}
+
+.section-title {
+  font-size: 3em;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.section-subtitle {
+  font-size: 1.4em;
+  margin-bottom: 50px;
+  color: #666;
+}
+
+.offers-container {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.offers-card {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+  width: 320px;
+  padding: 30px 20px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.offres-page .offers-card {
+min-height: 550px;
+}
+.offers-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.offers-card h3 {
+  font-size: 1.5em;
+  margin-bottom: 15px;
+  color: #222;
+}
+
+.offers-card ul {
+  flex-grow: 1;
+  margin: 15px 0;
+  padding: 0 20px;
+  list-style: none;
+  text-align: left;
+  line-height: 1.7em;
+}
+
+.offers-card ul li {
+  margin-bottom: 10px;
+  font-size: 1em;
+  position: relative;
+  padding-left: 20px;
+}
+
+.offers-card ul li::before {
+  content: '✔';
+  position: absolute;
+  left: 0;
+  color: #28a745;
+}
+
+.btn-primary {
+  background: linear-gradient(45deg, #28a745, #218838);
+  color: white;
+  padding: 12px 25px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-transform: uppercase;
+  font-weight: bold;
+  border: none;
+}
+
+.btn-primary:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.5);
+}
+
+.comparateur-section {
+  width: 100%;
+  max-width: 1200px;
+  margin: 50px auto 0;
+  border-radius: 10px;
+  overflow-x: auto;
+  background-color: #fff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.comparateur-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-bottom: 2px solid #ddd;
+  font-size: 1.2em;
+}
+
+.chevron-icon {
+  font-size: 1.5em;
+  color: #000;
+}
+
+.comparateur-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.comparateur-table th,
+.comparateur-table td {
+  padding: 15px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.comparateur-table th {
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+}
+
+.comparateur-table tr:hover {
+  background-color: #e6f7ff;
+}
+
+@media (max-width: 768px) {
+  .offers-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .offers-card {
+    width: 90%;
+  }
+
+  .comparateur-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

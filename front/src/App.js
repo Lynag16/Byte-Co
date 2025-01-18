@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
-import HomePage from './pages/HomePage';
+import HomePage from './pages/home/HomePage';
+import Offres from './pages/offres/OffresPage';
 import Dashboard from './components/Dashboard/Dashboard';
 import Login from './components/auth/Login';
 import { AuthProvider, useAuth } from './components/auth/AuthContext';
@@ -45,6 +46,7 @@ function App() {
                                 </ProtectedRoute>
                             }
                         />
+                        <Route path="/offres" element={<Offres />} />
                     </Routes>
                 </AppLayout>
             </Router>

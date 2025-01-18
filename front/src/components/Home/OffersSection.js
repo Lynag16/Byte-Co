@@ -1,9 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import voyageImage from '../../assets/images/offre-voyage.jpg';
-import santeImage from '../../assets/images/offre-sante.jpg';
-import proImage from '../../assets/images/offre-pro.jpg';
-import persoImage from '../../assets/images/offre-personnalisee.jpg';
+import voyageImage from '../../assets/images/offres/offre-voyage.jpg';
+import santeImage from '../../assets/images/offres/offre-sante.jpg';
+import proImage from '../../assets/images/offres/offre-pro.jpg';
+import persoImage from '../../assets/images/offres/offre-personnalisee.jpg';
 import '../../assets/css/OffresSection.css';
 
 const OffersSection = () => {
