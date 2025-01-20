@@ -6,8 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+
 
 @Entity
 public class Contract {
@@ -17,10 +16,11 @@ public class Contract {
     private int id;
 
     //relation avec la table Offre
-    @ManyToOne
-    @JoinColumn(name = "id_offer")
+    /*@ManyToOne
+    @JoinColumn(name = "offerId")
     private Offer offer;
-
+    */
+    private int clientId;
     private String typeAssurance;
     private LocalDateTime dateSouscription;
     private LocalDateTime dateExpiration;
@@ -32,8 +32,9 @@ public class Contract {
     public Contract() {
     }
 
-    public Contract(int id, String typeAssurance, LocalDateTime dateSouscription, LocalDateTime dateExpiration, String statut, float montantContrat, float empreinteCalculee, float compensationCarbone) {
+    public Contract(int id,int clientId, String typeAssurance, LocalDateTime dateSouscription, LocalDateTime dateExpiration, String statut, float montantContrat, float empreinteCalculee, float compensationCarbone) {
         this.id = id;
+        this.clientId = clientId;
         this.typeAssurance = typeAssurance;
         this.dateSouscription = dateSouscription;
         this.dateExpiration = dateExpiration;
@@ -41,6 +42,14 @@ public class Contract {
         this.montantContrat = montantContrat;
         this.empreinteCalculee = empreinteCalculee;
         this.compensationCarbone = compensationCarbone;
+    }
+
+    public int getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(int clientId) {
+        this.clientId = clientId;
     }
 
     public String getTypeAssurance() {
@@ -105,13 +114,5 @@ public class Contract {
 
     public void setStatut(String statut) {
         this.statut = statut;
-    }
-
-    public Offer getOffer() {
-        return offer;
-    }
-
-    public void setOffer(Offer offer) {
-        this.offer = offer;
     }
 }
