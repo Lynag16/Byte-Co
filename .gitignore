@@ -1,0 +1,19 @@
+# Fichiers à ignorer globalement
+.idea/
+.vscode/
+node_modules/
+package-lock.json
+yarn.lock
+target/
+mvnw
+mvnw.cmd
+.mvn/
+*.log
+docker-compose.override.yml
+.DS_Store
+Thumbs.db
+~
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
