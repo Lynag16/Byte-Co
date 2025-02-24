@@ -17,3 +17,9 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+.metadata/
+target/
+maven-status/
+.settings/
+.classpath
+.project
