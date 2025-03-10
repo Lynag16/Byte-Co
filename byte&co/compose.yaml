@@ -1,0 +1,108 @@
+version: '3.8'
+
+services:
+  backend-auth:
+    build: ./authentification/backend
+    restart: always
+    ports:
+      - 8080:8080
+    secrets:
+      - db-password-auth
+    environment:
+      MYSQL_HOST: db-auth
+      MYSQL_DATABASE: auth_db
+      MYSQL_USER: auth_user
+      MYSQL_PASSWORD_FILE: db-57xsl
+    networks:
+      - react-spring
+      - auth-mysql
+    depends_on:
+      db-auth:
+        condition: service_healthy
+
+  db-auth:
+    image: mysql:8.0.19
+    environment:
+      - MYSQL_DATABASE=auth_db
+      - MYSQL_USER=auth_user
+      - MYSQL_PASSWORD_FILE=/run/secrets/db-password-auth
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-auth
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 3s
+      retries: 5
+      start_period: 30s
+    secrets:
+      - db-password-auth
+    volumes:
+      - db-auth-data:/var/lib/mysql
+    networks:
+      - auth-mysql
+
+  # backend-other:
+  #   build: ./other_microservice/backend
+  #   restart: always
+  #   secrets:
+  #     - db-password-other
+  #   environment:
+  #     MYSQL_HOST: db-other
+  #     MYSQL_DATABASE: other_db
+  #     MYSQL_USER: other_user
+  #     MYSQL_PASSWORD_FILE: /run/secrets/db-password-other
+  #   networks:
+  #     - react-spring
+  #     - other-mysql
+  #   depends_on:
+  #     db-other:
+  #       condition: service_healthy
+
+  # db-other:
+  #   image: mysql:8.0.19
+  #   environment:
+  #     - MYSQL_DATABASE=other_db
+  #     - MYSQL_USER=other_user
+  #     - MYSQL_PASSWORD_FILE=/run/secrets/db-password-other
+  #     - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-other
+  #   restart: always
+  #   healthcheck:
+  #     test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+  #     interval: 3s
+  #     retries: 5
+  #     start_period: 30s
+  #   secrets:
+  #     - db-password-other
+  #   volumes:
+  #     - db-other-data:/var/lib/mysql
+  #   networks:
+  #     - other-mysql
+
+  frontend:
+    build:
+      context: frontend
+      target: development
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend/src:/code/src
+      - /project/node_modules
+    networks:
+      - react-spring
+    depends_on:
+      - backend-auth
+      # - backend-other
+
+volumes:
+  db-auth-data: {}
+  # db-other-data: {}
+
+secrets:
+  db-password-auth:
+    file: ./authentification/db/password.txt
+  # db-password-other:
+  #   file: db/other_password.txt
+
+networks:
+  react-spring: {}
+  auth-mysql: {}
+  other-mysql: {}
