@@ -4,7 +4,7 @@ Projet GLOP M2 MIAGE
 
 Equipe:
 - AGOUAZI Lynda
-- GHOFIR Abdelali
+- RHOFIR Abdelali
 - LAIRAIBI Javad
 - TOTOUM Patricia
 
