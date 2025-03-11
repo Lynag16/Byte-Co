@@ -1,18 +1,19 @@
 version: '3.8'
 
 services:
+  #___________Microservice Authentification
   backend-auth:
     build: ./authentification/backend
     restart: always
     ports:
-      - 8080:8080
+      - "8080:8080"
     secrets:
       - db-password-auth
     environment:
       MYSQL_HOST: db-auth
       MYSQL_DATABASE: auth_db
       MYSQL_USER: auth_user
-      MYSQL_PASSWORD_FILE: db-57xsl
+      MYSQL_PASSWORD_FILE: /run/secrets/db-password-auth
     networks:
       - react-spring
       - auth-mysql
@@ -40,30 +41,75 @@ services:
     networks:
       - auth-mysql
 
-  # backend-other:
-  #   build: ./other_microservice/backend
+
+  #___________Microservice Gestion Client
+  backend-gestionclient:
+    build: ./gestionclient/backend
+    restart: always
+    ports:
+      - "8081:8080"
+    secrets:
+      - db-password-gestionclient
+    environment:
+      MYSQL_HOST: db-gestionclient
+      MYSQL_DATABASE: gestionclient_db
+      MYSQL_USER: gestionclient_user
+      MYSQL_PASSWORD_FILE: /run/secrets/db-password-gestionclient
+    networks:
+      - react-spring
+      - gestionclient-mysql
+    depends_on:
+      db-gestionclient:
+        condition: service_healthy
+
+  db-gestionclient:
+    image: mysql:8.0.19
+    environment:
+      - MYSQL_DATABASE=gestionclient_db
+      - MYSQL_USER=gestionclient_user
+      - MYSQL_PASSWORD_FILE=/run/secrets/db-password-gestionclient
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-gestionclient
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 3s
+      retries: 5
+      start_period: 30s
+    secrets:
+      - db-password-gestionclient
+    volumes:
+      - db-gestionclient-data:/var/lib/mysql
+    networks:
+      - gestionclient-mysql
+
+
+  # #___________Microservice Gestion des Contrats
+  # backend-gestioncontrat:
+  #   build: ./gestioncontrat/backend
   #   restart: always
+  #   ports:
+  #     - "8082:8080"
   #   secrets:
-  #     - db-password-other
+  #     - db-password-gestioncontrat
   #   environment:
-  #     MYSQL_HOST: db-other
-  #     MYSQL_DATABASE: other_db
-  #     MYSQL_USER: other_user
-  #     MYSQL_PASSWORD_FILE: /run/secrets/db-password-other
+  #     MYSQL_HOST: db-gestioncontrat
+  #     MYSQL_DATABASE: gestioncontrat_db
+  #     MYSQL_USER: gestioncontrat_user
+  #     MYSQL_PASSWORD_FILE: /run/secrets/db-password-gestioncontrat
   #   networks:
   #     - react-spring
-  #     - other-mysql
+  #     - gestioncontrat-mysql
   #   depends_on:
-  #     db-other:
+  #     db-gestioncontrat:
   #       condition: service_healthy
 
-  # db-other:
+  # db-gestioncontrat:
   #   image: mysql:8.0.19
   #   environment:
-  #     - MYSQL_DATABASE=other_db
-  #     - MYSQL_USER=other_user
-  #     - MYSQL_PASSWORD_FILE=/run/secrets/db-password-other
-  #     - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-other
+  #     - MYSQL_DATABASE=gestioncontrat_db
+  #     - MYSQL_USER=gestioncontrat_user
+  #     - MYSQL_PASSWORD_FILE=/run/secrets/db-password-gestioncontrat
+  #     - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-gestioncontrat
   #   restart: always
   #   healthcheck:
   #     test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
@@ -71,18 +117,112 @@ services:
   #     retries: 5
   #     start_period: 30s
   #   secrets:
-  #     - db-password-other
+  #     - db-password-gestioncontrat
   #   volumes:
-  #     - db-other-data:/var/lib/mysql
+  #     - db-gestioncontrat-data:/var/lib/mysql
   #   networks:
-  #     - other-mysql
+  #     - gestioncontrat-mysql
 
+
+  # #___________Microservice Gestion des Offres
+  # backend-gestionoffres:
+  #   build: ./gestionoffres/backend
+  #   restart: always
+  #   ports:
+  #     - "8083:8080"
+  #   secrets:
+  #     - db-password-gestionoffres
+  #   environment:
+  #     MYSQL_HOST: db-gestionoffres
+  #     MYSQL_DATABASE: gestionoffres_db
+  #     MYSQL_USER: gestionoffres_user
+  #     MYSQL_PASSWORD_FILE: /run/secrets/db-password-gestionoffres
+  #   networks:
+  #     - react-spring
+  #     - gestionoffres-mysql
+  #   depends_on:
+  #     db-gestionoffres:
+  #       condition: service_healthy
+
+  # db-gestionoffres:
+  #   image: mysql:8.0.19
+  #   environment:
+  #     - MYSQL_DATABASE=gestionoffres_db
+  #     - MYSQL_USER=gestionoffres_user
+  #     - MYSQL_PASSWORD_FILE=/run/secrets/db-password-gestionoffres
+  #     - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-gestionoffres
+  #   restart: always
+  #   healthcheck:
+  #     test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+  #     interval: 3s
+  #     retries: 5
+  #     start_period: 30s
+  #   secrets:
+  #     - db-password-gestionoffres
+  #   volumes:
+  #     - db-gestionoffres-data:/var/lib/mysql
+  #   networks:
+  #     - gestionoffres-mysql
+
+
+  # #___________Microservice Empreinte Carbone
+  # backend-empreintecarbone:
+  #   build: ./empreintecarbone/backend
+  #   restart: always
+  #   ports:
+  #     - "8084:8080"
+  #   networks:
+  #     - react-spring
+
+
+  # #___________Microservice Gestion de Sinistre
+  # backend-gestionsinistre:
+  #   build: ./gestionsinistre/backend
+  #   restart: always
+  #   ports:
+  #     - "8085:8080"
+  #   secrets:
+  #     - db-password-gestionsinistre
+  #   environment:
+  #     MYSQL_HOST: db-gestionsinistre
+  #     MYSQL_DATABASE: gestionsinistre_db
+  #     MYSQL_USER: gestionsinistre_user
+  #     MYSQL_PASSWORD_FILE: /run/secrets/db-password-gestionsinistre
+  #   networks:
+  #     - react-spring
+  #     - gestionsinistre-mysql
+  #   depends_on:
+  #     db-gestionsinistre:
+  #       condition: service_healthy
+
+  # db-gestionsinistre:
+  #   image: mysql:8.0.19
+  #   environment:
+  #     - MYSQL_DATABASE=gestionsinistre_db
+  #     - MYSQL_USER=gestionsinistre_user
+  #     - MYSQL_PASSWORD_FILE=/run/secrets/db-password-gestionsinistre
+  #     - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-gestionsinistre
+  #   restart: always
+  #   healthcheck:
+  #     test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+  #     interval: 3s
+  #     retries: 5
+  #     start_period: 30s
+  #   secrets:
+  #     - db-password-gestionsinistre
+  #   volumes:
+  #     - db-gestionsinistre-data:/var/lib/mysql
+  #   networks:
+  #     - gestionsinistre-mysql
+
+
+#___________Frontend
   frontend:
     build:
       context: frontend
       target: development
     ports:
-      - 3000:3000
+      - "3000:3000"
     volumes:
       - ./frontend/src:/code/src
       - /project/node_modules
@@ -90,19 +230,27 @@ services:
       - react-spring
     depends_on:
       - backend-auth
-      # - backend-other
 
+#___________Volumes
 volumes:
   db-auth-data: {}
-  # db-other-data: {}
+  db-gestionclient-data: {}
+  db-gestioncontrat-data: {}
+  db-gestionoffres-data: {}
+  db-gestionsinistre-data: {}
 
+#___________Secrets
 secrets:
   db-password-auth:
     file: ./authentification/db/password.txt
-  # db-password-other:
-  #   file: db/other_password.txt
+  db-password-gestionclient:
+    file: ./gestionclient/db/password.txt
 
+#___________Networks
 networks:
   react-spring: {}
   auth-mysql: {}
-  other-mysql: {}
+  gestionclient-mysql: {}
+  gestioncontrat-mysql: {}
+  gestionoffres-mysql: {}
+  gestionsinistre-mysql: {}
