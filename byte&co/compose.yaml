@@ -175,45 +175,45 @@ services:
   #     - react-spring
 
 
-  # #___________Microservice Gestion de Sinistre
-  # backend-gestionsinistre:
-  #   build: ./gestionsinistre/backend
-  #   restart: always
-  #   ports:
-  #     - "8085:8080"
-  #   secrets:
-  #     - db-password-gestionsinistre
-  #   environment:
-  #     MYSQL_HOST: db-gestionsinistre
-  #     MYSQL_DATABASE: gestionsinistre_db
-  #     MYSQL_USER: gestionsinistre_user
-  #     MYSQL_PASSWORD_FILE: /run/secrets/db-password-gestionsinistre
-  #   networks:
-  #     - react-spring
-  #     - gestionsinistre-mysql
-  #   depends_on:
-  #     db-gestionsinistre:
-  #       condition: service_healthy
+  #___________Microservice Gestion de Sinistre
+  backend-gestionsinistres:
+    build: ./gestionsinistres/backend
+    restart: always
+    ports:
+      - "8085:8080"
+    secrets:
+      - db-password-gestionsinistres
+    environment:
+      MYSQL_HOST: db-gestionsinistres
+      MYSQL_DATABASE: gestionsinistres_db
+      MYSQL_USER: gestionsinistres_user
+      MYSQL_PASSWORD_FILE: /run/secrets/db-password-gestionsinistres
+    networks:
+      - react-spring
+      - gestionsinistres-mysql
+    depends_on:
+      db-gestionsinistres:
+        condition: service_healthy
 
-  # db-gestionsinistre:
-  #   image: mysql:8.0.19
-  #   environment:
-  #     - MYSQL_DATABASE=gestionsinistre_db
-  #     - MYSQL_USER=gestionsinistre_user
-  #     - MYSQL_PASSWORD_FILE=/run/secrets/db-password-gestionsinistre
-  #     - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-gestionsinistre
-  #   restart: always
-  #   healthcheck:
-  #     test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
-  #     interval: 3s
-  #     retries: 5
-  #     start_period: 30s
-  #   secrets:
-  #     - db-password-gestionsinistre
-  #   volumes:
-  #     - db-gestionsinistre-data:/var/lib/mysql
-  #   networks:
-  #     - gestionsinistre-mysql
+  db-gestionsinistres:
+    image: mysql:8.0.19
+    environment:
+      - MYSQL_DATABASE=gestionsinistres_db
+      - MYSQL_USER=gestionsinistres_user
+      - MYSQL_PASSWORD_FILE=/run/secrets/db-password-gestionsinistres
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-gestionsinistres
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 3s
+      retries: 5
+      start_period: 30s
+    secrets:
+      - db-password-gestionsinistres
+    volumes:
+      - db-gestionsinistres-data:/var/lib/mysql
+    networks:
+      - gestionsinistres-mysql
 
 
 #___________Frontend
@@ -237,7 +237,7 @@ volumes:
   db-gestionclient-data: {}
   db-gestioncontrat-data: {}
   db-gestionoffres-data: {}
-  db-gestionsinistre-data: {}
+  db-gestionsinistres-data: {}
 
 #___________Secrets
 secrets:
@@ -245,6 +245,8 @@ secrets:
     file: ./authentification/db/password.txt
   db-password-gestionclient:
     file: ./gestionclient/db/password.txt
+  db-password-gestionsinistres:
+    file: ./gestionsinistres/db/password.txt
 
 #___________Networks
 networks:
@@ -253,4 +255,4 @@ networks:
   gestionclient-mysql: {}
   gestioncontrat-mysql: {}
   gestionoffres-mysql: {}
-  gestionsinistre-mysql: {}
+  gestionsinistres-mysql: {}
