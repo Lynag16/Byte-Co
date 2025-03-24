@@ -177,6 +177,27 @@ services:
   #     - gestionsinistres-mysql
 
 
+
+#___________Microservice Empreinte Carbone
+  backend-empreintecarbone:
+    build: ./empreintecarbone
+    restart: always
+    ports:
+      - "8084:8080"
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cutt46popnds739qav80-a.frankfurt-postgres.render.com:5432/assurmob
+      SPRING_DATASOURCE_USERNAME: assurmob_user
+      SPRING_DATASOURCE_PASSWORD: MEbiFOhZtaE7FDf4A387P986PTZbXq77
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+
+    networks:
+      - react-spring
+
+
+
 #___________Frontend
   frontend:
     build:
