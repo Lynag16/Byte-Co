@@ -40,43 +40,19 @@ services:
 
   #___________Microservice Gestion Client
   backend-gestionclient:
-    build: ./gestionclient/backend
+    build: ./gestionclient
     restart: always
     ports:
-      - "8081:8080"
-    secrets:
-      - db-password-gestionclient
+      - "8081:8080"  # ou un autre port si conflit
     environment:
-      MYSQL_HOST: db-gestionclient
-      MYSQL_DATABASE: gestionclient_db
-      MYSQL_USER: gestionclient_user
-      MYSQL_PASSWORD_FILE: /run/secrets/db-password-gestionclient
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cutt46popnds739qav80-a.frankfurt-postgres.render.com:5432/assurmob
+      SPRING_DATASOURCE_USERNAME: assurmob_user
+      SPRING_DATASOURCE_PASSWORD: MEbiFOhZtaE7FDf4A387P986PTZbXq77
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
     networks:
       - react-spring
-      - gestionclient-mysql
-    depends_on:
-      db-gestionclient:
-        condition: service_healthy
-
-  db-gestionclient:
-    image: mysql:8.0.19
-    environment:
-      - MYSQL_DATABASE=gestionclient_db
-      - MYSQL_USER=gestionclient_user
-      - MYSQL_PASSWORD_FILE=/run/secrets/db-password-gestionclient
-      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-gestionclient
-    restart: always
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
-      interval: 3s
-      retries: 5
-      start_period: 30s
-    secrets:
-      - db-password-gestionclient
-    volumes:
-      - db-gestionclient-data:/var/lib/mysql
-    networks:
-      - gestionclient-mysql
 
 
   # #___________Microservice Gestion des Contrats
