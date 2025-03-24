@@ -3,43 +3,39 @@ version: '3.8'
 services:
   #___________Microservice Authentification
   backend-auth:
-    build: ./authentification/backend
+    build: ./authentification
     restart: always
     ports:
-      - "8080:8080"
-    secrets:
-      - db-password-auth
+      - "8082:8080" # différent des autres ports pour éviter les conflits
     environment:
-      MYSQL_HOST: db-auth
-      MYSQL_DATABASE: auth_db
-      MYSQL_USER: auth_user
-      MYSQL_PASSWORD_FILE: /run/secrets/db-password-auth
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cutt46popnds739qav80-a.frankfurt-postgres.render.com:5432/assurmob
+      SPRING_DATASOURCE_USERNAME: assurmob_user
+      SPRING_DATASOURCE_PASSWORD: MEbiFOhZtaE7FDf4A387P986PTZbXq77
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
     networks:
       - react-spring
-      - auth-mysql
-    depends_on:
-      db-auth:
-        condition: service_healthy
 
-  db-auth:
-    image: mysql:8.0.19
-    environment:
-      - MYSQL_DATABASE=auth_db
-      - MYSQL_USER=auth_user
-      - MYSQL_PASSWORD_FILE=/run/secrets/db-password-auth
-      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-auth
-    restart: always
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
-      interval: 3s
-      retries: 5
-      start_period: 30s
-    secrets:
-      - db-password-auth
-    volumes:
-      - db-auth-data:/var/lib/mysql
-    networks:
-      - auth-mysql
+  # db-auth:
+  #   image: mysql:8.0.19
+  #   environment:
+  #     - MYSQL_DATABASE=auth_db
+  #     - MYSQL_USER=auth_user
+  #     - MYSQL_PASSWORD_FILE=/run/secrets/db-password-auth
+  #     - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-auth
+  #   restart: always
+  #   healthcheck:
+  #     test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+  #     interval: 3s
+  #     retries: 5
+  #     start_period: 30s
+  #   secrets:
+  #     - db-password-auth
+  #   volumes:
+  #     - db-auth-data:/var/lib/mysql
+  #   networks:
+  #     - auth-mysql
 
 
   #___________Microservice Gestion Client

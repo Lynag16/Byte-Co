@@ -40,7 +40,7 @@ export const loginUser = (credentials) => async (dispatch) => {
   dispatch(loginStart());
   try {
     const response = await axios.post(
-      "http://localhost:8080/api/auth/login",
+      "http://localhost:8082/api/auth/login",
       credentials,
       { withCredentials: true }
     );
