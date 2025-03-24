@@ -38,45 +38,45 @@ services:
   #     - auth-mysql
 
 
-  #___________Microservice Gestion Client
-  backend-gestionclient:
-    build: ./gestionclient/backend
-    restart: always
-    ports:
-      - "8081:8080"
-    secrets:
-      - db-password-gestionclient
-    environment:
-      MYSQL_HOST: db-gestionclient
-      MYSQL_DATABASE: gestionclient_db
-      MYSQL_USER: gestionclient_user
-      MYSQL_PASSWORD_FILE: /run/secrets/db-password-gestionclient
-    networks:
-      - react-spring
-      - gestionclient-mysql
-    depends_on:
-      db-gestionclient:
-        condition: service_healthy
+  # #___________Microservice Gestion Client
+  # backend-gestionclient:
+  #   build: ./gestionclient/backend
+  #   restart: always
+  #   ports:
+  #     - "8081:8080"
+  #   secrets:
+  #     - db-password-gestionclient
+  #   environment:
+  #     MYSQL_HOST: db-gestionclient
+  #     MYSQL_DATABASE: gestionclient_db
+  #     MYSQL_USER: gestionclient_user
+  #     MYSQL_PASSWORD_FILE: /run/secrets/db-password-gestionclient
+  #   networks:
+  #     - react-spring
+  #     - gestionclient-mysql
+  #   depends_on:
+  #     db-gestionclient:
+  #       condition: service_healthy
 
-  db-gestionclient:
-    image: mysql:8.0.19
-    environment:
-      - MYSQL_DATABASE=gestionclient_db
-      - MYSQL_USER=gestionclient_user
-      - MYSQL_PASSWORD_FILE=/run/secrets/db-password-gestionclient
-      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-gestionclient
-    restart: always
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
-      interval: 3s
-      retries: 5
-      start_period: 30s
-    secrets:
-      - db-password-gestionclient
-    volumes:
-      - db-gestionclient-data:/var/lib/mysql
-    networks:
-      - gestionclient-mysql
+  # db-gestionclient:
+  #   image: mysql:8.0.19
+  #   environment:
+  #     - MYSQL_DATABASE=gestionclient_db
+  #     - MYSQL_USER=gestionclient_user
+  #     - MYSQL_PASSWORD_FILE=/run/secrets/db-password-gestionclient
+  #     - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-gestionclient
+  #   restart: always
+  #   healthcheck:
+  #     test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+  #     interval: 3s
+  #     retries: 5
+  #     start_period: 30s
+  #   secrets:
+  #     - db-password-gestionclient
+  #   volumes:
+  #     - db-gestionclient-data:/var/lib/mysql
+  #   networks:
+  #     - gestionclient-mysql
 
 
   # #___________Microservice Gestion des Contrats
@@ -121,32 +121,32 @@ services:
 
 
   # #___________Microservice Gestion des Offres
-  # backend-gestionoffres:
-  #   build: ./gestionoffres/backend
+  # backend-gestionoffre:
+  #   build: ./gestionoffre/backend
   #   restart: always
   #   ports:
   #     - "8083:8080"
   #   secrets:
-  #     - db-password-gestionoffres
+  #     - db-password-gestionoffre
   #   environment:
-  #     MYSQL_HOST: db-gestionoffres
-  #     MYSQL_DATABASE: gestionoffres_db
-  #     MYSQL_USER: gestionoffres_user
-  #     MYSQL_PASSWORD_FILE: /run/secrets/db-password-gestionoffres
+  #     MYSQL_HOST: db-gestionoffre
+  #     MYSQL_DATABASE: gestionoffre_db
+  #     MYSQL_USER: gestionoffre_user
+  #     MYSQL_PASSWORD_FILE: /run/secrets/db-password-gestionoffre
   #   networks:
   #     - react-spring
-  #     - gestionoffres-mysql
+  #     - gestionoffre-mysql
   #   depends_on:
-  #     db-gestionoffres:
+  #     db-gestionoffre:
   #       condition: service_healthy
 
-  # db-gestionoffres:
+  # db-gestionoffre:
   #   image: mysql:8.0.19
   #   environment:
-  #     - MYSQL_DATABASE=gestionoffres_db
-  #     - MYSQL_USER=gestionoffres_user
-  #     - MYSQL_PASSWORD_FILE=/run/secrets/db-password-gestionoffres
-  #     - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-gestionoffres
+  #     - MYSQL_DATABASE=gestionoffre_db
+  #     - MYSQL_USER=gestionoffre_user
+  #     - MYSQL_PASSWORD_FILE=/run/secrets/db-password-gestionoffre
+  #     - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-gestionoffre
   #   restart: always
   #   healthcheck:
   #     test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
@@ -154,11 +154,11 @@ services:
   #     retries: 5
   #     start_period: 30s
   #   secrets:
-  #     - db-password-gestionoffres
+  #     - db-password-gestionoffre
   #   volumes:
-  #     - db-gestionoffres-data:/var/lib/mysql
+  #     - db-gestionoffre-data:/var/lib/mysql
   #   networks:
-  #     - gestionoffres-mysql
+  #     - gestionoffre-mysql
 
 
   # #___________Microservice Empreinte Carbone
@@ -173,43 +173,31 @@ services:
 
   #___________Microservice Gestion de Sinistre
   backend-gestionsinistres:
-    build: ./gestionsinistres/backend
+    build: ./gestionsinistres
     restart: always
     ports:
       - "8085:8080"
-    secrets:
-      - db-password-gestionsinistres
     environment:
-      MYSQL_HOST: db-gestionsinistres
-      MYSQL_DATABASE: gestionsinistres_db
-      MYSQL_USER: gestionsinistres_user
-      MYSQL_PASSWORD_FILE: /run/secrets/db-password-gestionsinistres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cutt46popnds739qav80-a.frankfurt-postgres.render.com:5432/assurmob
+      SPRING_DATASOURCE_USERNAME: assurmob_user
+      SPRING_DATASOURCE_PASSWORD: MEbiFOhZtaE7FDf4A387P986PTZbXq77
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
     networks:
       - react-spring
-      - gestionsinistres-mysql
-    depends_on:
-      db-gestionsinistres:
-        condition: service_healthy
 
-  db-gestionsinistres:
-    image: mysql:8.0.19
-    environment:
-      - MYSQL_DATABASE=gestionsinistres_db
-      - MYSQL_USER=gestionsinistres_user
-      - MYSQL_PASSWORD_FILE=/run/secrets/db-password-gestionsinistres
-      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-gestionsinistres
-    restart: always
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
-      interval: 3s
-      retries: 5
-      start_period: 30s
-    secrets:
-      - db-password-gestionsinistres
-    volumes:
-      - db-gestionsinistres-data:/var/lib/mysql
-    networks:
-      - gestionsinistres-mysql
+  # db-gestionsinistres:
+  #   image: mysql:8.0.19
+  #   environment:
+  #     SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cutt46popnds739qav80-a.frankfurt-postgres.render.com:5432/assurmob
+  #     SPRING_DATASOURCE_USERNAME: assurmob_user
+  #     SPRING_DATASOURCE_PASSWORD: MEbiFOhZtaE7FDf4A387P986PTZbXq77
+  #     SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+  #     SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+  #     SPRING_JPA_HIBERNATE_DDL_AUTO: update
+  #   restart: always
+
 
 
 #___________Frontend
@@ -232,7 +220,7 @@ volumes:
   db-auth-data: {}
   db-gestionclient-data: {}
   db-gestioncontrat-data: {}
-  db-gestionoffres-data: {}
+  db-gestionoffre-data: {}
   db-gestionsinistres-data: {}
 
 #___________Secrets
@@ -243,6 +231,8 @@ secrets:
     file: ./gestionclient/db/password.txt
   db-password-gestionsinistres:
     file: ./gestionsinistres/db/password.txt
+  db-password-gestionoffre:
+    file: ./gestionoffre/db/password.txt
 
 #___________Networks
 networks:
@@ -250,5 +240,5 @@ networks:
   auth-mysql: {}
   gestionclient-mysql: {}
   gestioncontrat-mysql: {}
-  gestionoffres-mysql: {}
+  gestionoffre-mysql: {}
   gestionsinistres-mysql: {}
