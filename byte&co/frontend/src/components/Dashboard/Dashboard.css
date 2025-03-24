@@ -1,0 +1,88 @@
+.content-area {
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin: 0;
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+}
+
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+}
+
+.dashboard-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #E4E4E7;
+    color: black;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    padding: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    background-color: #E4E4E7;
+}
+
+.menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-list li {
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.menu-list li:hover {
+    background-color: #81C784;
+}
+
+.menu-list li.active {
+    background-color: #81C784;
+}
+
+.dashboard-header {
+    background-color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.dashboard-header h2 {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    margin: 0;
+}
+
+.dashboard-header button {
+    font-size: 14px;
+    background-color: #4CAF4F;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.dashboard-header button:hover {
+    background-color: #45a049;
+}

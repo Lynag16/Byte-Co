@@ -1,0 +1,46 @@
+.navbar {
+  transition: all 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+.navbar-brand {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.nav-link {
+  margin: 0 15px;
+  font-weight: 500;
+  color: #333;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+  color: #28a745;
+  text-decoration: underline;
+}
+
+.btn {
+  font-weight: 600;
+  transition: transform 0.2s ease-in-out;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: #fff;
+}
+
+.btn-outline-success {
+  border-color: #28a745;
+  color: #28a745;
+}
+
+.btn-outline-success:hover {
+  background-color: #28a745;
+  color: #fff;
+}
