@@ -15,7 +15,7 @@ services:
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     networks:
-      - react-spring
+      - byteco-network
 
   # db-auth:
   #   image: mysql:8.0.19
@@ -52,7 +52,7 @@ services:
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     networks:
-      - react-spring
+      - byteco-network
 
 
   #___________Microservice Gestion des Contrats
@@ -69,7 +69,7 @@ services:
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     networks:
-      - react-spring
+      - byteco-network
 
   # db-gestioncontrat:
   #   image: mysql:8.0.19
@@ -106,7 +106,7 @@ services:
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     networks:
-      - react-spring
+      - byteco-network
 
   # db-gestionoffre:
   #   image: mysql:8.0.19
@@ -136,7 +136,7 @@ services:
   #   ports:
   #     - "8084:8080"
   #   networks:
-  #     - react-spring
+  #     - byteco-network
 
 
   #___________Microservice Gestion de Sinistre
@@ -154,7 +154,8 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     
     networks:
-      - react-spring
+      - byteco-network
+        
 
   # db-gestionsinistres:
   #   image: mysql:8.0.19
@@ -194,7 +195,7 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
 
     networks:
-      - react-spring
+      - byteco-network
 
 
 
@@ -209,7 +210,7 @@ services:
       - ./frontend/src:/code/src
       - /project/node_modules
     networks:
-      - react-spring
+      - byteco-network
     depends_on:
       - backend-auth
 
@@ -232,9 +233,6 @@ secrets:
 
 #___________Networks
 networks:
-  react-spring: {}
-  auth-mysql: {}
-  gestionclient-mysql: {}
-  gestioncontrat-mysql: {}
-  gestionoffre-mysql: {}
-  gestionsinistres-mysql: {}
+  byteco-network:
+    driver: bridge
+
