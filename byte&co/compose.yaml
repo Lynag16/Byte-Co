@@ -55,25 +55,21 @@ services:
       - react-spring
 
 
-  # #___________Microservice Gestion des Contrats
-  # backend-gestioncontrat:
-  #   build: ./gestioncontrat/backend
-  #   restart: always
-  #   ports:
-  #     - "8082:8080"
-  #   secrets:
-  #     - db-password-gestioncontrat
-  #   environment:
-  #     MYSQL_HOST: db-gestioncontrat
-  #     MYSQL_DATABASE: gestioncontrat_db
-  #     MYSQL_USER: gestioncontrat_user
-  #     MYSQL_PASSWORD_FILE: /run/secrets/db-password-gestioncontrat
-  #   networks:
-  #     - react-spring
-  #     - gestioncontrat-mysql
-  #   depends_on:
-  #     db-gestioncontrat:
-  #       condition: service_healthy
+  #___________Microservice Gestion des Contrats
+  backend-gestioncontrat:
+    build: ./gestioncontrats
+    restart: always
+    ports:
+      - "8086:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cutt46popnds739qav80-a.frankfurt-postgres.render.com:5432/assurmob
+      SPRING_DATASOURCE_USERNAME: assurmob_user
+      SPRING_DATASOURCE_PASSWORD: MEbiFOhZtaE7FDf4A387P986PTZbXq77
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    networks:
+      - react-spring
 
   # db-gestioncontrat:
   #   image: mysql:8.0.19
@@ -156,8 +152,10 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    
     networks:
       - react-spring
+
   # db-gestionsinistres:
   #   image: mysql:8.0.19
   #   environment:
