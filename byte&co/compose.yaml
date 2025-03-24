@@ -149,43 +149,38 @@ services:
 
   #___________Microservice Gestion de Sinistre
   backend-gestionsinistres:
-    build: ./gestionsinistres/backend
+    build: ./gestionsinistres
     restart: always
     ports:
       - "8085:8080"
-    secrets:
-      - db-password-gestionsinistres
     environment:
-      MYSQL_HOST: db-gestionsinistres
-      MYSQL_DATABASE: gestionsinistres_db
-      MYSQL_USER: gestionsinistres_user
-      MYSQL_PASSWORD_FILE: /run/secrets/db-password-gestionsinistres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cutt46popnds739qav80-a.frankfurt-postgres.render.com:5432/assurmob
+      SPRING_DATASOURCE_USERNAME: assurmob_user
+      SPRING_DATASOURCE_PASSWORD: MEbiFOhZtaE7FDf4A387P986PTZbXq77
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
     networks:
       - react-spring
-      - gestionsinistres-mysql
-    depends_on:
-      db-gestionsinistres:
-        condition: service_healthy
-
-  db-gestionsinistres:
-    image: mysql:8.0.19
-    environment:
-      - MYSQL_DATABASE=gestionsinistres_db
-      - MYSQL_USER=gestionsinistres_user
-      - MYSQL_PASSWORD_FILE=/run/secrets/db-password-gestionsinistres
-      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-gestionsinistres
-    restart: always
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
-      interval: 3s
-      retries: 5
-      start_period: 30s
-    secrets:
-      - db-password-gestionsinistres
-    volumes:
-      - db-gestionsinistres-data:/var/lib/mysql
-    networks:
-      - gestionsinistres-mysql
+  # db-gestionsinistres:
+  #   image: mysql:8.0.19
+  #   environment:
+  #     - MYSQL_DATABASE=gestionsinistres_db
+  #     - MYSQL_USER=gestionsinistres_user
+  #     - MYSQL_PASSWORD_FILE=/run/secrets/db-password-gestionsinistres
+  #     - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-gestionsinistres
+  #   restart: always
+  #   healthcheck:
+  #     test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+  #     interval: 3s
+  #     retries: 5
+  #     start_period: 30s
+  #   secrets:
+  #     - db-password-gestionsinistres
+  #   volumes:
+  #     - db-gestionsinistres-data:/var/lib/mysql
+  #   networks:
+  #     - gestionsinistres-mysql
 
 
 #___________Frontend
