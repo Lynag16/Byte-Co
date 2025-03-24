@@ -12,25 +12,19 @@ import jakarta.persistence.Table;
 public class Utilisateur {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idUtilisateur;
-    
+    private Long id;
+
     @Column(unique = true, nullable = false)
     private String email;
-    
+
     @Column(name = "motdepasse", nullable = false)
     private String motDePasse;
-    
-    @Column(name = "type_utilisateur", nullable = false)
-    // Client, Partenaire, Personnel, Admin
-    private String typeUtilisateur;
-    
-    private Integer idType;
 
     @Column(nullable = false)
-    private Boolean isAdmin = false;
+    private String typeUtilisateur = "USER"; // Default value
 
-    public Integer getIdUtilisateur() { return idUtilisateur; }
-    public void setIdUtilisateur(Integer idUtilisateur) { this.idUtilisateur = idUtilisateur; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
@@ -40,11 +34,5 @@ public class Utilisateur {
 
     public String getTypeUtilisateur() { return typeUtilisateur; }
     public void setTypeUtilisateur(String typeUtilisateur) { this.typeUtilisateur = typeUtilisateur; }
-
-    public Integer getIdType() { return idType; }
-    public void setIdType(Integer idType) { this.idType = idType; }
-
-    public Boolean getIsAdmin() { return isAdmin; }
-    public void setIsAdmin(Boolean isAdmin) { this.isAdmin = isAdmin; }
 }
 
