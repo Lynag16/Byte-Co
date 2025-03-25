@@ -8,6 +8,7 @@ WORKDIR /app
 COPY . .
 
 # Compiler le projet (skip tests)
+
 RUN mvn clean package -DskipTests
 
 # Étape 2 : Exécuter l'application avec JRE

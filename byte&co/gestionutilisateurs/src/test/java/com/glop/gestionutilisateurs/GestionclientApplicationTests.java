@@ -1,10 +1,10 @@
-package com.glop.gestionclient;
+package com.glop.gestionutilisateurs;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class GestionclientApplicationTests {
+class GestionutilisateursApplicationTests {
 
 	@Test
 	void contextLoads() {

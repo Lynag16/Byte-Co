@@ -1,13 +1,13 @@
-package com.glop.gestionclient;
+package com.glop.gestionutilisateurs;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class GestionclientApplication {
+public class GestionutilisateursApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GestionclientApplication.class, args);
+		SpringApplication.run(GestionutilisateursApplication.class, args);
 	}
 
 }

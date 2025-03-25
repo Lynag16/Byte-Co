@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.glop</groupId>
-	<artifactId>gestionclient</artifactId>
+	<artifactId>gestionutilisateurs</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>gestionclient</name>
+	<name>gestionutilisateurs</name>
 	<description>microservice pour la gestion des clients</description>
 	<url/>
 	<licenses>

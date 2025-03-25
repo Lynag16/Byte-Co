@@ -38,9 +38,9 @@ services:
   #     - auth-mysql
 
 
-  #___________Microservice Gestion Client
-  backend-gestionclient:
-    build: ./gestionclient
+  #___________Microservice Gestion des utilisateurs
+  backend-gestionutilisateurs:
+    build: ./gestionutilisateurs
     restart: always
     ports:
       - "8081:8080"  # ou un autre port si conflit
@@ -55,21 +55,21 @@ services:
       - byteco-network
 
 
-  #___________Microservice Gestion des Contrats
-  backend-gestioncontrat:
-    build: ./gestioncontrats
-    restart: always
-    ports:
-      - "8086:8080"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cutt46popnds739qav80-a.frankfurt-postgres.render.com:5432/assurmob
-      SPRING_DATASOURCE_USERNAME: assurmob_user
-      SPRING_DATASOURCE_PASSWORD: MEbiFOhZtaE7FDf4A387P986PTZbXq77
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
-      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-    networks:
-      - byteco-network
+  # #___________Microservice Gestion des Contrats
+  # backend-gestioncontrat:
+  #   build: ./gestioncontrats
+  #   restart: always
+  #   ports:
+  #     - "8086:8080"
+  #   environment:
+  #     SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cutt46popnds739qav80-a.frankfurt-postgres.render.com:5432/assurmob
+  #     SPRING_DATASOURCE_USERNAME: assurmob_user
+  #     SPRING_DATASOURCE_PASSWORD: MEbiFOhZtaE7FDf4A387P986PTZbXq77
+  #     SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+  #     SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+  #     SPRING_JPA_HIBERNATE_DDL_AUTO: update
+  #   networks:
+  #     - byteco-network
 
   # db-gestioncontrat:
   #   image: mysql:8.0.19
@@ -92,21 +92,21 @@ services:
   #     - gestioncontrat-mysql
 
 
-  #___________Microservice Gestion des Offres
-  backend-gestionoffre:
-    build: ./gestionoffre
-    restart: always
-    ports:
-      - "8083:8080"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cutt46popnds739qav80-a.frankfurt-postgres.render.com:5432/assurmob
-      SPRING_DATASOURCE_USERNAME: assurmob_user
-      SPRING_DATASOURCE_PASSWORD: MEbiFOhZtaE7FDf4A387P986PTZbXq77
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
-      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-    networks:
-      - byteco-network
+  # #___________Microservice Gestion des Offres
+  # backend-gestionoffre:
+  #   build: ./gestionoffre
+  #   restart: always
+  #   ports:
+  #     - "8083:8080"
+  #   environment:
+  #     SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cutt46popnds739qav80-a.frankfurt-postgres.render.com:5432/assurmob
+  #     SPRING_DATASOURCE_USERNAME: assurmob_user
+  #     SPRING_DATASOURCE_PASSWORD: MEbiFOhZtaE7FDf4A387P986PTZbXq77
+  #     SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+  #     SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+  #     SPRING_JPA_HIBERNATE_DDL_AUTO: update
+  #   networks:
+  #     - byteco-network
 
   # db-gestionoffre:
   #   image: mysql:8.0.19
@@ -139,22 +139,22 @@ services:
   #     - byteco-network
 
 
-  #___________Microservice Gestion de Sinistre
-  backend-gestionsinistres:
-    build: ./gestionsinistres
-    restart: always
-    ports:
-      - "8085:8080"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cutt46popnds739qav80-a.frankfurt-postgres.render.com:5432/assurmob
-      SPRING_DATASOURCE_USERNAME: assurmob_user
-      SPRING_DATASOURCE_PASSWORD: MEbiFOhZtaE7FDf4A387P986PTZbXq77
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
-      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+  # #___________Microservice Gestion de Sinistre
+  # backend-gestionsinistres:
+  #   build: ./gestionsinistres
+  #   restart: always
+  #   ports:
+  #     - "8085:8080"
+  #   environment:
+  #     SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cutt46popnds739qav80-a.frankfurt-postgres.render.com:5432/assurmob
+  #     SPRING_DATASOURCE_USERNAME: assurmob_user
+  #     SPRING_DATASOURCE_PASSWORD: MEbiFOhZtaE7FDf4A387P986PTZbXq77
+  #     SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+  #     SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+  #     SPRING_JPA_HIBERNATE_DDL_AUTO: update
     
-    networks:
-      - byteco-network
+  #   networks:
+  #     - byteco-network
         
 
   # db-gestionsinistres:
@@ -179,23 +179,23 @@ services:
 
 
 
-#___________Microservice Empreinte Carbone
-  backend-empreintecarbone:
-    build: ./empreintecarbone
-    restart: always
-    ports:
-      - "8084:8080"
+# #___________Microservice Empreinte Carbone
+#   backend-empreintecarbone:
+#     build: ./empreintecarbone
+#     restart: always
+#     ports:
+#       - "8084:8080"
 
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cutt46popnds739qav80-a.frankfurt-postgres.render.com:5432/assurmob
-      SPRING_DATASOURCE_USERNAME: assurmob_user
-      SPRING_DATASOURCE_PASSWORD: MEbiFOhZtaE7FDf4A387P986PTZbXq77
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
-      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+#     environment:
+#       SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cutt46popnds739qav80-a.frankfurt-postgres.render.com:5432/assurmob
+#       SPRING_DATASOURCE_USERNAME: assurmob_user
+#       SPRING_DATASOURCE_PASSWORD: MEbiFOhZtaE7FDf4A387P986PTZbXq77
+#       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+#       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+#       SPRING_JPA_HIBERNATE_DDL_AUTO: update
 
-    networks:
-      - byteco-network
+#     networks:
+#       - byteco-network
 
 
 
@@ -217,7 +217,7 @@ services:
 #___________Volumes
 volumes:
   db-auth-data: {}
-  db-gestionclient-data: {}
+  db-gestionutilisateurs-data: {}
   db-gestioncontrat-data: {}
   db-gestionoffre-data: {}
   db-gestionsinistres-data: {}
@@ -226,8 +226,8 @@ volumes:
 secrets:
   db-password-auth:
     file: ./authentification/db/password.txt
-  db-password-gestionclient:
-    file: ./gestionclient/db/password.txt
+  db-password-gestionutilisateurs:
+    file: ./gestionutilisateurs/db/password.txt
   db-password-gestionsinistres:
     file: ./gestionsinistres/db/password.txt
 
@@ -235,4 +235,3 @@ secrets:
 networks:
   byteco-network:
     driver: bridge
-
