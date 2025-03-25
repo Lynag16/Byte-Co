@@ -1,7 +1,8 @@
 package glop.gestioncontrats.mappers;
 
-import glop.gestioncontrats.dto.ContractDTO;
 import glop.gestioncontrats.entities.Contract;
+
+import glop.gestioncontrats.dto.ContractDTO;
 
 public class ContractMapper {
 
@@ -20,6 +21,7 @@ public class ContractMapper {
             dto.setClientId(contract.getClientId());
         }
         
+
         // Map Offer ID if Offer is not null
         /*if (contract.getOffer() != null) {
             dto.setOfferId(contract.getOffer().getId());

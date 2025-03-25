@@ -6,9 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import glop.gestioncontrats.service.ContractService;
 import glop.gestioncontrats.dto.ContractDTO;
-import glop.gestioncontrats.service.CarbonFootprintClient;
-import glop.gestioncontrats.service.interfaces.ContractService;
 
 @RestController
 @RequestMapping("/api/contract")
@@ -17,8 +16,6 @@ public class ContractController {
     @Autowired
     private ContractService contractService;
 
-    @Autowired
-    private CarbonFootprintClient carbonFootprintClient;
 
     // Récupérer tous les contrats
     @GetMapping("/all")
@@ -41,6 +38,7 @@ public class ContractController {
         return ResponseEntity.ok(savedContract);
     }
 
+    
     // Mettre à jour un contrat
     @PutMapping("/update/{id}")
     public ResponseEntity<ContractDTO> updateContract(@PathVariable int id, @RequestBody ContractDTO contractDTO) {
@@ -55,12 +53,5 @@ public class ContractController {
         return ResponseEntity.noContent().build();
     }
 
-    // Appeler le microservice Empreinte Carbone
-    @GetMapping("/carbon-footprint")
-    public ResponseEntity<String> getCarbonFootprint(
-            @RequestParam int km,
-            @RequestParam String transport) {
-        String result = carbonFootprintClient.getCarbonFootprint(km, transport);
-        return ResponseEntity.ok(result);
-    }
+
 }
