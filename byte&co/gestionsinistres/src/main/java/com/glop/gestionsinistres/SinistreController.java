@@ -1,6 +1,8 @@
 package com.glop.gestionsinistres;
 
 
+import com.glop.gestionsinistres.model.Sinistre;
+import com.glop.gestionsinistres.service.SinistreServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +14,7 @@ import java.util.Optional;
 public class SinistreController {
 
     @Autowired
-    private SinistreService sinistreService;
+    private SinistreServiceImpl sinistreService;
 
     @GetMapping
     public List<Sinistre> getAllSinistres() {

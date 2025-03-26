@@ -1,4 +1,4 @@
-package com.glop.gestionsinistres;
+package com.glop.gestionsinistres.model;
 
 import jakarta.persistence.*;
 import java.util.Date;
@@ -11,12 +11,24 @@ public class Sinistre {
     private Long id;
 
     private String description;
-    private String type;
+
+    @Enumerated(EnumType.STRING)
+    private TypeSinistre type;
+
+    @Temporal(TemporalType.DATE)
     private Date dateDeclaration;
+
     private double montantEstime;
-    private String statut;
 
+    @Enumerated(EnumType.STRING)
+    private StatutSinistre statut;
 
+    private String userId;
+
+    @OneToOne(mappedBy = "sinistre", cascade = CascadeType.ALL, orphanRemoval = true)
+    private DetailsSinistre details;
+
+    // === Getters & Setters ===
 
     public Long getId() {
         return id;
@@ -34,11 +46,11 @@ public class Sinistre {
         this.description = description;
     }
 
-    public String getType() {
+    public TypeSinistre getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(TypeSinistre type) {
         this.type = type;
     }
 
@@ -58,13 +70,27 @@ public class Sinistre {
         this.montantEstime = montantEstime;
     }
 
-    public String getStatut() {
+    public StatutSinistre getStatut() {
         return statut;
     }
 
-    public void setStatut(String statut) {
+    public void setStatut(StatutSinistre statut) {
         this.statut = statut;
     }
 
-    
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public DetailsSinistre getDetails() {
+        return details;
+    }
+
+    public void setDetails(DetailsSinistre details) {
+        this.details = details;
+    }
 }
