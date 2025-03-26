@@ -23,10 +23,22 @@ public class Sinistre {
     @Enumerated(EnumType.STRING)
     private StatutSinistre statut;
 
-    private String userId;
+    private String userId; // car le token contient l'ID comme ça
 
     @OneToOne(mappedBy = "sinistre", cascade = CascadeType.ALL, orphanRemoval = true)
     private DetailsSinistre details;
+
+    public Sinistre() {
+    }
+
+    public Sinistre(String description, TypeSinistre type, Date dateDeclaration, double montantEstime, StatutSinistre statut, String userId) {
+        this.description = description;
+        this.type = type;
+        this.dateDeclaration = dateDeclaration;
+        this.montantEstime = montantEstime;
+        this.statut = statut;
+        this.userId = userId;
+    }
 
     // === Getters & Setters ===
 
