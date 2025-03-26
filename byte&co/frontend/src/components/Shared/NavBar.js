@@ -38,6 +38,9 @@ const NavBar = () => {
               <Link className="nav-link" to="/empreinte-carbone">Calculer votre empreinte carbone</Link>
             </li>
             <li className="nav-item">
+              <Link className="nav-link" to="/AssistanceEtSinistre">Assistance et Sinistre</Link>
+            </li>
+            <li className="nav-item">
               <Link className="nav-link" to="/contact">Contact</Link>
             </li>
           </ul>

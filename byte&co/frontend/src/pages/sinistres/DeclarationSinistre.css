@@ -1,0 +1,121 @@
+.gestion-sinistres-container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.gestion-sinistres-container h1 {
+    text-align: center;
+    color: #4CAF4F;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.form-container {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.form-container label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form-container input,
+.form-container textarea,
+.form-container select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    transition: border 0.3s;
+}
+
+.form-container input:focus,
+.form-container textarea:focus,
+.form-container select:focus {
+    border: 1px solid #166534;
+    outline: none;
+}
+
+.submit-btn {
+    background-color: #4CAF4F;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    width: 100%;
+}
+
+.submit-btn:hover {
+    background-color: #198754;
+}
+
+.sinistres-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.sinistres-table th, .sinistres-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.sinistres-table th {
+    background-color: #4CAF4F;
+    color: white;
+    font-weight: bold;
+}
+
+.status-pending {
+    color: #eab308; /* Jaune */
+    font-weight: bold;
+}
+
+.status-in-progress {
+    color: #3b82f6; /* Bleu */
+    font-weight: bold;
+}
+
+.status-done {
+    color: #4CAF4F;
+    font-weight: bold;
+}
+
+.sinistres-table tr:hover {
+    background-color: #f1f5f9;
+}
+
+@media (max-width: 768px) {
+    .gestion-sinistres-container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .form-container input,
+    .form-container textarea,
+    .form-container select {
+        font-size: 14px;
+    }
+
+    .submit-btn {
+        font-size: 14px;
+    }
+}
