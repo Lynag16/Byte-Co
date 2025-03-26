@@ -1,46 +1,77 @@
 package com.glop.gestionsinistres.service;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.glop.gestionsinistres.dto.SinistreDTO;
+import com.glop.gestionsinistres.mapper.SinistreMapper;
 import com.glop.gestionsinistres.model.Sinistre;
 import com.glop.gestionsinistres.repository.SinistreRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
-public class SinistreServiceImpl {
+public class SinistreServiceImpl implements SinistreService {
 
-    @Autowired
-    private SinistreRepository sinistreRepository;
+    private final SinistreRepository sinistreRepository;
 
-    public List<Sinistre> getAllSinistres() {
-        return sinistreRepository.findAll();
+    public SinistreServiceImpl(SinistreRepository sinistreRepository) {
+        this.sinistreRepository = sinistreRepository;
     }
 
-    public Optional<Sinistre> getSinistreById(Long id) {
-        return sinistreRepository.findById(id);
+    @Override
+    public List<SinistreDTO> getAllSinistres() {
+        return sinistreRepository.findAll()
+                .stream()
+                .map(SinistreMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public Sinistre createSinistre(Sinistre sinistre) {
-        return sinistreRepository.save(sinistre);
+    @Override
+    public List<SinistreDTO> getSinistresByUserId(String userId) {
+        return sinistreRepository.findByUserId(userId)
+                .stream()
+                .map(SinistreMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public Sinistre updateSinistre(Long id, Sinistre sinistreDetails) {
-        Optional<Sinistre> sinistre = sinistreRepository.findById(id);
-        if (sinistre.isPresent()) {
-            Sinistre updatedSinistre = sinistre.get();
-            updatedSinistre.setDescription(sinistreDetails.getDescription());
-            updatedSinistre.setType(sinistreDetails.getType());
-            updatedSinistre.setDateDeclaration(sinistreDetails.getDateDeclaration());
-            updatedSinistre.setMontantEstime(sinistreDetails.getMontantEstime());
-            updatedSinistre.setStatut(sinistreDetails.getStatut());
-            return sinistreRepository.save(updatedSinistre);
-        }
-        return null;
+    @Override
+    public Optional<SinistreDTO> getSinistreById(Long id) {
+        return sinistreRepository.findById(id)
+                .map(SinistreMapper::toDTO);
     }
 
+    @Override
+    public SinistreDTO createSinistre(SinistreDTO dto) {
+        Sinistre sinistre = SinistreMapper.toEntity(dto);
+        Sinistre saved = sinistreRepository.save(sinistre);
+        return SinistreMapper.toDTO(saved);
+    }
+
+    @Override
+    public Optional<SinistreDTO> updateSinistre(Long id, SinistreDTO dto) {
+        return sinistreRepository.findById(id).map(existing -> {
+            existing.setDescription(dto.getDescription());
+            existing.setType(SinistreMapper.toEntity(dto).getType());
+            existing.setDateDeclaration(dto.getDateDeclaration());
+            existing.setMontantEstime(dto.getMontantEstime());
+            existing.setStatut(SinistreMapper.toEntity(dto).getStatut());
+            Sinistre updated = sinistreRepository.save(existing);
+            return SinistreMapper.toDTO(updated);
+        });
+    }
+
+    @Override
     public void deleteSinistre(Long id) {
         sinistreRepository.deleteById(id);
     }
+
+    @Override
+    public List<SinistreDTO> getSinistresByStatut(String statut) {
+        return sinistreRepository.findAll().stream()
+                .filter(s -> s.getStatut().name().equalsIgnoreCase(statut))
+                .map(SinistreMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
 }
