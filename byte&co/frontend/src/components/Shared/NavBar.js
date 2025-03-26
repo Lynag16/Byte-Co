@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../../assets/images/Logo.png';
 import '../../assets/css/NavBar.css';
+import { useAuth } from '../auth/AuthContext';
 
 const NavBar = () => {
-  const isLoggedIn = localStorage.getItem('token');
+  const { user, userIsAuthenticated } = useAuth();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Permet d’éviter les décalages si l’état vient du localStorage/sessionStorage
+  useEffect(() => {
+    setIsAuthenticated(userIsAuthenticated());
+  }, [user]);
 
   return (
     <nav className="navbar fixed-top navbar-expand-lg bg-white shadow-sm py-3">
@@ -32,22 +39,16 @@ const NavBar = () => {
               <Link className="nav-link" to="/offres">Nos Offres</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/assistance">Assistance</Link>
-            </li>
-            <li className="nav-item">
               <Link className="nav-link" to="/empreinte-carbone">Calculer votre empreinte carbone</Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/AssistanceEtSinistre">Assistance et Sinistre</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/contact">Contact</Link>
-            </li>
           </ul>
 
-          {isLoggedIn ? (
+          {isAuthenticated ? (
             <Link className="btn btn-outline-success rounded-pill px-4" to="/dashboard">
-              Espace Client
+              Espace personnel
             </Link>
           ) : (
             <Link className="btn btn-success rounded-pill px-4" to="/login">

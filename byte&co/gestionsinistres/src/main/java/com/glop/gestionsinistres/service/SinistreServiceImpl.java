@@ -1,13 +1,15 @@
-package com.glop.gestionsinistres;
+package com.glop.gestionsinistres.service;
 
 import java.util.List;
 import java.util.Optional;
 
+import com.glop.gestionsinistres.model.Sinistre;
+import com.glop.gestionsinistres.repository.SinistreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SinistreService {
+public class SinistreServiceImpl {
 
     @Autowired
     private SinistreRepository sinistreRepository;

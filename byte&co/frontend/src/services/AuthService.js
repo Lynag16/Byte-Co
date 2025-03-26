@@ -1,28 +1,28 @@
-const SERVER_URL = "http://localhost:4000";
+const SERVER_URL = "http://localhost:8082/api/auth";
 
-class AuthService {
-    async login(credentials) {
-        const response = await fetch(SERVER_URL + '/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(credentials),
-        });
+const AuthService = {
+  async login(credentials) {
+    const response = await fetch(`${SERVER_URL}/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(credentials),
+    });
 
-        if (!response.ok) {
-            throw new Error('Invalid email or password');
-        }
-
-        const data = await response.json();
-                console.log('Login Response:', data);
-                return data;
+    if (!response.ok) {
+      throw new Error("Email ou mot de passe invalide");
     }
 
-    async logout() {
-        return Promise.resolve('Logged out');
-    }
-}
+    const data = await response.json();
+    return {
+      token: data.token,
+      email: data.email,
+      role: data.role
+    };
+  },
 
-const authServiceInstance = new AuthService();
-export default authServiceInstance;
+  logout() {
+    localStorage.removeItem('user');
+  }
+};
+
+export default AuthService;

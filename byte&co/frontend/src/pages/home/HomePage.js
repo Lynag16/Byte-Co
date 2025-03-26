@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../components/auth/AuthContext';
 import HeroSection from '../../components/Home/HeroSection';
 import PartnersSection from '../../components/Home/PartnersSection';
 import PromosSection from '../../components/Home/PromosSection';
@@ -12,9 +14,17 @@ import '../../assets/css/main.css';
 import './HomePage.css';
 
 const HomePage = () => {
+  const { userIsAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
   useEffect(() => {
     document.title = 'AssurMob';
-  }, []);
+
+    // ⛔️ Si connecté ET revient depuis le login => on reste ici et on clean l'historique
+    if (userIsAuthenticated() && window.history.state?.usr === '/login') {
+      navigate('/', { replace: true }); // 🧹 Supprime le /login du stack
+    }
+  }, [userIsAuthenticated, navigate]);
 
   return (
     <div>
