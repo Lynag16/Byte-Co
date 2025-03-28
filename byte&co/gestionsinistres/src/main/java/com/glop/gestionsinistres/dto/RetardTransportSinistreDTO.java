@@ -1,22 +1,16 @@
-package com.glop.gestionsinistres.model;
+package com.glop.gestionsinistres.dto;
 
-import jakarta.persistence.Entity;
-
-import static com.glop.gestionsinistres.model.TypeSinistre.RETARD_TRANSPORT;
-
-@Entity
-public class RetardTransportSinistre extends Sinistre {
+public class RetardTransportSinistreDTO extends SinistreDTO {
 
     private String moyenTransport;
     private int dureeRetardMinutes;
 
-    public RetardTransportSinistre() {
+    public RetardTransportSinistreDTO() {
         super();
-        setType(RETARD_TRANSPORT);
     }
 
     public String getMoyenTransport() {
-        return moyenTransport;
+        return this.moyenTransport;
     }
 
     public void setMoyenTransport(String moyenTransport) {
@@ -24,10 +18,11 @@ public class RetardTransportSinistre extends Sinistre {
     }
 
     public int getDureeRetardMinutes() {
-        return dureeRetardMinutes;
+        return this.dureeRetardMinutes;
     }
 
     public void setDureeRetardMinutes(int dureeRetardMinutes) {
         this.dureeRetardMinutes = dureeRetardMinutes;
     }
+
 }

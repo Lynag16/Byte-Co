@@ -3,19 +3,21 @@ package com.glop.gestionsinistres.service;
 import com.glop.gestionsinistres.dto.AccidentRouteSinistreDTO;
 import com.glop.gestionsinistres.dto.PanneImmobilisationSinistreDTO;
 import com.glop.gestionsinistres.dto.VolOuPerteObjetSinistreDTO;
+import com.glop.gestionsinistres.dto.RetardTransportSinistreDTO;
 import com.glop.gestionsinistres.mapper.AccidentRouteSinistreMapper;
 import com.glop.gestionsinistres.mapper.PanneImmobilisationSinistreMapper;
 import com.glop.gestionsinistres.mapper.VolOuPerteObjetSinistreMapper;
-import com.glop.gestionsinistres.model.AccidentRouteSinistre;
-import com.glop.gestionsinistres.model.PanneImmobilisationSinistre;
-import com.glop.gestionsinistres.model.VolOuPerteObjetSinistre;
+import com.glop.gestionsinistres.mapper.RetardTransportSinistreMapper;
+import com.glop.gestionsinistres.model.*;
 import com.glop.gestionsinistres.repository.SinistreRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 @Service
 public class SinistreDeclarationService {
@@ -29,69 +31,65 @@ public class SinistreDeclarationService {
         this.fileStorageService = fileStorageService;
     }
 
-    public AccidentRouteSinistre declarerAccident(AccidentRouteSinistreDTO dto) throws IOException {
+    private String logAndGetUserId(String description, LocalDateTime dateDeclaration) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         log.info("Déclaration sinistre par utilisateur: {}", userId);
-        log.info("Description: {}", dto.getDescription());
-        log.info("Date déclaration: {}", dto.getDateDeclaration());
+        log.info("Description: {}", description);
+        log.info("Date déclaration: {}", dateDeclaration);
+        return userId;
+    }
 
-        AccidentRouteSinistre sinistre;
-
-        if (dto.getConstat() != null && !dto.getConstat().isEmpty()) {
-            log.info("Fichier constat: {}", dto.getConstat().getOriginalFilename());
-            String filePath = fileStorageService.storeFile(dto.getConstat());
-            sinistre = AccidentRouteSinistreMapper.toEntity(dto, filePath);
-            log.info("Fichier stocké: {}", filePath);
-        } else {
-            log.warn("Aucun fichier constat fourni.");
-            sinistre = AccidentRouteSinistreMapper.toEntity(dto);
-        }
-
-        sinistre.setUserId(userId);
-        AccidentRouteSinistre saved = sinistreRepository.save(sinistre);
+    private <T extends Sinistre> T saveSinistre(T sinistre) {
+        T saved = sinistreRepository.save(sinistre);
         log.info("Sinistre enregistré ID: {}", saved.getId());
-
         return saved;
+    }
+
+    private String handleFileUpload(MultipartFile file, String label) throws IOException {
+        if (file != null && !file.isEmpty()) {
+            log.info("Fichier {}: {}", label, file.getOriginalFilename());
+            String filePath = fileStorageService.storeFile(file);
+            log.info("Fichier stocké: {}", filePath);
+            return filePath;
+        } else {
+            log.warn("Aucun fichier {} fourni.", label);
+            return null;
+        }
+    }
+
+    public AccidentRouteSinistre declarerAccident(AccidentRouteSinistreDTO dto) throws IOException {
+        String userId = logAndGetUserId(dto.getDescription(), dto.getDateDeclaration());
+        String filePath = handleFileUpload(dto.getConstat(), "constat");
+        AccidentRouteSinistre sinistre = (filePath != null)
+                ? AccidentRouteSinistreMapper.toEntity(dto, filePath)
+                : AccidentRouteSinistreMapper.toEntity(dto);
+        sinistre.setUserId(userId);
+        return saveSinistre(sinistre);
     }
 
     public PanneImmobilisationSinistre declarerPanne(PanneImmobilisationSinistreDTO dto) {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        log.info("Déclaration sinistre par utilisateur: {}", userId);
-        log.info("Description: {}", dto.getDescription());
-        log.info("Date déclaration: {}", dto.getDateDeclaration());
-
+        String userId = logAndGetUserId(dto.getDescription(), dto.getDateDeclaration());
         PanneImmobilisationSinistre sinistre = PanneImmobilisationSinistreMapper.toEntity(dto);
         sinistre.setUserId(userId);
-        PanneImmobilisationSinistre saved = sinistreRepository.save(sinistre);
-        log.info("Sinistre enregistré ID: {}", saved.getId());
-
-        return saved;
+        return saveSinistre(sinistre);
     }
 
     public VolOuPerteObjetSinistre declarerVol(VolOuPerteObjetSinistreDTO dto) throws IOException {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        log.info("Déclaration sinistre par utilisateur: {}", userId);
-        log.info("Description: {}", dto.getDescription());
-        log.info("Date déclaration: {}", dto.getDateDeclaration());
+        String userId = logAndGetUserId(dto.getDescription(), dto.getDateDeclaration());
+        String filePath = handleFileUpload(dto.getDeclarationPolice(), "declarationPolice");
 
-        VolOuPerteObjetSinistre sinistre;
-
-        if (dto.getDeclarationPolice() != null && !dto.getDeclarationPolice().isEmpty()) {
-            log.info("Fichier déclaration police: {}", dto.getDeclarationPolice().getOriginalFilename());
-            String filePath = fileStorageService.storeFile(dto.getDeclarationPolice());
-            sinistre = VolOuPerteObjetSinistreMapper.toEntity(dto, filePath);
-            log.info("Fichier stocké: {}", filePath);
-            sinistre.setUserId(userId);
-        }
-        else {
-            log.warn("Aucun fichier déclaration police fourni.");
-            sinistre = VolOuPerteObjetSinistreMapper.toEntity(dto);
-        }
+        VolOuPerteObjetSinistre sinistre = (filePath != null)
+                ? VolOuPerteObjetSinistreMapper.toEntity(dto, filePath)
+                : VolOuPerteObjetSinistreMapper.toEntity(dto);
         sinistre.setUserId(userId);
-        VolOuPerteObjetSinistre saved = sinistreRepository.save(sinistre);
-        log.info("Sinistre enregistré ID: {}", saved.getId());
+        return saveSinistre(sinistre);
+    }
 
-        return saved;
+    public RetardTransportSinistre declarerRetardTransport(RetardTransportSinistreDTO dto) {
+        String userId = logAndGetUserId(dto.getDescription(), dto.getDateDeclaration());
+        RetardTransportSinistre sinistre = RetardTransportSinistreMapper.toEntity(dto);
+        sinistre.setUserId(userId);
+        return saveSinistre(sinistre);
     }
 
 }
