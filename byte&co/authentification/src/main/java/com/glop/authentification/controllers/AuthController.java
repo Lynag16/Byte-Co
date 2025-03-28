@@ -117,14 +117,19 @@ public class AuthController {
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> request) {
         String email = request.get("email");
+        String currentPassword = request.get("currentPassword");
         String newPassword = request.get("newPassword");
 
         if (newPassword == null || newPassword.isEmpty()) {
-            return ResponseEntity.status(400).body("Le nouveau mot de passe est obligatoire !");
+            return ResponseEntity.status(400).body("Le nouveau mot mot de passe est obligatoire !");
         }
 
         Utilisateur utilisateur = utilisateurService.findByEmail(email);
         if (utilisateur != null) {
+            if (!passwordEncoder.matches(currentPassword, utilisateur.getMotDePasse())) {
+                return ResponseEntity.status(400).body("Le mot de passe actuel est incorrect !");
+            }
+
             utilisateur.setMotDePasse(passwordEncoder.encode(newPassword)); // Encode the new password
             utilisateurService.saveUtilisateur(utilisateur);
             return ResponseEntity.ok("Mot de passe réinitialisé avec succès !");
