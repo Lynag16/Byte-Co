@@ -4,7 +4,7 @@ import DashboardLayout from './DashboardLayout';
 import UserProfile from './UserProfile';
 import Parametres from './Parametres';
 
-const DashboardClient = ({ user, onLogout }) => {
+const DashboardUser = ({ user, onLogout }) => {
   const menuItems = [
     { key: 'profil', label: 'Mes informations personnelles', icon: <FaUserCircle /> },
     { key: 'contrats', label: 'Mes Contrats', icon: <FaFileContract /> },
@@ -39,4 +39,4 @@ const DashboardClient = ({ user, onLogout }) => {
   return <DashboardLayout user={user} onLogout={onLogout} menuItems={menuItems} renderContent={renderContent} />;
 };
 
-export default DashboardClient;
+export default DashboardUser;

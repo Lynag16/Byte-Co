@@ -1,65 +1,37 @@
-import React, { useState } from 'react';
-import { FaHome, FaUsers, FaFileContract, FaTools } from 'react-icons/fa';
+import React from 'react';
+import { FaFileAlt, FaFileContract, FaTools, FaUsers, FaUserCircle, FaMoneyBill, FaBell, FaCogs, FaLifeRing, FaFilePdf } from 'react-icons/fa';
 import GestionOffres from '../GestionOffres/GestionOffres';
-import './Dashboard.css';
-import Footer from '../../components/Shared/Footer';
+import DashboardLayout from './DashboardLayout';
+import UserProfile from './UserProfile';
+import Parametres from './Parametres'
 
 const DashboardAdmin = ({ user, onLogout }) => {
-  const [activeMenu, setActiveMenu] = useState('tableauDeBord');
-
   const menuItems = [
-    { key: 'tableauDeBord', label: 'Tableau de Bord', icon: <FaHome /> },
+    { key: 'profil', label: 'Mes informations personnelles', icon: <FaUserCircle /> },
     { key: 'utilisateurs', label: 'Utilisateurs', icon: <FaUsers /> },
     { key: 'contrats', label: 'Contrats', icon: <FaFileContract /> },
     { key: 'gestionOffres', label: 'Gestion des Offres', icon: <FaTools /> },
+    { key: 'parametres', label: 'Paramètres', icon: <FaCogs /> }
   ];
 
-  const renderContent = () => {
+  const renderContent = (activeMenu) => {
     switch (activeMenu) {
-      case 'tableauDeBord':
-        return <h2>Bienvenue, administrateur</h2>;
+      case 'profil':
+        return <UserProfile user={user} />;
       case 'utilisateurs':
         return <h2>Gestion des utilisateurs</h2>;
       case 'contrats':
         return <h2>Contrats</h2>;
       case 'gestionOffres':
         return <GestionOffres />;
+      case 'parametres':
+        return <Parametres user={user} />;
       default:
         return <h2>Contenu non disponible</h2>;
     }
   };
 
-  return (
-    <>
-      <div className="dashboard-container">
-        <aside className="sidebar">
-          <div className="sidebar-header">
-            <h1>Admin</h1>
-          </div>
-          <ul className="menu-list">
-            {menuItems.map(menu => (
-              <li
-                key={menu.key}
-                className={activeMenu === menu.key ? 'active' : ''}
-                onClick={() => setActiveMenu(menu.key)}
-              >
-                <span className="menu-icon">{menu.icon}</span>
-                <span className="menu-label">{menu.label}</span>
-              </li>
-            ))}
-          </ul>
-        </aside>
-        <main className="dashboard-content">
-          <header className="dashboard-header">
-            <h2>{user.email}</h2>
-            <button onClick={onLogout}>Déconnexion</button>
-          </header>
-          <section className="content-area">{renderContent()}</section>
-        </main>
-      </div>
-      <Footer />
-    </>
-  );
+  return <DashboardLayout user={user} onLogout={onLogout} menuItems={menuItems} renderContent={renderContent} />;
 };
 
 export default DashboardAdmin;

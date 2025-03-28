@@ -12,6 +12,7 @@ import DeclarationSinistre from "./pages/sinistres/DeclarationSinistre";
 import AssistanceEtSinistre from './pages/sinistres/AssistanceEtSinistre';
 import Dashboard from './components/Dashboard/Dashboard';
 import Login from './components/auth/Login';
+import Register from './components/auth/Register';
 import { AuthProvider, useAuth } from './components/auth/AuthContext';
 import NavBar from './components/Shared/NavBar';
 import Footer from './components/Shared/Footer';
@@ -49,6 +50,7 @@ function App() {
             <Route path="/login" element={<LoginRoute />} />
             <Route path="/offres" element={<Offres />} />
             <Route path="/empreinte-carbone" element={<HomePage />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/AssistanceEtSinistre" element={<AssistanceEtSinistre />} />
             <Route path="/declaration-sinistre" element={<DeclarationSinistre />} />
             <Route

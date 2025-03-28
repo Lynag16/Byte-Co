@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
-import './Dashboard.css';
-import Footer from '../../components/Shared/Footer';
+import React from 'react';
+import { FaUserCircle } from 'react-icons/fa';
+import DashboardLayout from './DashboardLayout';
+import UserProfile from './UserProfile';
 
 const DashboardMedecin = ({ user, onLogout }) => {
-  const [activeMenu, setActiveMenu] = useState('tableauDeBord');
-
   const menuItems = [
-    { key: 'tableauDeBord', label: 'Tableau de Bord' },
+    { key: 'profil', label: 'Mes informations personnelles', icon: <FaUserCircle /> },
     { key: 'casAssignes', label: 'Cas Assignés' }
   ];
 
-  const renderContent = () => {
+  const renderContent = (activeMenu) => {
     switch (activeMenu) {
-      case 'tableauDeBord':
-        return <h2>Bienvenue Docteur</h2>;
+      case 'profil':
+        return <UserProfile user={user} />;
       case 'casAssignes':
         return <h2>Liste des cas assignés</h2>;
       default:
@@ -21,36 +20,7 @@ const DashboardMedecin = ({ user, onLogout }) => {
     }
   };
 
-  return (
-    <>
-      <div className="dashboard-container">
-        <aside className="sidebar">
-          <div className="sidebar-header">
-            <h1>Médecin</h1>
-          </div>
-          <ul className="menu-list">
-            {menuItems.map(menu => (
-              <li
-                key={menu.key}
-                className={activeMenu === menu.key ? 'active' : ''}
-                onClick={() => setActiveMenu(menu.key)}
-              >
-                {menu.label}
-              </li>
-            ))}
-          </ul>
-        </aside>
-        <main className="dashboard-content">
-          <header className="dashboard-header">
-            <h2>{user.email}</h2>
-            <button onClick={onLogout}>Déconnexion</button>
-          </header>
-          <section className="content-area">{renderContent()}</section>
-        </main>
-      </div>
-      <Footer />
-    </>
-  );
+  return <DashboardLayout user={user} onLogout={onLogout} menuItems={menuItems} renderContent={renderContent} />;
 };
 
 export default DashboardMedecin;

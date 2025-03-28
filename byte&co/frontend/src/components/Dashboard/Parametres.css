@@ -1,0 +1,82 @@
+.parametres-wrapper {
+    max-width: 600px;
+    margin: 3rem auto;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.07);
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .parametres-title {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+  }
+  
+  .parametres-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .parametres-field {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .parametres-field label {
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 0.5rem;
+  }
+  
+  .parametres-field input,
+  .parametres-field select {
+    padding: 0.7rem;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 15px;
+  }
+  
+  .parametres-button {
+    margin-top: 1.5rem;
+    padding: 12px 18px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .parametres-button:hover {
+    background-color: #3da043;
+  }
+  
+  .success-message,
+  .error-message {
+    margin-top: 1rem;
+    text-align: center;
+    font-weight: 500;
+    font-size: 14px;
+  }
+  
+  .success-message {
+    color: #2ecc71;
+  }
+  
+  .error-message {
+    color: #e74c3c;
+  }
+  
+  @media (max-width: 480px) {
+    .parametres-wrapper {
+      padding: 1.2rem;
+    }
+  
+    .parametres-button {
+      width: 100%;
+    }
+  }

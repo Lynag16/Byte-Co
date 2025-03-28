@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import AuthService from '../../services/AuthService';
 import LoginImg from '../../assets/images/login.png';
@@ -8,18 +8,25 @@ import './Login.css';
 const Login = () => {
   const { userLogin, userIsAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const emailInputRef = useRef(null);
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState(location.state?.email || '');
+  const [password, setPassword] = useState(location.state?.password || '');
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
 
-  // Rediriger automatiquement vers la page d’accueil si déjà connecté
   useEffect(() => {
     if (userIsAuthenticated()) {
-      navigate('/', { replace: true }); // 🔁 Supprime /login de l'historique
+      navigate('/', { replace: true });
     }
-  }, [userIsAuthenticated, navigate]);
+
+    if (location.state?.email) {
+      setTimeout(() => {
+        emailInputRef.current?.focus();
+      }, 50);
+    }
+  }, [userIsAuthenticated, navigate, location]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -33,7 +40,7 @@ const Login = () => {
       }
 
       userLogin(userDetails);
-      navigate('/dashboard', { replace: true }); // 🔁 empêche retour sur /login
+      navigate('/dashboard', { replace: true });
     } catch (err) {
       setError(err.message || 'Erreur de connexion');
     }
@@ -47,50 +54,58 @@ const Login = () => {
             <img src={LoginImg} alt="Bienvenue" />
           </div>
 
-          <form onSubmit={handleLogin} className="login-form" autoComplete="on">
+          <div className="login-form">
             <h2>BIENVENUE</h2>
 
-            <div className="input-group">
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={email}
-                autoComplete="email"
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email"
-                required
-              />
-            </div>
+            <form onSubmit={handleLogin} autoComplete="on">
+              <div className="input-group">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  ref={emailInputRef}
+                  value={email}
+                  autoComplete="email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
 
-            <div className="input-group">
-              <label htmlFor="password">Mot de passe</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={password}
-                autoComplete="current-password"
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Mot de passe"
-                required
-              />
-            </div>
+              <div className="input-group">
+                <label htmlFor="password">Mot de passe</label>
+                <input
+                  type="password"
+                  id="password"
+                  value={password}
+                  autoComplete="current-password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
 
-            <div className="input-group remember-me">
-              <input
-                type="checkbox"
-                id="rememberMe"
-                checked={rememberMe}
-                onChange={() => setRememberMe(!rememberMe)}
-              />
-              <label htmlFor="rememberMe">Se souvenir de moi</label>
-            </div>
+              <div className="input-group remember-me">
+                <input
+                  type="checkbox"
+                  id="rememberMe"
+                  checked={rememberMe}
+                  onChange={() => setRememberMe(!rememberMe)}
+                />
+                <label htmlFor="rememberMe">Se souvenir de moi</label>
+              </div>
 
-            <button type="submit" className="login-button">LOGIN</button>
-            {error && <div className="error-message">{error}</div>}
-          </form>
+              <button type="submit" className="login-button">Se connecter</button>
+
+              {error && <div className="error-message">{error}</div>}
+
+              <button
+                className="register-button"
+                type="button"
+                onClick={() => navigate('/register')}
+              >
+                Créer mon compte
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>

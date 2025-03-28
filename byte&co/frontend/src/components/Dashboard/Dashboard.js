@@ -4,6 +4,7 @@ import DashboardClient from './DashboardClient';
 import DashboardAdmin from './DashboardAdmin';
 import DashboardMedecin from './DashboardMedecin';
 import DashboardPartenaire from './DashboardPartenaire';
+import DashboardUser from './DashboardUser';
 import Footer from '../../components/Shared/Footer';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,11 +17,13 @@ const Dashboard = () => {
     navigate('/login');
   };
 
-  console.log('Rôle utilisateur :', user?.role); // ✅ CORRECT ici
+  console.log('Rôle utilisateur :', user?.role);
 
   switch (user?.role?.toUpperCase()) {
     case 'CLIENT':
       return <DashboardClient user={user} onLogout={handleLogout} />;
+      case 'USER':
+        return <DashboardUser user={user} onLogout={handleLogout} />;
     case 'ADMIN':
       return <DashboardAdmin user={user} onLogout={handleLogout} />;
     case 'MEDECIN':
@@ -34,7 +37,7 @@ const Dashboard = () => {
           <p>Votre rôle est : {user?.role}</p>
           <button onClick={handleLogout}>Se déconnecter</button>
           <Footer />
-        </div>
+        </div> 
       );
   }
 };

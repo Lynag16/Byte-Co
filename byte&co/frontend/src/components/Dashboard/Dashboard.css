@@ -57,6 +57,13 @@
     background-color: #81C784;
 }
 
+.sidebar-logo {
+    width: 120px;
+    height: auto;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
 .dashboard-header {
     background-color: #fff;
     padding: 10px 20px;
