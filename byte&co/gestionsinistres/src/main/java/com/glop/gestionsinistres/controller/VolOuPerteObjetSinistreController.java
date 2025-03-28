@@ -1,47 +1,50 @@
 package com.glop.gestionsinistres.controller;
 
-import com.glop.gestionsinistres.dto.AccidentRouteSinistreDTO;
 import com.glop.gestionsinistres.model.AccidentRouteSinistre;
 import com.glop.gestionsinistres.service.SinistreDeclarationService;
+import com.glop.gestionsinistres.dto.VolOuPerteObjetSinistreDTO;
+import com.glop.gestionsinistres.model.VolOuPerteObjetSinistre;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.InputStream;
-import org.springframework.core.io.InputStreamResource;
+
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @RestController
-@RequestMapping("/api/sinistres/accident")
-public class AccidentRouteSinistreController {
+@RequestMapping("/api/sinistres/vol-ou-perte-objet")
+public class VolOuPerteObjetSinistreController {
 
     private final SinistreDeclarationService declarationService;
 
-    public AccidentRouteSinistreController(SinistreDeclarationService declarationService) {
+    public VolOuPerteObjetSinistreController(SinistreDeclarationService declarationService) {
         this.declarationService = declarationService;
     }
 
     @PostMapping(consumes = {"multipart/form-data"})
     @PreAuthorize("hasAnyRole('USER', 'CLIENT')")
-    public ResponseEntity<AccidentRouteSinistre> declarerAccident(
-            @RequestPart("dto") AccidentRouteSinistreDTO dto,
-            @RequestPart(value = "constat", required = false) MultipartFile constat
+    public ResponseEntity<VolOuPerteObjetSinistre> declarerVol(
+            @RequestPart("dto") VolOuPerteObjetSinistreDTO dto,
+            @RequestPart(value = "declarationPolice", required = false) MultipartFile declarationPolice
     ) throws IOException {
-        dto.setConstat(constat);
-        AccidentRouteSinistre created = declarationService.declarerAccident(dto);
+        dto.setDeclarationPolice(declarationPolice);
+        VolOuPerteObjetSinistre created = declarationService.declarerVol(dto);
         return ResponseEntity.ok(created);
     }
 
-    @Value("${app.upload.dir.constats}")
+    @Value("${app.upload.dir.declarationPolices}")
     private String uploadDir;
 
-    @GetMapping("/uploads/constats/{filename:.+}")
-    public ResponseEntity<?> downloadConstat(@PathVariable String filename) throws IOException {
+    @GetMapping("/uploads/declarationPolices/{filename:.+}")
+    public ResponseEntity<?> downloadDeclarationPolice(@PathVariable String filename) throws IOException {
         Path file = Paths.get(uploadDir, filename).normalize().toAbsolutePath();
         System.out.println(">>> Tentative d'accès à : " + file);
 
@@ -57,5 +60,4 @@ public class AccidentRouteSinistreController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
                 .body(resource);
     }
-
 }
