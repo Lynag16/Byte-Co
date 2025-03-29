@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 
 
 @Entity
+@Table(name = "contrats")
 public class Contract {
 
     @Id
