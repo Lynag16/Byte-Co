@@ -19,4 +19,5 @@ public class EmpreinteCarboneController {
             @RequestParam String transport) {
         return empreinteCarboneService.getCarbonFootprint(km, transport);
     }
+    
 }
