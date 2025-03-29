@@ -1,44 +1,89 @@
 package com.glop.gestionutilisateurs.services;
 
+import com.glop.gestionutilisateurs.dtos.ClientDTO;
 import com.glop.gestionutilisateurs.entities.Client;
 import com.glop.gestionutilisateurs.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClientService {
+
     @Autowired
     private ClientRepository clientRepository;
 
-    public List<Client> getAllClients() {
-        return clientRepository.findAll();
+    // Convertir Client en ClientDTO
+    private ClientDTO convertToDTO(Client client) {
+        return new ClientDTO(
+            client.getNom(), 
+            client.getPrenom(), 
+            client.getEmail(), 
+            client.getTelephone(),
+            client.getMotdepasse(),
+            client.getDateInscription(),
+            client.getLanguePreference(),
+            client.getMonnaiePreference(),
+            client.getAdresseclient(),
+            //client.getBadge(),
+            client.getStatut()
+        );
     }
 
-    public Client getClientById(int id) {
-        return clientRepository.findById(id).orElse(null);
+    // Convertir ClientDTO en Client
+    private Client convertToEntity(ClientDTO clientDTO) {
+        return new Client(
+            clientDTO.getNom(),
+            clientDTO.getPrenom(),
+            clientDTO.getEmail(),
+            clientDTO.getTelephone(),
+            clientDTO.getMotdepasse(),
+            clientDTO.getDateInscription(),
+            clientDTO.getLanguePreference(),
+            clientDTO.getMonnaiePreference(),
+            clientDTO.getAdresseclient(),
+            //clientDTO.getBadge(),
+            clientDTO.getStatut()
+        );
     }
 
-    public Client createClient(Client client) {
-        return clientRepository.save(client);
+    public List<ClientDTO> getAllClients() {
+        List<Client> clients = clientRepository.findAll();
+        return clients.stream()
+                      .map(this::convertToDTO)
+                      .toList();
     }
 
-    public Client updateClient(int id, Client client) {
-        Client existingClient = clientRepository.findById(id).orElse(null);
-        if (existingClient != null) {
-            existingClient.setNom(client.getNom());
-            existingClient.setPrenom(client.getPrenom());
-            existingClient.setEmail(client.getEmail());
-            existingClient.setTelephone(client.getTelephone());
-            existingClient.setMotdepasse(client.getMotdepasse());
-            existingClient.setDateInscription(client.getDateInscription());
-            existingClient.setLanguePreference(client.getLanguePreference());
-            existingClient.setMonnaiePreference(client.getMonnaiePreference());
-            existingClient.setAdresseclient(client.getAdresseclient());
-            existingClient.setBadge(client.getBadge());
-            existingClient.setStatut(client.getStatut());
-            return clientRepository.save(existingClient);
+    public ClientDTO getClientById(int id) {
+        Client client = clientRepository.findById(id).orElse(null);
+        return client != null ? convertToDTO(client) : null;
+    }
+
+    public ClientDTO createClient(ClientDTO clientDTO) {
+        Client client = convertToEntity(clientDTO);
+        Client savedClient = clientRepository.save(client);
+        return convertToDTO(savedClient);
+    }
+
+    public ClientDTO updateClient(int id, ClientDTO clientDTO) {
+        Optional<Client> existingClient = clientRepository.findById(id);
+        if (existingClient.isPresent()) {
+            Client client = existingClient.get();
+            client.setNom(clientDTO.getNom());
+            client.setPrenom(clientDTO.getPrenom());
+            client.setEmail(clientDTO.getEmail());
+            client.setTelephone(clientDTO.getTelephone());
+            client.setMotdepasse(clientDTO.getMotdepasse());
+            client.setDateInscription(clientDTO.getDateInscription());
+            client.setLanguePreference(clientDTO.getLanguePreference());
+            client.setMonnaiePreference(clientDTO.getMonnaiePreference());
+            client.setAdresseclient(clientDTO.getAdresseclient());
+            //client.setBadge(clientDTO.getBadge());
+            client.setStatut(clientDTO.getStatut());
+            Client updatedClient = clientRepository.save(client);
+            return convertToDTO(updatedClient);
         }
         return null;
     }

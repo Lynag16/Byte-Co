@@ -1,21 +1,12 @@
-package com.glop.gestionutilisateurs.entities;
+package com.glop.gestionutilisateurs.dtos;
 
-import jakarta.persistence.*;
 import java.util.Date;
 
-@Entity
-@Table(name = "clients")
-public class Client {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idClient;
+public class ClientDTO {
 
     private String nom;
     private String prenom;
-
-    @Column(unique = true)
     private String email;
-
     private String telephone;
     private String motdepasse;
     private Date dateInscription;
@@ -25,14 +16,25 @@ public class Client {
     //private String badge;
     private String statut;
 
-    public int getIdClient() {
-        return idClient;
+    // Constructeurs
+    public ClientDTO() {}
+
+    public ClientDTO(String nom, String prenom, String email, String telephone, String motdepasse, Date dateInscription, 
+                     String languePreference, String monnaiePreference, String adresseclient, String statut) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.telephone = telephone;
+        this.motdepasse = motdepasse;
+        this.dateInscription = dateInscription;
+        this.languePreference = languePreference;
+        this.monnaiePreference = monnaiePreference;
+        this.adresseclient = adresseclient;
+        //this.badge = badge;
+        this.statut = statut;
     }
 
-    public void setIdClient(int idClient) {
-        this.idClient = idClient;
-    }
-
+    // Getters et Setters
     public String getNom() {
         return nom;
     }
@@ -120,24 +122,4 @@ public class Client {
     public void setStatut(String statut) {
         this.statut = statut;
     }
-
-    public Client() {
-    }
-
-    public Client(String nom, String prenom, String email, String telephone, String motdepasse, Date dateInscription, String languePreference, String monnaiePreference, String adresseclient, String statut) {
-        this.nom = nom;
-        this.prenom = prenom;
-        this.email = email;
-        this.telephone = telephone;
-        this.motdepasse = motdepasse;
-        this.dateInscription = dateInscription;
-        this.languePreference = languePreference;
-        this.monnaiePreference = monnaiePreference;
-        this.adresseclient = adresseclient;
-        //this.badge = badge;
-        this.statut = statut;
-    }
 }
-
-
-
