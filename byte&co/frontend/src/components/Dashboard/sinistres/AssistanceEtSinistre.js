@@ -2,14 +2,17 @@ import React from "react";
 import { AlertTriangle, PhoneCall, Truck, FileText, Wrench } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import "./AssistanceEtSinistre.css";
+import "../../../assets/css/AssistanceEtSinistre.css";
+import { useAuth } from '../../auth/AuthContext';
+import DeclarationSinistre from './DeclarationSinistre'
 
 const actions = [
   {
     icon: <AlertTriangle className="assistance-card-icon w-6 h-6" />,
     title: "Déclarer un sinistre",
-    description: "Accident, vol, blessure ou autre incident",
-    route: "/declaration-sinistre",
+    description: "Accident, vol, retard de transport, incident médical",
+    route: "/DeclarationSinistre",
+    protected: true,
   },
   {
     icon: <PhoneCall className="assistance-card-icon w-6 h-6" />,
@@ -38,6 +41,7 @@ const actions = [
 ];
 
 export default function AssistanceEtSinistre() {
+  const { userIsAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   return (
@@ -51,16 +55,20 @@ export default function AssistanceEtSinistre() {
         <span>Assistance</span> et <span>sinistre</span>
       </motion.h1>
 
-      <p className="assistance-subtitle">
-        Comment pouvons-nous vous aider ?
-      </p>
+      <p className="assistance-subtitle">Comment pouvons-nous vous aider ?</p>
 
       <div className="assistance-grid">
         {actions.map((action, index) => (
           <div
             key={index}
             className="assistance-card"
-            onClick={() => navigate(action.route)}
+            onClick={() => {
+              if (action.protected && !userIsAuthenticated()) {
+                navigate("/login", { state: { from: action.route } });
+              } else {
+                navigate(action.route);
+              }
+            }}
           >
             {action.icon}
             <div className="assistance-card-content">

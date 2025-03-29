@@ -1,16 +1,22 @@
 package com.glop.gestionsinistres.dto;
 
-import java.time.LocalDateTime;
+import com.glop.gestionsinistres.model.TypeSinistre;
+
+import java.time.LocalDate;
 
 public abstract class SinistreDTO {
 
     private String description;
-    private LocalDateTime dateDeclaration;
+    private LocalDate dateDeclaration;
+    private TypeSinistre typeSinistre;
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public LocalDateTime getDateDeclaration() { return dateDeclaration; }
-    public void setDateDeclaration(LocalDateTime dateDeclaration) { this.dateDeclaration = dateDeclaration; }
+    public LocalDate getDateDeclaration() { return dateDeclaration; }
+    public void setDateDeclaration(LocalDate dateDeclaration) { this.dateDeclaration = dateDeclaration; }
+
+    public TypeSinistre getTypeSinistre() { return typeSinistre; }
+    public void setTypeSinistre(TypeSinistre typeSinistre) { this.typeSinistre = typeSinistre; }
 
 }

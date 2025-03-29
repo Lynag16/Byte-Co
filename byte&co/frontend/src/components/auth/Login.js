@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import AuthService from '../../services/AuthService';
 import LoginImg from '../../assets/images/login.png';
-import './Login.css';
+import '../../assets/css/Login.css';
 
 const Login = () => {
   const { userLogin, userIsAuthenticated } = useAuth();
@@ -18,7 +18,12 @@ const Login = () => {
 
   useEffect(() => {
     if (userIsAuthenticated()) {
-      navigate('/', { replace: true });
+      // Si l'utilisateur est déjà authentifié, on le redirige vers la page de redirection (ou le dashboard)
+      if (location.state?.from) {
+        navigate(location.state.from, { replace: true });
+      } else {
+        navigate('/dashboard', { replace: true });
+      }
     }
 
     if (location.state?.email) {
@@ -40,7 +45,13 @@ const Login = () => {
       }
 
       userLogin(userDetails);
-      navigate('/dashboard', { replace: true });
+
+      // Redirige vers la page d'origine ou vers le dashboard si aucun état "from" n'est défini
+      if (location.state?.from) {
+        navigate(location.state.from, { replace: true });
+      } else {
+        navigate('/dashboard', { replace: true });
+      }
     } catch (err) {
       setError(err.message || 'Erreur de connexion');
     }

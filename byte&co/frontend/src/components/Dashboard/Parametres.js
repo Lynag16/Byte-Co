@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './Parametres.css';
+import { motion } from 'framer-motion';
+
 
 const Parametres = ({ user }) => {
   const [form, setForm] = useState({
@@ -43,7 +45,14 @@ const Parametres = ({ user }) => {
 
   return (
     <div className="parametres-wrapper">
-      <h2 className="parametres-title">Paramètres du compte</h2>
+      <motion.h2
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="declaration-sinistre-title"
+            >
+              Paramètres du compte
+            </motion.h2>
       <form className="parametres-form" onSubmit={handleSubmit}>
         <div className="parametres-field">
           <label>Email :</label>

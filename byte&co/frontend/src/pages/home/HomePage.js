@@ -20,9 +20,9 @@ const HomePage = () => {
   useEffect(() => {
     document.title = 'AssurMob';
 
-    // ⛔️ Si connecté ET revient depuis le login => on reste ici et on clean l'historique
+    // si connecté ET revient depuis le login => on reste ici et on clean l'historique
     if (userIsAuthenticated() && window.history.state?.usr === '/login') {
-      navigate('/', { replace: true }); // 🧹 Supprime le /login du stack
+      navigate('/', { replace: true });
     }
   }, [userIsAuthenticated, navigate]);
 
