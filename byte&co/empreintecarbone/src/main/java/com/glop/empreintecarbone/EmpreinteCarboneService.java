@@ -13,7 +13,7 @@ public class EmpreinteCarboneService {
     private final RestTemplate restTemplate;
 
     // Remplacez par votre clé d'API obtenue
-    private static final String API_KEY = "";    
+    private static final String API_KEY = "d75181cd-2265-4ee4-8c3f-35785292f5f2";    
 
 
     public EmpreinteCarboneService(RestTemplate restTemplate) {
