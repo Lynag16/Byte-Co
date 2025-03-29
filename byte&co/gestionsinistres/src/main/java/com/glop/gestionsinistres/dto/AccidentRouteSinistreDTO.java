@@ -5,7 +5,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class AccidentRouteSinistreDTO extends SinistreDTO {
 
     private String lieuAccident;
-    private MultipartFile constat; // le fichier uploadé côté frontend
+    private MultipartFile constat;
+    private String immatriculation;
 
     public AccidentRouteSinistreDTO() {
         super();
@@ -16,4 +17,7 @@ public class AccidentRouteSinistreDTO extends SinistreDTO {
 
     public MultipartFile getConstat() { return constat; }
     public void setConstat(MultipartFile constat) { this.constat = constat; }
+
+    public String getImmatriculation() { return immatriculation; }
+    public void setImmatriculation(String immatriculation) { this.immatriculation = immatriculation; }
 }

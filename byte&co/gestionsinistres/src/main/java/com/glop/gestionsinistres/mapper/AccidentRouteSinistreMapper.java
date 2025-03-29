@@ -10,6 +10,7 @@ public class AccidentRouteSinistreMapper {
         SinistreMapper.mapCommonFields(dto, sinistre);
         sinistre.setLieuAccident(dto.getLieuAccident());
         sinistre.setConstatFilePath(filePath);
+        sinistre.setImmatriculation(dto.getImmatriculation());
         return sinistre;
     }
 
@@ -17,6 +18,7 @@ public class AccidentRouteSinistreMapper {
         AccidentRouteSinistre sinistre = new AccidentRouteSinistre();
         SinistreMapper.mapCommonFields(dto, sinistre);
         sinistre.setLieuAccident(dto.getLieuAccident());
+        sinistre.setImmatriculation(dto.getImmatriculation());
         return sinistre;
     }
 }
