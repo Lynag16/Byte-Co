@@ -8,8 +8,8 @@ import {
 } from 'react-router-dom';
 import HomePage from './pages/home/HomePage';
 import Offres from './pages/offres/OffresPage';
-import DeclarationSinistre from "./pages/sinistres/DeclarationSinistre";
-import AssistanceEtSinistre from './pages/sinistres/AssistanceEtSinistre';
+import DeclarationSinistre from "./components/Dashboard/sinistres/DeclarationSinistre";
+import AssistanceEtSinistre from './components/Dashboard/sinistres/AssistanceEtSinistre';
 import Dashboard from './components/Dashboard/Dashboard';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
@@ -52,7 +52,8 @@ function App() {
             <Route path="/empreinte-carbone" element={<HomePage />} />
             <Route path="/register" element={<Register />} />
             <Route path="/AssistanceEtSinistre" element={<AssistanceEtSinistre />} />
-            <Route path="/declaration-sinistre" element={<DeclarationSinistre />} />
+            <Route path="/DeclarationSinistre" element={<DeclarationSinistre />} />
+
             <Route
               path="/dashboard"
               element={

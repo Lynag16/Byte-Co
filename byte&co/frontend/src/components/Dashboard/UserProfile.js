@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './UserProfile.css';
+import { motion } from 'framer-motion';
 
 const UserProfile = ({ user }) => {
   const [profile, setProfile] = useState(null);
@@ -45,7 +46,14 @@ const UserProfile = ({ user }) => {
 
   return (
     <div className="profile-wrapper">
-      <h2 className="profile-title">Mes informations personnelles</h2>
+      <motion.h2
+        nitial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="declaration-sinistre-title"
+        >
+        Mes informations personnelles
+      </motion.h2>
 
       <div className="profile-card">
         <div className="profile-field">

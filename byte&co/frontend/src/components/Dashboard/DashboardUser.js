@@ -1,14 +1,15 @@
 import React from 'react';
-import { FaFileAlt, FaFileContract, FaUserCircle, FaMoneyBill, FaBell, FaCogs, FaLifeRing, FaFilePdf } from 'react-icons/fa';
+import { FaFileAlt, FaExclamationCircle, FaFileContract, FaUserCircle, FaMoneyBill, FaBell, FaCogs, FaLifeRing, FaFilePdf } from 'react-icons/fa';
 import DashboardLayout from './DashboardLayout';
 import UserProfile from './UserProfile';
 import Parametres from './Parametres';
+import DeclarationSinistre from './sinistres/DeclarationSinistre'
 
 const DashboardUser = ({ user, onLogout }) => {
   const menuItems = [
     { key: 'profil', label: 'Mes informations personnelles', icon: <FaUserCircle /> },
+    { key: 'sinistre', label: 'Déclarer un sinistre', icon: <FaExclamationCircle /> },
     { key: 'contrats', label: 'Mes Contrats', icon: <FaFileContract /> },
-    { key: 'paiements', label: 'Paiements', icon: <FaMoneyBill /> },
     { key: 'assistance', label: 'Assistance', icon: <FaLifeRing /> },
     { key: 'documents', label: 'Documents', icon: <FaFilePdf /> },
     { key: 'notifications', label: 'Notifications', icon: <FaBell /> },
@@ -19,6 +20,8 @@ const DashboardUser = ({ user, onLogout }) => {
     switch (activeMenu) {
       case 'profil':
         return <UserProfile user={user} />;
+      case 'sinistre':
+        return <DeclarationSinistre />;
       case 'contrats':
         return <h2>Vos contrats</h2>;
       case 'paiements':

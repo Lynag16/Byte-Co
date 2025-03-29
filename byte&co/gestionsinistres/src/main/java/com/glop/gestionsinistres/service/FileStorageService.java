@@ -11,15 +11,33 @@ import java.util.UUID;
 @Service
 public class FileStorageService {
 
-    @Value("${app.upload.dir}")
-    private String uploadDir;
+    @Value("${app.upload.dir.constats}")
+    private String uploadConstatDir;
 
-    public String storeFile(MultipartFile file) throws IOException {
+    @Value("${app.upload.dir.declarationPolices}")
+    private String uploadDeclarationPoliceDir;
+
+    @Value("${app.upload.dir.dossierMedicaux}")
+    private String uploadDossierMedicalDir;
+
+    public String storeFile(MultipartFile file, String directory) throws IOException {
         String filename = UUID.randomUUID() + "-" + file.getOriginalFilename();
-        Path destination = Paths.get(uploadDir).resolve(filename).normalize();
+        Path destination = Paths.get(directory).resolve(filename).normalize();
         Files.createDirectories(destination.getParent());
         Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
         System.out.println(">>> Fichier enregistré ici : " + destination.toAbsolutePath());
-        return destination.toString(); // chemin à stocker dans la base
+        return destination.toString();
+    }
+
+    public String storeConstat(MultipartFile file) throws IOException {
+        return storeFile(file, uploadConstatDir);
+    }
+
+    public String storeDeclarationPolice(MultipartFile file) throws IOException {
+        return storeFile(file, uploadDeclarationPoliceDir);
+    }
+
+    public String storeDossierMedical(MultipartFile file) throws IOException {
+        return storeFile(file, uploadDossierMedicalDir);
     }
 }

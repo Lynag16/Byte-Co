@@ -1,12 +1,26 @@
 package com.glop.gestionsinistres.model;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "typeSinistre"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = AccidentRouteSinistre.class, name = "ACCIDENT_ROUTE"),
+        @JsonSubTypes.Type(value = IncidentMedicalSinistre.class, name = "INCIDENT_MEDICAL"),
+        @JsonSubTypes.Type(value = ProblemeHebergementSinistre.class, name = "PROBLEME_HEBERGEMENT"),
+        @JsonSubTypes.Type(value = RetardTransportSinistre.class, name = "RETARD_TRANSPORT"),
+})
 public abstract class Sinistre {
 
     @Id
@@ -15,20 +29,21 @@ public abstract class Sinistre {
     private String description;
     @Enumerated(EnumType.STRING)
     private TypeSinistre type;
-    private LocalDateTime dateDeclaration;
+    private LocalDate dateDeclaration;
     @Enumerated(EnumType.STRING)
     private StatutSinistre statut;
     private String userId;
 
+
     public Sinistre() {
         this.statut = StatutSinistre.EN_ATTENTE;
-        this.dateDeclaration = LocalDateTime.now();
+        this.dateDeclaration = LocalDate.now();
     }
 
-    public Sinistre(String description, TypeSinistre type, LocalDateTime dateDeclaration, String userId) {
+    public Sinistre(String description, TypeSinistre type, LocalDate dateDeclaration, String userId) {
         this.description = description;
         this.type = type;
-        this.dateDeclaration = dateDeclaration;
+        this.dateDeclaration = (dateDeclaration == null) ? LocalDate.now() : dateDeclaration;
         this.userId = userId;
         this.statut = StatutSinistre.EN_ATTENTE;
     }
@@ -42,8 +57,8 @@ public abstract class Sinistre {
     public TypeSinistre getType() { return type; }
     public void setType(TypeSinistre type) { this.type = type; }
 
-    public LocalDateTime getDateDeclaration() { return dateDeclaration; }
-    public void setDateDeclaration(LocalDateTime dateDeclaration) { this.dateDeclaration = dateDeclaration; }
+    public LocalDate getDateDeclaration() { return dateDeclaration; }
+    public void setDateDeclaration(LocalDate dateDeclaration) { this.dateDeclaration = dateDeclaration; }
 
     public StatutSinistre getStatut() { return statut; }
     public void setStatut(StatutSinistre statut) { this.statut = statut; }
@@ -67,5 +82,17 @@ public abstract class Sinistre {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getDescription(), getType(), getDateDeclaration(), getStatut(), getUserId());
+    }
+
+    @Override
+    public String toString() {
+        return "Sinistre{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", type=" + type +
+                ", dateDeclaration=" + dateDeclaration +
+                ", statut=" + statut +
+                ", userId='" + userId + '\'' +
+                '}';
     }
 }

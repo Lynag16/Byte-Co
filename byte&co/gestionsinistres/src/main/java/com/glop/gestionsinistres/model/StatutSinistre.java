@@ -4,5 +4,4 @@ public enum StatutSinistre {
     EN_ATTENTE,
     EN_COURS,
     CLOTURE,
-    REJETE
 }
