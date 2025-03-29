@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class SinistreService {
@@ -44,7 +45,7 @@ public class SinistreService {
     private String handleFileUpload(MultipartFile file, String label, String directory) throws IOException {
         if (file != null && !file.isEmpty()) {
             log.info("Fichier {}: {}", label, file.getOriginalFilename());
-            String filePath = fileStorageService.storeFile(file, directory);  // Passing directory here
+            String filePath = fileStorageService.storeFile(file, directory);
             log.info("Fichier stocké: {}", filePath);
             return filePath;
         } else {
@@ -65,7 +66,7 @@ public class SinistreService {
 
     public VolOuPerteObjetSinistre declarerVolOuPerteObjet(VolOuPerteObjetSinistreDTO dto) throws IOException {
         String userId = logAndGetUserId(dto.getDescription(), dto.getDateDeclaration());
-        String filePath = handleFileUpload(dto.getDeclarationPolice(), "declarationPolice", "/app/uploads/declarationPolices");  // Provide directory
+        String filePath = handleFileUpload(dto.getDeclarationPolice(), "declarationPolice", "/app/uploads/declarationPolices");
 
         VolOuPerteObjetSinistre sinistre = (filePath != null)
                 ? VolOuPerteObjetSinistreMapper.toEntity(dto, filePath)
@@ -83,7 +84,7 @@ public class SinistreService {
 
     public IncidentMedicalSinistre declarerIncidentMedical(IncidentMedicalSinistreDTO dto) throws IOException {
         String userId = logAndGetUserId(dto.getDescription(), dto.getDateDeclaration());
-        String filePath = handleFileUpload(dto.getDossierMedical(), "dossierMedical", "/app/uploads/dossierMedicaux");  // Provide directory
+        String filePath = handleFileUpload(dto.getDossierMedical(), "dossierMedical", "/app/uploads/dossierMedicaux");
         IncidentMedicalSinistre sinistre = (filePath != null)
                 ? IncidentMedicalSinistreMapper.toEntity(dto, filePath)
                 : IncidentMedicalSinistreMapper.toEntity(dto);
@@ -96,6 +97,12 @@ public class SinistreService {
         ProblemeHebergementSinistre sinistre = ProblemeHebergementSinistreMapper.toEntity(dto);
         sinistre.setUserId(userId);
         return saveSinistre(sinistre);
+    }
+
+    public List<Sinistre> getSinistresUtilisateurConnecte() {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info("Récupération des sinistres pour l'utilisateur: {}", userId);
+        return sinistreRepository.findByUserId(userId);
     }
 
 }

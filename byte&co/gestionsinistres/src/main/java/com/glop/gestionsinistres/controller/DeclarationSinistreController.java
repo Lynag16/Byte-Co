@@ -116,23 +116,19 @@ public class DeclarationSinistreController {
 
     // Téléchargement et affichage du fichier déclaration de police pour un vol ou perte d'objet
     @GetMapping("/uploads/declarationPolices/{filename:.+}")
+    @PreAuthorize("hasAnyRole('USER', 'CLIENT', 'ADMIN')")
     public ResponseEntity<?> displayDeclarationPolice(@PathVariable String filename) throws IOException {
         Path file = Paths.get(uploadDeclarationPoliceDir, filename).normalize().toAbsolutePath();
-        System.out.println(">>> Tentative d'accès à : " + file);
-
         if (!Files.exists(file)) {
-            System.out.println(">>> Fichier introuvable !");
             return ResponseEntity.notFound().build();
         }
-
-        System.out.println(">>> Fichier trouvé, préparation pour affichage...");
         InputStream inputStream = Files.newInputStream(file);
         InputStreamResource resource = new InputStreamResource(inputStream);
 
-        // Changez l'en-tête pour afficher le fichier dans le navigateur si inline, ou pour téléchargement si attachment
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "application/pdf")  // Spécifie que c'est un PDF
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"")  // Affichage inline dans le navigateur
+                .header(HttpHeaders.CONTENT_TYPE, "application/pdf")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"")
+                .header("X-Frame-Options", "SAMEORIGIN") // 👈 Important pour éviter l’erreur XFO
                 .body(resource);
     }
 
