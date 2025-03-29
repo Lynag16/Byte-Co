@@ -7,6 +7,7 @@ public class AccidentRouteSinistre extends Sinistre {
 
     private String lieuAccident;
     private String constatFilePath;
+    private String immatriculation;
 
     public AccidentRouteSinistre() {
         super();
@@ -18,4 +19,7 @@ public class AccidentRouteSinistre extends Sinistre {
 
     public String getConstatFilePath() { return constatFilePath; }
     public void setConstatFilePath(String constatFilePath) { this.constatFilePath = constatFilePath; }
+
+    public String getImmatriculation() { return immatriculation; }
+    public void setImmatriculation(String immatriculation) { this.immatriculation = immatriculation; }
 }

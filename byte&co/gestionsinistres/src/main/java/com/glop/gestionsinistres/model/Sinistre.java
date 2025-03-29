@@ -22,6 +22,7 @@ public abstract class Sinistre {
 
     public Sinistre() {
         this.statut = StatutSinistre.EN_ATTENTE;
+        this.dateDeclaration = LocalDateTime.now();
     }
 
     public Sinistre(String description, TypeSinistre type, LocalDateTime dateDeclaration, String userId) {
@@ -53,8 +54,14 @@ public abstract class Sinistre {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Sinistre sinistre)) return false;
-        return Objects.equals(getId(), sinistre.getId()) && Objects.equals(getDescription(), sinistre.getDescription()) && getType() == sinistre.getType() && Objects.equals(getDateDeclaration(), sinistre.getDateDeclaration()) && getStatut() == sinistre.getStatut() && Objects.equals(getUserId(), sinistre.getUserId());
+        if (!(o instanceof Sinistre)) return false;
+        Sinistre sinistre = (Sinistre) o;
+        return Objects.equals(id, sinistre.id) &&
+                Objects.equals(description, sinistre.description) &&
+                type == sinistre.type &&
+                Objects.equals(dateDeclaration, sinistre.dateDeclaration) &&
+                statut == sinistre.statut &&
+                Objects.equals(userId, sinistre.userId);
     }
 
     @Override

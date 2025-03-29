@@ -1,5 +1,8 @@
 package com.glop.gestionsinistres.model;
 
+import jakarta.persistence.Entity;
+
+@Entity
 public class VolOuPerteObjetSinistre extends Sinistre {
 
     private String lieuVol;
