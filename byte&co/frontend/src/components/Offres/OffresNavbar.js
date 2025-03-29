@@ -11,7 +11,6 @@ const OffresNavbar = () => {
     const handleScroll = () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-      // La navbar devient sticky lorsqu'on descend jusqu'à elle
       if (scrollTop >= navbarOffsetTop) {
         setIsSticky(true);
       } else {

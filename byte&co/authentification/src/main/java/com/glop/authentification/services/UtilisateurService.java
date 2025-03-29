@@ -28,6 +28,10 @@ public class UtilisateurService {
         utilisateur.setEmail(utilisateurDTO.getEmail());
         utilisateur.setMotDePasse(passwordEncoder.encode(utilisateurDTO.getMotDePasse())); // Encode password
         utilisateur.setTypeUtilisateur(utilisateurDTO.getTypeUtilisateur() != null ? utilisateurDTO.getTypeUtilisateur() : "USER"); // Default to "USER"
+        utilisateur.setNom(utilisateurDTO.getNom());
+        utilisateur.setPrenom(utilisateurDTO.getPrenom());
+        utilisateur.setDateNaissance(utilisateurDTO.getDateNaissance());
+        utilisateur.setCodePostal(utilisateurDTO.getCodePostal());
         return utilisateurRepository.save(utilisateur);
     }
 
