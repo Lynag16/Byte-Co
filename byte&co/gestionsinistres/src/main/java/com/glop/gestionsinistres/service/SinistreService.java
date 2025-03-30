@@ -2,7 +2,7 @@ package com.glop.gestionsinistres.service;
 
 import com.glop.gestionsinistres.dto.*;
 import com.glop.gestionsinistres.mapper.*;
-import com.glop.gestionsinistres.model.*;
+import com.glop.gestionsinistres.model.sinistre.*;
 import com.glop.gestionsinistres.repository.SinistreRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

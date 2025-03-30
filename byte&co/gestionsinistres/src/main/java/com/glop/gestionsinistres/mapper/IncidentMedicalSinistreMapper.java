@@ -1,7 +1,7 @@
 package com.glop.gestionsinistres.mapper;
 
 import com.glop.gestionsinistres.dto.IncidentMedicalSinistreDTO;
-import com.glop.gestionsinistres.model.IncidentMedicalSinistre;
+import com.glop.gestionsinistres.model.sinistre.IncidentMedicalSinistre;
 
 public class IncidentMedicalSinistreMapper {
 

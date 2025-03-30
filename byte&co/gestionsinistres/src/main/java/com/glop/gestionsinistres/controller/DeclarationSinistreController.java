@@ -1,7 +1,7 @@
 package com.glop.gestionsinistres.controller;
 
 import com.glop.gestionsinistres.dto.*;
-import com.glop.gestionsinistres.model.*;
+import com.glop.gestionsinistres.model.sinistre.*;
 import com.glop.gestionsinistres.service.SinistreService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;

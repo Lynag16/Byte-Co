@@ -1,6 +1,6 @@
 package com.glop.gestionsinistres.dto;
 
-import com.glop.gestionsinistres.model.TypeSinistre;
+import com.glop.gestionsinistres.model.sinistre.TypeSinistre;
 
 import java.time.LocalDate;
 

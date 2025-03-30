@@ -1,8 +1,8 @@
-package com.glop.gestionsinistres.model;
+package com.glop.gestionsinistres.model.sinistre;
 
 import jakarta.persistence.Entity;
 
-import static com.glop.gestionsinistres.model.TypeSinistre.PROBLEME_HEBERGEMENT;
+import static com.glop.gestionsinistres.model.sinistre.TypeSinistre.PROBLEME_HEBERGEMENT;
 
 @Entity
 public class ProblemeHebergementSinistre extends Sinistre {

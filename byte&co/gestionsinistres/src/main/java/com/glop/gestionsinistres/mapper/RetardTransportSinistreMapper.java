@@ -1,7 +1,7 @@
 package com.glop.gestionsinistres.mapper;
 
 import com.glop.gestionsinistres.dto.RetardTransportSinistreDTO;
-import com.glop.gestionsinistres.model.RetardTransportSinistre;
+import com.glop.gestionsinistres.model.sinistre.RetardTransportSinistre;
 
 public class RetardTransportSinistreMapper {
 

@@ -1,8 +1,8 @@
 package com.glop.gestionsinistres.repository;
 
-import com.glop.gestionsinistres.model.Sinistre;
-import com.glop.gestionsinistres.model.StatutSinistre;
-import com.glop.gestionsinistres.model.TypeSinistre;
+import com.glop.gestionsinistres.model.sinistre.Sinistre;
+import com.glop.gestionsinistres.model.sinistre.StatutSinistre;
+import com.glop.gestionsinistres.model.sinistre.TypeSinistre;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
 package com.glop.gestionsinistres.controller;
 
-import com.glop.gestionsinistres.model.Sinistre;
+import com.glop.gestionsinistres.model.sinistre.Sinistre;
 import com.glop.gestionsinistres.service.SinistreService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

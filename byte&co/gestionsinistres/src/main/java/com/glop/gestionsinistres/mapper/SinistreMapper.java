@@ -1,7 +1,7 @@
 package com.glop.gestionsinistres.mapper;
 
 import com.glop.gestionsinistres.dto.SinistreDTO;
-import com.glop.gestionsinistres.model.Sinistre;
+import com.glop.gestionsinistres.model.sinistre.Sinistre;
 
 public class SinistreMapper {
 

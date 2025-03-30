@@ -1,4 +1,4 @@
-package com.glop.gestionsinistres.model;
+package com.glop.gestionsinistres.model.sinistre;
 
 public enum TypeSinistre {
     ACCIDENT_ROUTE,
