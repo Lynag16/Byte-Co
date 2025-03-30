@@ -2,6 +2,8 @@ package com.glop.gestionutilisateurs.controllers;
 
 import com.glop.gestionutilisateurs.dtos.PartenaireDTO;
 import com.glop.gestionutilisateurs.services.PartenaireService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,27 +19,40 @@ public class PartenaireController {
     }
 
     @GetMapping("/")
-    public List<PartenaireDTO> getAllPartenaires() {
-        return partenaireService.getAllPartenaires();
+    public ResponseEntity<List<PartenaireDTO>> getAllPartenaires() {
+        List<PartenaireDTO> partenaires = partenaireService.getAllPartenaires();
+        return new ResponseEntity<>(partenaires, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public PartenaireDTO getPartenaireById(@PathVariable int id) {
-        return partenaireService.getPartenaireById(id);
+    public ResponseEntity<PartenaireDTO> getPartenaireById(@PathVariable int id) {
+        PartenaireDTO partenaire = partenaireService.getPartenaireById(id);
+        if (partenaire != null) {
+            return new ResponseEntity<>(partenaire, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("/register")
-    public PartenaireDTO registerPartenaire(@RequestBody PartenaireDTO partenaireDTO) {
-        return partenaireService.createPartenaire(partenaireDTO);
+    public ResponseEntity<PartenaireDTO> registerPartenaire(@RequestBody PartenaireDTO partenaireDTO) {
+        PartenaireDTO createdPartenaire = partenaireService.createPartenaire(partenaireDTO);
+        return new ResponseEntity<>(createdPartenaire, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public PartenaireDTO updatePartenaire(@PathVariable int id, @RequestBody PartenaireDTO partenaireDTO) {
-        return partenaireService.updatePartenaire(id, partenaireDTO);
+    public ResponseEntity<PartenaireDTO> updatePartenaire(@PathVariable int id, @RequestBody PartenaireDTO partenaireDTO) {
+        PartenaireDTO updatedPartenaire = partenaireService.updatePartenaire(id, partenaireDTO);
+        if (updatedPartenaire != null) {
+            return new ResponseEntity<>(updatedPartenaire, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public void deletePartenaire(@PathVariable int id) {
+    public ResponseEntity<Void> deletePartenaire(@PathVariable int id) {
         partenaireService.deletePartenaire(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

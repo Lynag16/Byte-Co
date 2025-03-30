@@ -11,5 +11,4 @@ public interface PartenaireRepository extends JpaRepository<Partenaire, Integer>
     Partenaire findByNomPartenaire(String nomPartenaire);
     Partenaire findByIdPartenaire(int idPartenaire);
 
-
 }

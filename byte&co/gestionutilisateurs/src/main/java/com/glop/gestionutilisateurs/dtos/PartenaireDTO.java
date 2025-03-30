@@ -6,7 +6,7 @@ public class PartenaireDTO {
     private String zonegeo;
     private String emailPartenaire;
     private String telephonePartenaire;
-    private String motdepassePartenaire;  // Add this field if it's missing
+    private String motdepassePartenaire;
     private String typeService;
     private String adressePartenaire;
 

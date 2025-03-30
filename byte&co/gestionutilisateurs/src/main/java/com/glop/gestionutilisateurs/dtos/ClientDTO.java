@@ -3,7 +3,7 @@ package com.glop.gestionutilisateurs.dtos;
 import java.util.Date;
 
 public class ClientDTO {
-
+    private int idClient;
     private String nom;
     private String prenom;
     private String email;
@@ -19,8 +19,9 @@ public class ClientDTO {
     // Constructeurs
     public ClientDTO() {}
 
-    public ClientDTO(String nom, String prenom, String email, String telephone, String motdepasse, Date dateInscription, 
+    public ClientDTO(int idClient, String nom, String prenom, String email, String telephone, String motdepasse, Date dateInscription, 
                      String languePreference, String monnaiePreference, String adresseclient, String statut) {
+        this.idClient = idClient;
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
@@ -35,6 +36,15 @@ public class ClientDTO {
     }
 
     // Getters et Setters
+
+    public int getIdClient() {
+        return idClient;
+    }
+
+    public void setIdClient(int idClient) {
+        this.idClient = idClient;
+    }
+    
     public String getNom() {
         return nom;
     }

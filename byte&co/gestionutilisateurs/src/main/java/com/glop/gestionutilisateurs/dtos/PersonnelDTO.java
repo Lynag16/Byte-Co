@@ -11,6 +11,23 @@ public class PersonnelDTO {
     private String adressepersonnel;
     private String motdepassepersonnel;
 
+    // Constructeurs (Ajoutez un constructeur par défaut et un constructeur avec tous les champs)
+
+    public PersonnelDTO() {
+    }
+
+    public PersonnelDTO(Long idpersonnel, String nompersonnel, String prenompersonnel, String emailpersonnel, String telephonepersonnel, String rolepersonnel, String departementpersonnel, String adressepersonnel, String motdepassepersonnel) {
+        this.idpersonnel = idpersonnel;
+        this.nompersonnel = nompersonnel;
+        this.prenompersonnel = prenompersonnel;
+        this.emailpersonnel = emailpersonnel;
+        this.telephonepersonnel = telephonepersonnel;
+        this.rolepersonnel = rolepersonnel;
+        this.departementpersonnel = departementpersonnel;
+        this.adressepersonnel = adressepersonnel;
+        this.motdepassepersonnel = motdepassepersonnel;
+    }
+
     // Getters and Setters
     public Long getIdpersonnel() {
         return idpersonnel;

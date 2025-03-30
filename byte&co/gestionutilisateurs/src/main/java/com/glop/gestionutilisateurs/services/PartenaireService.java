@@ -25,7 +25,7 @@ public class PartenaireService {
         dto.setTelephonePartenaire(partenaire.getTelephonePartenaire());
         dto.setTypeService(partenaire.getTypeService());
         dto.setAdressePartenaire(partenaire.getAdressePartenaire());
-        dto.setMotdepassePartenaire(partenaire.getMotdepassePartenaire());  
+        dto.setMotdepassePartenaire(partenaire.getMotdepassePartenaire());
         return dto;
     }
 
@@ -46,8 +46,8 @@ public class PartenaireService {
     public List<PartenaireDTO> getAllPartenaires() {
         List<Partenaire> partenaires = partenaireRepository.findAll();
         return partenaires.stream()
-                          .map(this::convertToDTO)
-                          .toList();
+                .map(this::convertToDTO)
+                .toList();
     }
 
     // Fetch partenaire by ID and return DTO
@@ -60,7 +60,10 @@ public class PartenaireService {
     public PartenaireDTO createPartenaire(PartenaireDTO partenaireDTO) {
         Partenaire partenaire = convertToEntity(partenaireDTO);
         Partenaire savedPartenaire = partenaireRepository.save(partenaire);
-        return convertToDTO(savedPartenaire);
+
+        PartenaireDTO dto = convertToDTO(savedPartenaire);
+        dto.setIdPartenaire(savedPartenaire.getIdPartenaire());
+        return dto;
     }
 
     // Update a partenaire and return the updated DTO

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PersonnelService {
@@ -62,7 +63,7 @@ public class PersonnelService {
     }
 
     // Convertir Personnel en PersonnelDTO
-    private PersonnelDTO convertToDTO(Personnel personnel) {
+    public PersonnelDTO convertToDTO(Personnel personnel) {
         PersonnelDTO personnelDTO = new PersonnelDTO();
         personnelDTO.setIdpersonnel(personnel.getIdpersonnel());
         personnelDTO.setNompersonnel(personnel.getNompersonnel());

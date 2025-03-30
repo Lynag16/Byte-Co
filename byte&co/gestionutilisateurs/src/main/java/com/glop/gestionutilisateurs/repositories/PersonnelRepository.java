@@ -9,4 +9,3 @@ public interface PersonnelRepository extends JpaRepository<Personnel, Long> {
     Personnel findByEmailpersonnel(String emailpersonnel);
     Personnel findByIdpersonnel(Long idpersonnel);
 }
-

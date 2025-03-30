@@ -79,7 +79,4 @@ public class Partenaire {
 		AdressePartenaire = adressePartenaire;
 	}
 
-
-
-    
 }

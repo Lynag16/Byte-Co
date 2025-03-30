@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ClientService {
@@ -18,23 +19,23 @@ public class ClientService {
     // Convertir Client en ClientDTO
     private ClientDTO convertToDTO(Client client) {
         return new ClientDTO(
-            client.getNom(), 
-            client.getPrenom(), 
-            client.getEmail(), 
+            client.getIdClient(),  
+            client.getNom(),
+            client.getPrenom(),
+            client.getEmail(),
             client.getTelephone(),
             client.getMotdepasse(),
             client.getDateInscription(),
             client.getLanguePreference(),
             client.getMonnaiePreference(),
             client.getAdresseclient(),
-            //client.getBadge(),
             client.getStatut()
         );
     }
 
-    // Convertir ClientDTO en Client
+    // Convertir ClientDTO en Client  
     private Client convertToEntity(ClientDTO clientDTO) {
-        return new Client(
+        Client client = new Client(
             clientDTO.getNom(),
             clientDTO.getPrenom(),
             clientDTO.getEmail(),
@@ -44,16 +45,16 @@ public class ClientService {
             clientDTO.getLanguePreference(),
             clientDTO.getMonnaiePreference(),
             clientDTO.getAdresseclient(),
-            //clientDTO.getBadge(),
             clientDTO.getStatut()
         );
+        return client;
     }
 
     public List<ClientDTO> getAllClients() {
         List<Client> clients = clientRepository.findAll();
         return clients.stream()
                       .map(this::convertToDTO)
-                      .toList();
+                      .collect(Collectors.toList());
     }
 
     public ClientDTO getClientById(int id) {
@@ -64,7 +65,11 @@ public class ClientService {
     public ClientDTO createClient(ClientDTO clientDTO) {
         Client client = convertToEntity(clientDTO);
         Client savedClient = clientRepository.save(client);
-        return convertToDTO(savedClient);
+
+        // Après la sauvegarde, récupérez l'ID généré et mettez-le dans le DTO
+        ClientDTO responseDTO = convertToDTO(savedClient);
+        responseDTO.setIdClient(savedClient.getIdClient());  
+        return responseDTO;
     }
 
     public ClientDTO updateClient(int id, ClientDTO clientDTO) {
@@ -80,7 +85,6 @@ public class ClientService {
             client.setLanguePreference(clientDTO.getLanguePreference());
             client.setMonnaiePreference(clientDTO.getMonnaiePreference());
             client.setAdresseclient(clientDTO.getAdresseclient());
-            //client.setBadge(clientDTO.getBadge());
             client.setStatut(clientDTO.getStatut());
             Client updatedClient = clientRepository.save(client);
             return convertToDTO(updatedClient);
