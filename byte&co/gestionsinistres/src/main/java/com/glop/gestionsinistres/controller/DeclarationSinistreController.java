@@ -94,7 +94,7 @@ public class DeclarationSinistreController {
     }
 
     @GetMapping("/uploads/constats/{filename:.+}")
-    @PreAuthorize("hasAnyRole('USER', 'CLIENT', 'ADMIN', 'PARTENAIRE')")
+    @PreAuthorize("hasAnyRole('USER', 'CLIENT', 'GESTIONNAIRE', 'PARTENAIRE')")
     public ResponseEntity<?> displayConstat(@PathVariable String filename) throws IOException {
         Path file = Paths.get(uploadConstatDir, filename).normalize().toAbsolutePath();
         System.out.println(">>> Tentative d'accès à : " + file);
@@ -117,7 +117,7 @@ public class DeclarationSinistreController {
 
     // Téléchargement et affichage du fichier déclaration de police pour un vol ou perte d'objet
     @GetMapping("/uploads/declarationPolices/{filename:.+}")
-    @PreAuthorize("hasAnyRole('USER', 'CLIENT', 'ADMIN', 'PARTENAIRE')")
+    @PreAuthorize("hasAnyRole('USER', 'CLIENT', 'GESTIONNAIRE', 'PARTENAIRE')")
     public ResponseEntity<?> displayDeclarationPolice(@PathVariable String filename) throws IOException {
         Path file = Paths.get(uploadDeclarationPoliceDir, filename).normalize().toAbsolutePath();
         System.out.println(">>> Tentative d'accès à : " + file);
@@ -137,7 +137,7 @@ public class DeclarationSinistreController {
 
     // Téléchargement et affichage du fichier dossier médical pour un incident médical
     @GetMapping("/uploads/dossierMedicaux/{filename:.+}")
-    @PreAuthorize("hasAnyRole('USER', 'CLIENT', 'ADMIN', 'PARTENAIRE')")
+    @PreAuthorize("hasAnyRole('USER', 'CLIENT', 'GESTIONNAIRE', 'PARTENAIRE', 'MEDECIN')")
     public ResponseEntity<?> displayDossierMedical(@PathVariable String filename) throws IOException {
         Path file = Paths.get(uploadDossierMedicalDir, filename).normalize().toAbsolutePath();
         System.out.println(">>> Tentative d'accès à : " + file);

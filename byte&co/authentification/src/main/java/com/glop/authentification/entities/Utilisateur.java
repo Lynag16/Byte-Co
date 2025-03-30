@@ -29,6 +29,10 @@ public class Utilisateur {
     private String dateNaissance;
     private String codePostal;
 
+    @Column(name = "is_admin", nullable = false)
+    private boolean isAdmin;
+
+
     public Utilisateur() {}
 
     public Utilisateur(String email, String motDePasse, String typeUtilisateur, String nom, String prenom, String dateNaissance, String codePostal) {
@@ -64,6 +68,15 @@ public class Utilisateur {
 
     public String getCodePostal() { return codePostal; }
     public void setCodePostal(String codePostal) { this.codePostal = codePostal; }
+
+    public Boolean getIsAdmin() {
+    return isAdmin;
+    }
+
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
 
 }
 

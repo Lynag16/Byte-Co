@@ -32,6 +32,7 @@ public class UtilisateurService {
         utilisateur.setPrenom(utilisateurDTO.getPrenom());
         utilisateur.setDateNaissance(utilisateurDTO.getDateNaissance());
         utilisateur.setCodePostal(utilisateurDTO.getCodePostal());
+        utilisateur.setIsAdmin(false);
         return utilisateurRepository.save(utilisateur);
     }
 

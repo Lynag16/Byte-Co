@@ -10,43 +10,43 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/admin/sinistres")
+@RequestMapping("/api/personnel/sinistres")
 @CrossOrigin(origins = "http://localhost:3000")
-public class SinistreAdminController {
+public class SinistrePersonnelController {
 
     private final SinistreService sinistreService;
 
-    public SinistreAdminController(SinistreService sinistreService) {
+    public SinistrePersonnelController(SinistreService sinistreService) {
         this.sinistreService = sinistreService;
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('GESTIONNAIRE')")
     public ResponseEntity<List<Sinistre>> getAllSinistres() {
-        System.out.println("✅ Accès autorisé pour ADMIN");
+        System.out.println("✅ Accès autorisé pour PERSONNEL");
         return ResponseEntity.ok(sinistreService.getAllSinistres());
     }
 
     @PostMapping("/{id}/traiter")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('GESTIONNAIRE')")
     public ResponseEntity<Sinistre> traiter(@PathVariable Long id) {
         return ResponseEntity.ok(sinistreService.traiterSinistre(id));
     }
 
     @PostMapping("/{id}/cloturer")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('GESTIONNAIRE')")
     public ResponseEntity<Sinistre> cloturer(@PathVariable Long id) {
         return ResponseEntity.ok(sinistreService.cloturerSinistre(id));
     }
 
     @PostMapping("/{id}/reouvrir")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('GESTIONNAIRE')")
     public ResponseEntity<Sinistre> reouvrir(@PathVariable Long id) {
         return ResponseEntity.ok(sinistreService.reouvrirSinistre(id));
     }
 
     @PostMapping("/{id}/affecter")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('GESTIONNAIRE')")
     public ResponseEntity<AffectationSinistre> affecter(@PathVariable Long id, @RequestParam String partenaireId) {
         return ResponseEntity.ok(sinistreService.affecterSinistre(id, partenaireId));
     }
