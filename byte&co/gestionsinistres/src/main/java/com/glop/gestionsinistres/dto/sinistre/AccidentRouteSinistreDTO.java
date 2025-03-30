@@ -1,4 +1,4 @@
-package com.glop.gestionsinistres.dto;
+package com.glop.gestionsinistres.dto.sinistre;
 
 import org.springframework.web.multipart.MultipartFile;
 

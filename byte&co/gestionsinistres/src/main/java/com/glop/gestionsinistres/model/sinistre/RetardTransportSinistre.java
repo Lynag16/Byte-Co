@@ -1,8 +1,8 @@
-package com.glop.gestionsinistres.model;
+package com.glop.gestionsinistres.model.sinistre;
 
 import jakarta.persistence.Entity;
 
-import static com.glop.gestionsinistres.model.TypeSinistre.RETARD_TRANSPORT;
+import static com.glop.gestionsinistres.model.sinistre.TypeSinistre.RETARD_TRANSPORT;
 
 @Entity
 public class RetardTransportSinistre extends Sinistre {

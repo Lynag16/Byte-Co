@@ -1,7 +1,7 @@
 package com.glop.gestionsinistres.controller;
 
-import com.glop.gestionsinistres.dto.*;
-import com.glop.gestionsinistres.model.*;
+import com.glop.gestionsinistres.dto.sinistre.*;
+import com.glop.gestionsinistres.model.sinistre.*;
 import com.glop.gestionsinistres.service.SinistreService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
@@ -94,6 +94,7 @@ public class DeclarationSinistreController {
     }
 
     @GetMapping("/uploads/constats/{filename:.+}")
+    @PreAuthorize("hasAnyRole('USER', 'CLIENT', 'ADMIN', 'PARTENAIRE')")
     public ResponseEntity<?> displayConstat(@PathVariable String filename) throws IOException {
         Path file = Paths.get(uploadConstatDir, filename).normalize().toAbsolutePath();
         System.out.println(">>> Tentative d'accès à : " + file);
@@ -107,37 +108,36 @@ public class DeclarationSinistreController {
         InputStream inputStream = Files.newInputStream(file);
         InputStreamResource resource = new InputStreamResource(inputStream);
 
-        // Changez l'en-tête pour que le fichier soit affiché dans le navigateur
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "application/pdf")  // Spécifie que c'est un PDF
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"")  // Utilise "inline" pour afficher dans le navigateur
+                .header(HttpHeaders.CONTENT_TYPE, "application/pdf")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"")
+                .header("X-Frame-Options", "SAMEORIGIN")
                 .body(resource);
     }
 
     // Téléchargement et affichage du fichier déclaration de police pour un vol ou perte d'objet
     @GetMapping("/uploads/declarationPolices/{filename:.+}")
+    @PreAuthorize("hasAnyRole('USER', 'CLIENT', 'ADMIN', 'PARTENAIRE')")
     public ResponseEntity<?> displayDeclarationPolice(@PathVariable String filename) throws IOException {
         Path file = Paths.get(uploadDeclarationPoliceDir, filename).normalize().toAbsolutePath();
         System.out.println(">>> Tentative d'accès à : " + file);
 
         if (!Files.exists(file)) {
-            System.out.println(">>> Fichier introuvable !");
             return ResponseEntity.notFound().build();
         }
-
-        System.out.println(">>> Fichier trouvé, préparation pour affichage...");
         InputStream inputStream = Files.newInputStream(file);
         InputStreamResource resource = new InputStreamResource(inputStream);
 
-        // Changez l'en-tête pour afficher le fichier dans le navigateur si inline, ou pour téléchargement si attachment
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "application/pdf")  // Spécifie que c'est un PDF
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"")  // Affichage inline dans le navigateur
+                .header(HttpHeaders.CONTENT_TYPE, "application/pdf")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"")
+                .header("X-Frame-Options", "SAMEORIGIN")
                 .body(resource);
     }
 
     // Téléchargement et affichage du fichier dossier médical pour un incident médical
     @GetMapping("/uploads/dossierMedicaux/{filename:.+}")
+    @PreAuthorize("hasAnyRole('USER', 'CLIENT', 'ADMIN', 'PARTENAIRE')")
     public ResponseEntity<?> displayDossierMedical(@PathVariable String filename) throws IOException {
         Path file = Paths.get(uploadDossierMedicalDir, filename).normalize().toAbsolutePath();
         System.out.println(">>> Tentative d'accès à : " + file);
@@ -151,10 +151,10 @@ public class DeclarationSinistreController {
         InputStream inputStream = Files.newInputStream(file);
         InputStreamResource resource = new InputStreamResource(inputStream);
 
-        // Changez l'en-tête pour afficher le fichier dans le navigateur si inline, ou pour téléchargement si attachment
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "application/pdf")  // Spécifie que c'est un PDF
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"")  // Affichage inline dans le navigateur
+                .header(HttpHeaders.CONTENT_TYPE, "application/pdf")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"")
+                .header("X-Frame-Options", "SAMEORIGIN")
                 .body(resource);
     }
 

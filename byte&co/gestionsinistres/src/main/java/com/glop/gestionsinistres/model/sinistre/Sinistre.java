@@ -1,11 +1,10 @@
-package com.glop.gestionsinistres.model;
+package com.glop.gestionsinistres.model.sinistre;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity

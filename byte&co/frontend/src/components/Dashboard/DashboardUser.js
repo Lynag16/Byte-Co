@@ -3,13 +3,14 @@ import { FaFileAlt, FaExclamationCircle, FaFileContract, FaUserCircle, FaMoneyBi
 import DashboardLayout from './DashboardLayout';
 import UserProfile from './UserProfile';
 import Parametres from './Parametres';
+import MesSinistres from './sinistres/MesSinistres';
 import DeclarationSinistre from './sinistres/DeclarationSinistre'
 
 const DashboardUser = ({ user, onLogout }) => {
   const menuItems = [
     { key: 'profil', label: 'Mes informations personnelles', icon: <FaUserCircle /> },
     { key: 'sinistre', label: 'Déclarer un sinistre', icon: <FaExclamationCircle /> },
-    { key: 'contrats', label: 'Mes Contrats', icon: <FaFileContract /> },
+    { key: 'sinistres', label: 'Mes Sinistres', icon: <FaFileContract /> },
     { key: 'assistance', label: 'Assistance', icon: <FaLifeRing /> },
     { key: 'documents', label: 'Documents', icon: <FaFilePdf /> },
     { key: 'notifications', label: 'Notifications', icon: <FaBell /> },
@@ -22,8 +23,8 @@ const DashboardUser = ({ user, onLogout }) => {
         return <UserProfile user={user} />;
       case 'sinistre':
         return <DeclarationSinistre />;
-      case 'contrats':
-        return <h2>Vos contrats</h2>;
+      case 'sinistres':
+        return <MesSinistres />;
       case 'paiements':
         return <h2>Historique des paiements</h2>;
       case 'assistance':

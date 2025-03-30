@@ -1,7 +1,7 @@
-package com.glop.gestionsinistres.mapper;
+package com.glop.gestionsinistres.mapper.sinistre;
 
-import com.glop.gestionsinistres.dto.VolOuPerteObjetSinistreDTO;
-import com.glop.gestionsinistres.model.VolOuPerteObjetSinistre;
+import com.glop.gestionsinistres.dto.sinistre.VolOuPerteObjetSinistreDTO;
+import com.glop.gestionsinistres.model.sinistre.VolOuPerteObjetSinistre;
 
 public class VolOuPerteObjetSinistreMapper {
 

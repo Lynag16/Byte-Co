@@ -1,16 +1,18 @@
-package com.glop.gestionsinistres.dto;
+package com.glop.gestionsinistres.model.sinistre;
 
-import org.springframework.web.multipart.MultipartFile;
+import jakarta.persistence.Entity;
 
-public class VolOuPerteObjetSinistreDTO extends SinistreDTO {
+@Entity
+public class VolOuPerteObjetSinistre extends Sinistre {
 
     private String lieuVol;
     private String descriptionObjetPerdu;
     private double valeurObjetPerdu;
-    private MultipartFile declarationPolice;
+    private String declarationPoliceFilePath;
 
-    public VolOuPerteObjetSinistreDTO() {
+    public VolOuPerteObjetSinistre() {
         super();
+        setType(TypeSinistre.VOL_OU_PERTE_OBJET);
     }
 
     public String getLieuVol() { return lieuVol; }
@@ -22,6 +24,6 @@ public class VolOuPerteObjetSinistreDTO extends SinistreDTO {
     public double getValeurObjetPerdu() { return valeurObjetPerdu; }
     public void setValeurObjetPerdu(double valeurObjetPerdu) { this.valeurObjetPerdu = valeurObjetPerdu; }
 
-    public MultipartFile getDeclarationPolice() { return declarationPolice; }
-    public void setDeclarationPolice(MultipartFile declarationPoliceFilePath) { this.declarationPolice = declarationPoliceFilePath; }
+    public String getDeclarationPoliceFilePath() { return declarationPoliceFilePath; }
+    public void setDeclarationPoliceFilePath(String declarationPoliceFilePath) { this.declarationPoliceFilePath = declarationPoliceFilePath; }
 }

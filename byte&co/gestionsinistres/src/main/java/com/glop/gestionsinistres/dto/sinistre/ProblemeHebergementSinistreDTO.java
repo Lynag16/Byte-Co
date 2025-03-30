@@ -1,19 +1,9 @@
-package com.glop.gestionsinistres.model;
+package com.glop.gestionsinistres.dto.sinistre;
 
-import jakarta.persistence.Entity;
-
-import static com.glop.gestionsinistres.model.TypeSinistre.PROBLEME_HEBERGEMENT;
-
-@Entity
-public class ProblemeHebergementSinistre extends Sinistre {
+public class ProblemeHebergementSinistreDTO extends SinistreDTO {
 
     private String nomHotel;
     private String natureProbleme;
-
-    public ProblemeHebergementSinistre() {
-        super();
-        setType(PROBLEME_HEBERGEMENT);
-    }
 
     public String getNomHotel() {
         return nomHotel;

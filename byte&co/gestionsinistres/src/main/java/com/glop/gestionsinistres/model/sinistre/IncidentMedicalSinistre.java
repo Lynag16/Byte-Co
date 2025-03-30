@@ -1,8 +1,8 @@
-package com.glop.gestionsinistres.model;
+package com.glop.gestionsinistres.model.sinistre;
 
 import jakarta.persistence.Entity;
 
-import static com.glop.gestionsinistres.model.TypeSinistre.INCIDENT_MEDICAL;
+import static com.glop.gestionsinistres.model.sinistre.TypeSinistre.INCIDENT_MEDICAL;
 
 @Entity
 public class IncidentMedicalSinistre extends Sinistre {
