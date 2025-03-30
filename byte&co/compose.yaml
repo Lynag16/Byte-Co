@@ -15,7 +15,7 @@ services:
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     networks:
-      - react-spring
+      - byteco-network
 
   # db-auth:
   #   image: mysql:8.0.19
@@ -38,9 +38,9 @@ services:
   #     - auth-mysql
 
 
-  #___________Microservice Gestion Client
-  backend-gestionclient:
-    build: ./gestionclient
+  #___________Microservice Gestion des utilisateurs
+  backend-gestionutilisateurs:
+    build: ./gestionutilisateurs
     restart: always
     ports:
       - "8081:8080"  # ou un autre port si conflit
@@ -52,36 +52,118 @@ services:
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     networks:
-      - react-spring
+      - byteco-network
 
 
-  # #___________Microservice Gestion des Contrats
-  # backend-gestioncontrat:
-  #   build: ./gestioncontrat/backend
-  #   restart: always
-  #   ports:
-  #     - "8082:8080"
-  #   secrets:
-  #     - db-password-gestioncontrat
-  #   environment:
-  #     MYSQL_HOST: db-gestioncontrat
-  #     MYSQL_DATABASE: gestioncontrat_db
-  #     MYSQL_USER: gestioncontrat_user
-  #     MYSQL_PASSWORD_FILE: /run/secrets/db-password-gestioncontrat
-  #   networks:
-  #     - react-spring
-  #     - gestioncontrat-mysql
-  #   depends_on:
-  #     db-gestioncontrat:
-  #       condition: service_healthy
+        # #___________Microservice Gestion des Contrats
+        # backend-gestioncontrat:
+        #   build: ./gestioncontrats
+        #   restart: always
+        #   ports:
+        #     - "8086:8080"
+        #   environment:
+        #     SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cutt46popnds739qav80-a.frankfurt-postgres.render.com:5432/assurmob
+        #     SPRING_DATASOURCE_USERNAME: assurmob_user
+        #     SPRING_DATASOURCE_PASSWORD: MEbiFOhZtaE7FDf4A387P986PTZbXq77
+        #     SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+        #     SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+        #     SPRING_JPA_HIBERNATE_DDL_AUTO: update
+        #   networks:
+        #     - byteco-network
 
-  # db-gestioncontrat:
+        # db-gestioncontrat:
+        #   image: mysql:8.0.19
+        #   environment:
+        #     - MYSQL_DATABASE=gestioncontrat_db
+        #     - MYSQL_USER=gestioncontrat_user
+        #     - MYSQL_PASSWORD_FILE=/run/secrets/db-password-gestioncontrat
+        #     - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-gestioncontrat
+        #   restart: always
+        #   healthcheck:
+        #     test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+        #     interval: 3s
+        #     retries: 5
+        #     start_period: 30s
+        #   secrets:
+        #     - db-password-gestioncontrat
+        #   volumes:
+        #     - db-gestioncontrat-data:/var/lib/mysql
+        #   networks:
+        #     - gestioncontrat-mysql
+
+
+        # #___________Microservice Gestion des Offres
+        # backend-gestionoffre:
+        #   build: ./gestionoffre
+        #   restart: always
+        #   ports:
+        #     - "8083:8080"
+        #   environment:
+        #     SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cutt46popnds739qav80-a.frankfurt-postgres.render.com:5432/assurmob
+        #     SPRING_DATASOURCE_USERNAME: assurmob_user
+        #     SPRING_DATASOURCE_PASSWORD: MEbiFOhZtaE7FDf4A387P986PTZbXq77
+        #     SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+        #     SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+        #     SPRING_JPA_HIBERNATE_DDL_AUTO: update
+        #   networks:
+        #     - byteco-network
+
+        # db-gestionoffre:
+        #   image: mysql:8.0.19
+        #   environment:
+        #     - MYSQL_DATABASE=gestionoffre_db
+        #     - MYSQL_USER=gestionoffre_user
+        #     - MYSQL_PASSWORD_FILE=/run/secrets/db-password-gestionoffre
+        #     - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-gestionoffre
+        #   restart: always
+        #   healthcheck:
+        #     test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+        #     interval: 3s
+        #     retries: 5
+        #     start_period: 30s
+        #   secrets:
+        #     - db-password-gestionoffre
+        #   volumes:
+        #     - db-gestionoffre-data:/var/lib/mysql
+        #   networks:
+        #     - gestionoffre-mysql
+
+
+        # #___________Microservice Empreinte Carbone
+        # backend-empreintecarbone:
+        #   build: ./empreintecarbone/backend
+        #   restart: always
+        #   ports:
+        #     - "8084:8080"
+        #   networks:
+        #     - byteco-network
+
+
+        # #___________Microservice Gestion de Sinistre
+        # backend-gestionsinistres:
+        #   build: ./gestionsinistres
+        #   restart: always
+        #   ports:
+        #     - "8085:8080"
+        #   environment:
+        #     SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cutt46popnds739qav80-a.frankfurt-postgres.render.com:5432/assurmob
+        #     SPRING_DATASOURCE_USERNAME: assurmob_user
+        #     SPRING_DATASOURCE_PASSWORD: MEbiFOhZtaE7FDf4A387P986PTZbXq77
+        #     SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+        #     SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+        #     SPRING_JPA_HIBERNATE_DDL_AUTO: update
+
+        #   networks:
+        #     - byteco-network
+
+
+  # db-gestionsinistres:
   #   image: mysql:8.0.19
   #   environment:
-  #     - MYSQL_DATABASE=gestioncontrat_db
-  #     - MYSQL_USER=gestioncontrat_user
-  #     - MYSQL_PASSWORD_FILE=/run/secrets/db-password-gestioncontrat
-  #     - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-gestioncontrat
+  #     - MYSQL_DATABASE=gestionsinistres_db
+  #     - MYSQL_USER=gestionsinistres_user
+  #     - MYSQL_PASSWORD_FILE=/run/secrets/db-password-gestionsinistres
+  #     - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-gestionsinistres
   #   restart: always
   #   healthcheck:
   #     test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
@@ -89,106 +171,35 @@ services:
   #     retries: 5
   #     start_period: 30s
   #   secrets:
-  #     - db-password-gestioncontrat
+  #     - db-password-gestionsinistres
   #   volumes:
-  #     - db-gestioncontrat-data:/var/lib/mysql
+  #     - db-gestionsinistres-data:/var/lib/mysql
   #   networks:
-  #     - gestioncontrat-mysql
+  #     - gestionsinistres-mysql
 
-
-  # #___________Microservice Gestion des Offres
-  # backend-gestionoffres:
-  #   build: ./gestionoffres/backend
-  #   restart: always
-  #   ports:
-  #     - "8083:8080"
-  #   secrets:
-  #     - db-password-gestionoffres
-  #   environment:
-  #     MYSQL_HOST: db-gestionoffres
-  #     MYSQL_DATABASE: gestionoffres_db
-  #     MYSQL_USER: gestionoffres_user
-  #     MYSQL_PASSWORD_FILE: /run/secrets/db-password-gestionoffres
-  #   networks:
-  #     - react-spring
-  #     - gestionoffres-mysql
-  #   depends_on:
-  #     db-gestionoffres:
-  #       condition: service_healthy
-
-  # db-gestionoffres:
-  #   image: mysql:8.0.19
-  #   environment:
-  #     - MYSQL_DATABASE=gestionoffres_db
-  #     - MYSQL_USER=gestionoffres_user
-  #     - MYSQL_PASSWORD_FILE=/run/secrets/db-password-gestionoffres
-  #     - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-gestionoffres
-  #   restart: always
-  #   healthcheck:
-  #     test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
-  #     interval: 3s
-  #     retries: 5
-  #     start_period: 30s
-  #   secrets:
-  #     - db-password-gestionoffres
-  #   volumes:
-  #     - db-gestionoffres-data:/var/lib/mysql
-  #   networks:
-  #     - gestionoffres-mysql
 
 
   # #___________Microservice Empreinte Carbone
-  # backend-empreintecarbone:
-  #   build: ./empreintecarbone/backend
-  #   restart: always
-  #   ports:
-  #     - "8084:8080"
-  #   networks:
-  #     - react-spring
+  #   backend-empreintecarbone:
+  #     build: ./empreintecarbone
+  #     restart: always
+  #     ports:
+  #       - "8084:8080"
+
+  #     environment:
+  #       SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cutt46popnds739qav80-a.frankfurt-postgres.render.com:5432/assurmob
+  #       SPRING_DATASOURCE_USERNAME: assurmob_user
+  #       SPRING_DATASOURCE_PASSWORD: MEbiFOhZtaE7FDf4A387P986PTZbXq77
+  #       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+  #       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+  #       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+
+  #     networks:
+  #       - byteco-network
 
 
-  #___________Microservice Gestion de Sinistre
-  backend-gestionsinistres:
-    build: ./gestionsinistres/backend
-    restart: always
-    ports:
-      - "8085:8080"
-    secrets:
-      - db-password-gestionsinistres
-    environment:
-      MYSQL_HOST: db-gestionsinistres
-      MYSQL_DATABASE: gestionsinistres_db
-      MYSQL_USER: gestionsinistres_user
-      MYSQL_PASSWORD_FILE: /run/secrets/db-password-gestionsinistres
-    networks:
-      - react-spring
-      - gestionsinistres-mysql
-    depends_on:
-      db-gestionsinistres:
-        condition: service_healthy
 
-  db-gestionsinistres:
-    image: mysql:8.0.19
-    environment:
-      - MYSQL_DATABASE=gestionsinistres_db
-      - MYSQL_USER=gestionsinistres_user
-      - MYSQL_PASSWORD_FILE=/run/secrets/db-password-gestionsinistres
-      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password-gestionsinistres
-    restart: always
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
-      interval: 3s
-      retries: 5
-      start_period: 30s
-    secrets:
-      - db-password-gestionsinistres
-    volumes:
-      - db-gestionsinistres-data:/var/lib/mysql
-    networks:
-      - gestionsinistres-mysql
-
-
-#___________Frontend
+  #___________Frontend
   frontend:
     build:
       context: frontend
@@ -199,32 +210,28 @@ services:
       - ./frontend/src:/code/src
       - /project/node_modules
     networks:
-      - react-spring
+      - byteco-network
     depends_on:
       - backend-auth
 
 #___________Volumes
 volumes:
   db-auth-data: {}
-  db-gestionclient-data: {}
+  db-gestionutilisateurs-data: {}
   db-gestioncontrat-data: {}
-  db-gestionoffres-data: {}
+  db-gestionoffre-data: {}
   db-gestionsinistres-data: {}
 
 #___________Secrets
 secrets:
   db-password-auth:
     file: ./authentification/db/password.txt
-  db-password-gestionclient:
-    file: ./gestionclient/db/password.txt
+  db-password-gestionutilisateurs:
+    file: ./gestionutilisateurs/db/password.txt
   db-password-gestionsinistres:
     file: ./gestionsinistres/db/password.txt
 
 #___________Networks
 networks:
-  react-spring: {}
-  auth-mysql: {}
-  gestionclient-mysql: {}
-  gestioncontrat-mysql: {}
-  gestionoffres-mysql: {}
-  gestionsinistres-mysql: {}
+  byteco-network:
+    driver: bridge

@@ -1,27 +1,35 @@
-import React from "react";
-import HomePage from "./pages/home/HomePage";
-import Offres from "./pages/offres/OffresPage";
-import Dashboard from "./components/Dashboard/Dashboard";
-import Login from "./components/auth/Login";
-import NavBar from "./components/Shared/NavBar";
-import Footer from "./components/Shared/Footer";
-import { useSelector } from "react-redux";
+import React from 'react';
 import {
   BrowserRouter as Router,
   Route,
   Routes,
   Navigate,
-  useLocation,
-} from "react-router-dom";
+  useLocation
+} from 'react-router-dom';
+import HomePage from './pages/home/HomePage';
+import Offres from './pages/offres/OffresPage';
+import DeclarationSinistre from "./components/Dashboard/sinistres/DeclarationSinistre";
+import AssistanceEtSinistre from './components/Dashboard/sinistres/AssistanceEtSinistre';
+import Dashboard from './components/Dashboard/Dashboard';
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
+import { AuthProvider, useAuth } from './components/auth/AuthContext';
+import NavBar from './components/Shared/NavBar';
+import Footer from './components/Shared/Footer';
 
 const ProtectedRoute = ({ children }) => {
-  const { user } = useSelector((state) => state.auth);
-  return user ? children : <Navigate to="/login" />;
+  const { userIsAuthenticated } = useAuth();
+  return userIsAuthenticated() ? children : <Navigate to="/" replace />;
+};
+
+const LoginRoute = () => {
+  const { userIsAuthenticated } = useAuth();
+  return userIsAuthenticated() ? <Navigate to="/" replace /> : <Login />;
 };
 
 const AppLayout = ({ children }) => {
   const location = useLocation();
-  const isDashboard = location.pathname === "/dashboard";
+  const isDashboard = location.pathname === '/dashboard';
 
   return (
     <div className="d-flex flex-column min-vh-100">
@@ -34,23 +42,30 @@ const AppLayout = ({ children }) => {
 
 function App() {
   return (
-    <Router>
-      <AppLayout>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/offres" element={<Offres />} />
-        </Routes>
-      </AppLayout>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <AppLayout>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginRoute />} />
+            <Route path="/offres" element={<Offres />} />
+            <Route path="/empreinte-carbone" element={<HomePage />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/AssistanceEtSinistre" element={<AssistanceEtSinistre />} />
+            <Route path="/DeclarationSinistre" element={<DeclarationSinistre />} />
+
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </AppLayout>
+      </Router>
+    </AuthProvider>
   );
 }
 

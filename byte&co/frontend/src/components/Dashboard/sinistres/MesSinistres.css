@@ -1,0 +1,76 @@
+/* MesSinistres.css */
+
+.mes-sinistres-wrapper {
+  padding: 2rem;
+  background-color: #f5f7fb;
+  min-height: 100vh;
+}
+
+.mes-sinistres-paper {
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+  background-color: #ffffff;
+}
+
+.mes-sinistres-title {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.mes-sinistres-table .MuiDataGrid-columnHeaders {
+  background-color: #eaf0f6;
+  font-weight: bold;
+}
+
+.mes-sinistres-table .MuiDataGrid-cell {
+  font-size: 0.95rem;
+}
+
+.icon {
+  font-size: 1rem;
+  margin-right: 5px;
+}
+
+.chip-type {
+  font-weight: 500;
+}
+
+.chip-statut {
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.aucun-lien {
+  font-style: italic;
+  color: #7f8c8d;
+}
+
+.stats-container {
+  margin-top: 2rem;
+  padding: 1rem 2rem;
+  background-color: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.stats-container {
+  margin-top: 2rem;
+  padding: 1rem 2rem;
+  background-color: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.chip-type {
+  font-weight: bold;
+  background-color: #f1f1f1;
+}
+
+.chip-statut {
+  text-transform: capitalize;
+}
+

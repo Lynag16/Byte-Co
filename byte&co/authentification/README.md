@@ -1,38 +1,98 @@
 
-# Microservice de connexion et d'inscription
+# Microservice de Connexion et d'Inscription
 
-- **Client** : done
-- **Partenaire** : done
-- **Personnel** : done
+Ce microservice gère l'inscription et la connexion des utilisateurs. Il utilise un système d'authentification basé sur des tokens JWT.
 
 ---
 
-## SWAGGER
+##Liste des Endpoints
 
-### ClientController Endpoints
+#### 1. **Inscription**
+- **URL**: `/auth/register`
+- **Méthode**: `POST`
+- **Description**: Permet à un nouvel utilisateur de s'inscrire.
+- **Corps de la requête**:
+    ```json
+    {
+        "username": "string",
+        "email": "string",
+        "password": "string"
+    }
+    ```
+- **Réponse**:
+    ```json
+    {
+        "message": "Inscription réussie",
+        "userId": "string"
+    }
+    ```
 
-| **Method** | **Endpoint**         | **Description**             | **Request Body**                                                                                                                                                                                                                                                                                  | **Response**                                                                                                                                               |
-|------------|----------------------|-----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| POST       | `/api/clients/register`  | Register a new client       | `{ "nom": "string", "prenom": "string", "email": "string", "motdepasse": "string", "telephone": "string", "adresse": "string" ,"adresseclient":"1 rue client 59000 lille"}`                                                                                                                           | `200 OK` - `"Client inscrit avec succès, ID: {id}"` <br> `400 Bad Request` - Invalid input.                                                               |
-| POST       | `/api/clients/login`     | Authenticate a client       | `{ "email": "string", "motdepasse": "string" }`                                                                                                                                                                                                           | `200 OK` - `{"id": "integer", "nom": "string", "prenom": "string", "email": "string", "telephone": "string", "adresse": "string"}` <br> `401 Unauthorized` - `"Échec de la connexion"`                                                                     |
-| POST       | `/api/clients/reset-password` | Reset client password       | `{ "email": "string", "newPassword": "string" }`                                                                                                                                                                                                 | `200 OK` - `"Mot de passe réinitialisé avec succès"` <br> `400 Bad Request` - `"Échec de la réinitialisation du mot de passe"`                            |
+#### 2. **Connexion**
+- **URL**: `/api/auth/login`
+- **Méthode**: `POST`
+- **Description**: Permet à un utilisateur existant de se connecter.
+- **Corps de la requête**:
+    ```json
+    {
+        "email": "string",
+        "password": "string"
+    }
+    ```
+- **Réponse**:
+    ```json
+    {
+        "token": "string",
+        "expiresIn": "number"
+    }
+    ```
 
----
+#### 3. **Vérification du Token**
+- **URL**: `/api/auth/verify-token`
+- **Méthode**: `GET`
+- **Description**: Vérifie si un token JWT est valide.
+- **En-tête**:
+    ```
+    Authorization: Bearer <token>
+    ```
+- **Réponse**:
+    ```json
+    {
+        "valid": true,
+        "userId": "string"
+    }
+    ```
 
-### PartenaireController Endpoints
+#### 4. **Réinitialisation du Mot de Passe**
+- **URL**: `/api/auth/reset-password`
+- **Méthode**: `POST`
+- **Description**: Permet à un utilisateur de demander une réinitialisation de son mot de passe.
+- **Corps de la requête**:
+    ```json
+    {
+        "email": "string"
+    }
+    ```
+- **Réponse**:
+    ```json
+    {
+        "message": "Un lien de réinitialisation a été envoyé à votre adresse email"
+    }
+    ```
 
-| **Method** | **Endpoint**           | **Description**               | **Request Body**                                                                                                                                                                                                                      | **Response**                                                                                                                                              |
-|------------|------------------------|-------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| POST       | `/api/partenaires/register`| Register a new partner        | `{ "nomPartenaire": "string", "prenomPartenaire": "string", "emailPartenaire": "string", "motdepassePartenaire": "string", "telephonePartenaire": "string", "TypeService": "string", "AdressePartenaire": "string" }`                   | `200 OK` - `"Partenaire inscrit avec succès, ID: {id}"` <br> `400 Bad Request` - Invalid input.                                                          |
-| POST       | `/api/partenaires/login`   | Authenticate a partner        | `{ "emailPartenaire": "string", "motdepassePartenaire": "string" }`                                                                                                                                                                  | `200 OK` - `{"idPartenaire": "integer", "nomPartenaire": "string", "prenomPartenaire": "string", "emailPartenaire": "string", "telephonePartenaire": "string", "TypeService": "string", "AdressePartenaire": "string"}` <br> `401 Unauthorized` - `"Échec de la connexion"`                                                                    |
-| POST       | `/api/partenaires/reset-password` | Reset partner password       | `{ "emailPartenaire": "string", "newPassword": "string" }`                                                                                                                                                                           | `200 OK` - `"Mot de passe réinitialisé avec succès"` <br> `400 Bad Request` - `"Échec de la réinitialisation du mot de passe"`                            |
-
----
-
-### PersonnelController Endpoints
-
-| **Method** | **Endpoint**           | **Description**               | **Request Body**                                                                                                                                                                                                                      | **Response**                                                                                                                                              |
-|------------|------------------------|-------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| POST       | `/api/personnels/register`| Register a new personal        | `{"nompersonnel": "Doe","prenompersonnel": "John","emailpersonnel": "john.doe@example.com","telephonepersonnel": "0123456789","rolepersonnel": "Admin","departementpersonnel": "admin","adressepersonnel": "123 Rue Exemple","motdepassepersonnel": "securepassword"}`                   | `200 OK` - `"Personnel inscrit avec succès, ID: {id}"` <br> `400 Bad Request` - Invalid input.                                                          |
-| POST       | `/api/personnels/login`   | Authenticate a personal        | `{ "emailpersonnel": "string", "motdepassepersonnel": "string" }`                                                                                                                                                                  | `200 OK` - `{"idpersonnel": "integer", "nompersonnel": "string", "prenompersonnel": "string", "emailpersonnel": "string", "telephonepersonnel": "string", "rolepersonnel": "string", "departementpersonnel": "string", "adressepersonnel": "string"}` <br> `401 Unauthorized` - `"Échec de la connexion"`                                                                    |
-| POST       | `/api/personnels/reset-password` | Reset personal password       | `{ "emailpersonnel": "string", "newPassword": "string" }`                                                                                                                                                                           | `200 OK` - `"Mot de passe réinitialisé avec succès"` <br> `400 Bad Request` - `"Échec de la réinitialisation du mot de passe"`                            |
+#### 5. **Mise à Jour du Mot de Passe**
+- **URL**: `/api/auth/update-password`
+- **Méthode**: `POST`
+- **Description**: Permet à un utilisateur de mettre à jour son mot de passe après réinitialisation.
+- **Corps de la requête**:
+    ```json
+    {
+        "resetToken": "string",
+        "newPassword": "string"
+    }
+    ```
+- **Réponse**:
+    ```json
+    {
+        "message": "Mot de passe mis à jour avec succès"
+    }
+    ```
