@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './UserProfile.css';
 import { motion } from 'framer-motion';
 
-const UserProfile = ({ user }) => {
+const PersonnelProfile = ({ user }) => {
   const [profile, setProfile] = useState(null);
   const [codePostal, setCodePostal] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -11,11 +11,11 @@ const UserProfile = ({ user }) => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch(`http://localhost:8082/api/auth/profile?email=${user.email}`);
+        const response = await fetch(`http://localhost:8082/api/auth/profile-personnel?email=${user.email}`);
         if (!response.ok) throw new Error('Erreur lors de la récupération des informations');
         const data = await response.json();
         setProfile(data);
-        setCodePostal(data.codePostal);
+        setCodePostal(data.adresse);  // Assurez-vous que l'adresse est dans la réponse
       } catch (error) {
         setErrorMessage(error.message);
       }
@@ -47,11 +47,11 @@ const UserProfile = ({ user }) => {
   return (
     <div className="profile-wrapper">
       <motion.h2
-        nitial={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="declaration-sinistre-title"
-        >
+      >
         Mes informations personnelles
       </motion.h2>
 
@@ -65,10 +65,6 @@ const UserProfile = ({ user }) => {
           <span>{profile.prenom}</span>
         </div>
         <div className="profile-field">
-          <label>Date de naissance :</label>
-          <span>{profile.dateNaissance}</span>
-        </div>
-        <div className="profile-field">
           <label>Email :</label>
           <span>{profile.email}</span>
         </div>
@@ -76,8 +72,16 @@ const UserProfile = ({ user }) => {
           <label>Rôle :</label>
           <span>{profile.role}</span>
         </div>
+        <div className="profile-field">
+          <label>Téléphone :</label>
+          <span>{profile.telephone}</span>
+        </div>
+        <div className="profile-field">
+          <label>Département :</label>
+          <span>{profile.departement}</span>
+        </div>
         <div className="profile-field editable">
-          <label>Adresse postale :</label>
+          <label>Adresse :</label>
           <input
             type="text"
             value={codePostal}
@@ -96,4 +100,4 @@ const UserProfile = ({ user }) => {
   );
 };
 
-export default UserProfile;
+export default PersonnelProfile;

@@ -1,8 +1,7 @@
 import React from 'react';
 import { useAuth } from '../auth/AuthContext';
 import DashboardClient from './DashboardClient';
-import DashboardAdmin from './DashboardAdmin';
-import DashboardMedecin from './DashboardMedecin';
+import DashboardGestionnaire from './DashboardGestionnaire';
 import DashboardPartenaire from './DashboardPartenaire';
 import DashboardUser from './DashboardUser';
 import Footer from '../../components/Shared/Footer';
@@ -24,10 +23,8 @@ const Dashboard = () => {
       return <DashboardClient user={user} onLogout={handleLogout} />;
       case 'USER':
         return <DashboardUser user={user} onLogout={handleLogout} />;
-    case 'ADMIN':
-      return <DashboardAdmin user={user} onLogout={handleLogout} />;
-    case 'MEDECIN':
-      return <DashboardMedecin user={user} onLogout={handleLogout} />;
+    case 'GESTIONNAIRE':
+      return <DashboardGestionnaire user={user} onLogout={handleLogout} />;
     case 'PARTENAIRE':
       return <DashboardPartenaire user={user} onLogout={handleLogout} />;
     default:

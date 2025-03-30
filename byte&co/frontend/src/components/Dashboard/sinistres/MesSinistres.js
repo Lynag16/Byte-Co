@@ -102,7 +102,8 @@ const typeLabel = {
 const MesSinistres = () => {
   const { user } = useAuth();
   const [sinistres, setSinistres] = useState([]);
-
+  const [openDetails, setOpenDetails] = useState(false);
+  const [selectedSinistre, setSelectedSinistre] = useState(null);
   const [openPreview, setOpenPreview] = useState(false);
   const [previewUrl, setPreviewUrl] = useState('');
 
@@ -119,6 +120,52 @@ const MesSinistres = () => {
     setPreviewUrl('');
   };
 
+  const renderDetails = () => {
+    if (!selectedSinistre) return null;
+    const { type } = selectedSinistre;
+    switch (type) {
+      case 'ACCIDENT_ROUTE':
+        return (
+          <>
+            <p><strong>Lieu :</strong> {selectedSinistre.lieuAccident}</p>
+            <p><strong>Immatriculation :</strong> {selectedSinistre.immatriculation}</p>
+          </>
+        );
+      case 'VOL_OU_PERTE_OBJET':
+        return (
+          <>
+            <p><strong>Lieu :</strong> {selectedSinistre.lieuVol}</p>
+            <p><strong>Objet :</strong> {selectedSinistre.descriptionObjetPerdu}</p>
+            <p><strong>Valeur :</strong> {selectedSinistre.valeurObjetPerdu} €</p>
+          </>
+        );
+      case 'INCIDENT_MEDICAL':
+        return (
+          <>
+            <p><strong>Symptômes :</strong> {selectedSinistre.symptomes}</p>
+            <p><strong>Type intervention :</strong> {selectedSinistre.typeIntervention}</p>
+            <p><strong>Coût :</strong> {selectedSinistre.coutIntervention} €</p>
+          </>
+        );
+      case 'RETARD_TRANSPORT':
+        return (
+          <>
+            <p><strong>Moyen de transport :</strong> {selectedSinistre.moyenTransport}</p>
+            <p><strong>Durée :</strong> {selectedSinistre.dureeRetardMinutes} minutes</p>
+          </>
+        );
+      case 'PROBLEME_HEBERGEMENT':
+        return (
+          <>
+            <p><strong>Hôtel :</strong> {selectedSinistre.nomHotel}</p>
+            <p><strong>Nature problème :</strong> {selectedSinistre.natureProbleme}</p>
+          </>
+        );
+      default:
+        return <p>Aucun détail disponible.</p>;
+    }
+  };
+
   useEffect(() => {
     const fetchSinistres = async () => {
       try {
@@ -132,6 +179,16 @@ const MesSinistres = () => {
     };
     fetchSinistres();
   }, [user]);
+
+  const handleOpenDetails = (row) => {
+    setSelectedSinistre(row);
+    setOpenDetails(true);
+  };
+
+  const handleCloseDetails = () => {
+    setOpenDetails(false);
+    setSelectedSinistre(null);
+  };
 
   const columns = [
     {
@@ -175,7 +232,15 @@ const MesSinistres = () => {
       ),
     },
     {
-      field: 'details',
+          field: 'voirDetails', headerName: 'Détails', flex: 1,
+          renderCell: ({ row }) => (
+            <Button variant="outlined" size="small" onClick={() => handleOpenDetails(row)}>
+              Voir détails
+            </Button>
+          ),
+        },
+    {
+      field: 'fichiers',
       headerName: 'Pièces jointes',
       flex: 1.5,
       renderCell: ({ row }) => {
@@ -236,7 +301,6 @@ const MesSinistres = () => {
           className="mes-sinistres-table"
         />
 
-
         {sinistres.length > 0 && (
           <>
             <StatsSinistres sinistres={sinistres} />
@@ -244,8 +308,25 @@ const MesSinistres = () => {
           </>
         )}
 
-
       </Paper>
+
+      <Dialog open={openDetails} onClose={handleCloseDetails} maxWidth="sm" fullWidth>
+              <DialogTitle>
+                Détails du sinistre
+                <IconButton onClick={handleCloseDetails} sx={{ position: 'absolute', right: 8, top: 8 }}>
+                  <Close />
+                </IconButton>
+              </DialogTitle>
+              <DialogContent dividers>
+                {selectedSinistre && (
+                  <>
+                    <p><strong>Description :</strong> {selectedSinistre.description}</p>
+                    <p><strong>Date :</strong> {selectedSinistre.dateDeclaration}</p>
+                    {renderDetails()}
+                  </>
+                )}
+              </DialogContent>
+            </Dialog>
 
       {/* Aperçu PDF */}
       <Dialog open={openPreview} onClose={handleClosePreview} maxWidth="md" fullWidth>

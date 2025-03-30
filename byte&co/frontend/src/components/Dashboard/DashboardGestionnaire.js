@@ -1,16 +1,18 @@
 import React from 'react';
-import { FaFileAlt, FaFileContract, FaTools, FaUsers, FaUserCircle, FaMoneyBill, FaBell, FaCogs, FaLifeRing, FaFilePdf } from 'react-icons/fa';
+import { FaFileAlt, FaFileContract, FaHandshake, FaTools, FaUsers, FaUserCircle, FaMoneyBill, FaBell, FaCogs, FaLifeRing, FaFilePdf } from 'react-icons/fa';
 import GestionOffres from '../GestionOffres/GestionOffres';
 import DashboardLayout from './DashboardLayout';
-import UserProfile from './UserProfile';
+import PersonnelProfile from './PersonnelProfile';
+import GestionPersonnel from './GestionPersonnel';
 import Parametres from './Parametres'
-import TousLesSinistresAdmin from './sinistres/TousLesSinistresAdmin';
+import TousLesSinistresPersonnel from './sinistres/TousLesSinistresPersonnel';
 
-const DashboardAdmin = ({ user, onLogout }) => {
+const DashboardGestionnaire = ({ user, onLogout }) => {
   const menuItems = [
     { key: 'profil', label: 'Mes informations personnelles', icon: <FaUserCircle /> },
-    { key: 'utilisateurs', label: 'Utilisateurs', icon: <FaUsers /> },
-    { key: 'sinistres', label: 'Sinistres', icon: <FaFileContract /> },
+    { key: 'personnel', label: 'Gestions du Personnel', icon: <FaUsers /> },
+    { key: 'partenaires', label: 'Gestion des Partenaires', icon: <FaHandshake /> },
+    { key: 'sinistres', label: 'Tous les Sinistres', icon: <FaFileContract /> },
     { key: 'gestionOffres', label: 'Gestion des Offres', icon: <FaTools /> },
     { key: 'contrats', label: 'Contrats', icon: <FaFileContract /> },
     { key: 'parametres', label: 'Paramètres', icon: <FaCogs /> }
@@ -19,11 +21,11 @@ const DashboardAdmin = ({ user, onLogout }) => {
   const renderContent = (activeMenu) => {
     switch (activeMenu) {
       case 'profil':
-        return <UserProfile user={user} />;
+        return <PersonnelProfile user={user} />;
       case 'sinistres':
-        return <TousLesSinistresAdmin />;
-      case 'utilisateurs':
-        return <h2>Gestion des utilisateurs</h2>;
+        return <TousLesSinistresPersonnel />;
+      case 'personnel':
+        return <GestionPersonnel />;
       case 'contrats':
         return <h2>Contrats</h2>;
       case 'gestionOffres':
@@ -38,4 +40,4 @@ const DashboardAdmin = ({ user, onLogout }) => {
   return <DashboardLayout user={user} onLogout={onLogout} menuItems={menuItems} renderContent={renderContent} />;
 };
 
-export default DashboardAdmin;
+export default DashboardGestionnaire;

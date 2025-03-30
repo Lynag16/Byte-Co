@@ -80,15 +80,17 @@ const StatsParStatut = ({ sinistres }) => {
   );
 };
 
-const TousLesSinistresAdmin = () => {
+const TousLesSinistresPersonnel = () => {
   const { user } = useAuth();
   const [sinistres, setSinistres] = useState([]);
+  const [openDetails, setOpenDetails] = useState(false);
+  const [selectedSinistre, setSelectedSinistre] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
   const [openPreview, setOpenPreview] = useState(false);
 
   const fetchSinistres = async () => {
     try {
-      const res = await axios.get('http://localhost:8085/api/admin/sinistres', {
+      const res = await axios.get('http://localhost:8085/api/personnel/sinistres', {
         headers: { Authorization: `Bearer ${user?.token}` },
       });
       setSinistres(res.data);
@@ -99,9 +101,65 @@ const TousLesSinistresAdmin = () => {
 
   useEffect(() => { fetchSinistres(); }, []);
 
+  const handleOpenDetails = (row) => {
+    setSelectedSinistre(row);
+    setOpenDetails(true);
+  };
+
+  const handleCloseDetails = () => {
+    setOpenDetails(false);
+    setSelectedSinistre(null);
+  };
+
+  const renderDetails = () => {
+    if (!selectedSinistre) return null;
+    const { type } = selectedSinistre;
+    switch (type) {
+      case 'ACCIDENT_ROUTE':
+        return (
+          <>
+            <p><strong>Lieu :</strong> {selectedSinistre.lieuAccident}</p>
+            <p><strong>Immatriculation :</strong> {selectedSinistre.immatriculation}</p>
+          </>
+        );
+      case 'VOL_OU_PERTE_OBJET':
+        return (
+          <>
+            <p><strong>Lieu :</strong> {selectedSinistre.lieuVol}</p>
+            <p><strong>Objet :</strong> {selectedSinistre.descriptionObjetPerdu}</p>
+            <p><strong>Valeur :</strong> {selectedSinistre.valeurObjetPerdu} €</p>
+          </>
+        );
+      case 'INCIDENT_MEDICAL':
+        return (
+          <>
+            <p><strong>Symptômes :</strong> {selectedSinistre.symptomes}</p>
+            <p><strong>Type intervention :</strong> {selectedSinistre.typeIntervention}</p>
+            <p><strong>Coût :</strong> {selectedSinistre.coutIntervention} €</p>
+          </>
+        );
+      case 'RETARD_TRANSPORT':
+        return (
+          <>
+            <p><strong>Moyen de transport :</strong> {selectedSinistre.moyenTransport}</p>
+            <p><strong>Durée :</strong> {selectedSinistre.dureeRetardMinutes} minutes</p>
+          </>
+        );
+      case 'PROBLEME_HEBERGEMENT':
+        return (
+          <>
+            <p><strong>Hôtel :</strong> {selectedSinistre.nomHotel}</p>
+            <p><strong>Nature problème :</strong> {selectedSinistre.natureProbleme}</p>
+          </>
+        );
+      default:
+        return <p>Aucun détail disponible.</p>;
+    }
+  };
+
   const handleAction = async (id, action) => {
     try {
-      await axios.put(`http://localhost:8085/api/admin/sinistres/${id}/${action}`, {}, {
+      await axios.put(`http://localhost:8085/api/personnel/sinistres/${id}/${action}`, {}, {
         headers: { Authorization: `Bearer ${user?.token}` },
       });
       fetchSinistres();
@@ -129,6 +187,15 @@ const TousLesSinistresAdmin = () => {
         <Chip label={params.value} className="chip-statut" />
       ),
     },
+
+        {
+          field: 'voirDetails', headerName: 'Détails', flex: 1,
+          renderCell: ({ row }) => (
+            <Button variant="outlined" size="small" onClick={() => handleOpenDetails(row)}>
+              Voir détails
+            </Button>
+          ),
+        },
     {
       field: 'userId',
       headerName: 'Déclarant',
@@ -176,6 +243,24 @@ const TousLesSinistresAdmin = () => {
         )}
       </Paper>
 
+      <Dialog open={openDetails} onClose={handleCloseDetails} maxWidth="sm" fullWidth>
+              <DialogTitle>
+                Détails du sinistre
+                <IconButton onClick={handleCloseDetails} sx={{ position: 'absolute', right: 8, top: 8 }}>
+                  <Close />
+                </IconButton>
+              </DialogTitle>
+              <DialogContent dividers>
+                {selectedSinistre && (
+                  <>
+                    <p><strong>Description :</strong> {selectedSinistre.description}</p>
+                    <p><strong>Date :</strong> {selectedSinistre.dateDeclaration}</p>
+                    {renderDetails()}
+                  </>
+                )}
+              </DialogContent>
+        </Dialog>
+
       {/* Aperçu PDF */}
       <Dialog open={openPreview} onClose={() => setOpenPreview(false)} maxWidth="md" fullWidth>
         <DialogTitle>
@@ -192,4 +277,4 @@ const TousLesSinistresAdmin = () => {
   );
 };
 
-export default TousLesSinistresAdmin;
+export default TousLesSinistresPersonnel;

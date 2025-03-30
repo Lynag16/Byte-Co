@@ -8,10 +8,10 @@ const DetailSinistre = ({ token }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/api/admin/sinistres/${id}`, {
+    axios.get(`http://localhost:8080/api/personnel/sinistres/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     }).then(res => setSinistre(res.data))
-      .catch(() => navigate("/admin/sinistres"));
+      .catch(() => navigate("/personnel/sinistres"));
   }, [id, token, navigate]);
 
   if (!sinistre) return <p>Chargement...</p>;
@@ -48,7 +48,7 @@ const DetailSinistre = ({ token }) => {
         </>
       )}
 
-      <button onClick={() => navigate("/admin/sinistres")}>Retour à la liste</button>
+      <button onClick={() => navigate("/personnel/sinistres")}>Retour à la liste</button>
     </div>
   );
 };
