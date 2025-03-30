@@ -6,6 +6,7 @@ import com.glop.gestionsinistres.model.sinistre.TypeSinistre;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -15,4 +16,5 @@ public interface SinistreRepository extends JpaRepository<Sinistre, Long> {
     List<Sinistre> findByUserId(String userId);
     List<Sinistre> findByTypeAndStatut(TypeSinistre type, StatutSinistre statut);
     List<Sinistre> findByType(TypeSinistre type);
+    List<Sinistre> findByDateDeclaration(LocalDate dateDeclaration);
 }
