@@ -2,11 +2,18 @@
 Projet GLOP M2 MIAGE
 
 
-Equipe:
+## Equipe:
 - AGOUAZI Lynda
 - RHOFIR Abdelali
 - LAIRAIBI Javad
 - TOTOUM Patricia
+
+## Encadrement 
+- Madame Laurence DUCHIEN
+- Monsieur Tony Landschoot
+  
+
+  
 
 
 [Notre site](https://byte-co.fr/)
