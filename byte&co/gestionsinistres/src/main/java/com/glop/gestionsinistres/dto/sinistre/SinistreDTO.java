@@ -1,4 +1,4 @@
-package com.glop.gestionsinistres.dto;
+package com.glop.gestionsinistres.dto.sinistre;
 
 import com.glop.gestionsinistres.model.sinistre.TypeSinistre;
 

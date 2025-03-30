@@ -1,6 +1,6 @@
 package com.glop.gestionsinistres.mapper;
 
-import com.glop.gestionsinistres.dto.ProblemeHebergementSinistreDTO;
+import com.glop.gestionsinistres.dto.sinistre.ProblemeHebergementSinistreDTO;
 import com.glop.gestionsinistres.model.sinistre.ProblemeHebergementSinistre;
 
 public class ProblemeHebergementSinistreMapper {
