@@ -1,4 +1,4 @@
-package com.glop.gestionsinistres.mapper;
+package com.glop.gestionsinistres.mapper.sinistre;
 
 import com.glop.gestionsinistres.dto.sinistre.AccidentRouteSinistreDTO;
 import com.glop.gestionsinistres.model.sinistre.AccidentRouteSinistre;
