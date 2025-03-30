@@ -6,9 +6,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 
 @Entity
-@Table(name = "offres")
+@Table(name = "offre")
 public class Offre {
 
     @Id
@@ -17,6 +18,7 @@ public class Offre {
 
     private String nomoffre;
 
+    @Column(name = "prix")
     private double prixoffre;
 
     private String descriptionoffre;
