@@ -2,8 +2,8 @@ package com.glop.gestionsinistres.service;
 
 import com.glop.gestionsinistres.dto.sinistre.*;
 import com.glop.gestionsinistres.mapper.sinistre.*;
-import com.glop.gestionsinistres.model.assistance.AffectationAssistance;
 import com.glop.gestionsinistres.model.sinistre.*;
+import com.glop.gestionsinistres.repository.AffectationSinistreRepository;
 import com.glop.gestionsinistres.repository.SinistreRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +22,9 @@ public class SinistreService {
     private final SinistreRepository sinistreRepository;
     private final FileStorageService fileStorageService;
     private static final Logger log = LoggerFactory.getLogger(SinistreService.class);
+
+    @Autowired
+    private AffectationSinistreRepository affectationSinistreRepository;
 
     @Autowired
     public SinistreService(SinistreRepository sinistreRepository, FileStorageService fileStorageService) {
@@ -178,14 +181,20 @@ public class SinistreService {
         return null;
     }
 
-    /*
-    public AffectationAssistance affecterSinistre(Long sinistreId, String partenaireId) {
-        AffectationAssistance affectation = new AffectationAssistance();
+    public AffectationSinistre affecterSinistre(Long sinistreId, String partenaireId) {
+        AffectationSinistre affectation = new AffectationSinistre();
         affectation.setSinistreId(sinistreId);
         affectation.setPartenaireId(partenaireId);
         affectation.setDateAffectation(LocalDate.now());
         affectation.setStatut(StatutSinistre.EN_COURS);
+
+        // changer le statut du sinistre aussi
+        Sinistre sinistre = sinistreRepository.findById(sinistreId).orElse(null);
+        if (sinistre != null) {
+            sinistre.setStatut(StatutSinistre.EN_COURS);
+            sinistreRepository.save(sinistre);
+        }
+
         return affectationSinistreRepository.save(affectation);
     }
-    */
 }

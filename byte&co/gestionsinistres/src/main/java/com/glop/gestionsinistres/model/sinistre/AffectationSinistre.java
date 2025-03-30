@@ -1,8 +1,6 @@
 package com.glop.gestionsinistres.model.sinistre;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -16,22 +14,17 @@ public class AffectationSinistre {
     private Long sinistreId;
     private String partenaireId;
     private LocalDate dateAffectation;
-    private String statut;
+    @Enumerated(EnumType.STRING)
+    private StatutSinistre statut;
 
     public AffectationSinistre() {
-    }
-
-    public AffectationSinistre(Long sinistreId, String partenaireId, LocalDate dateAffectation, String statut) {
-        this.sinistreId = sinistreId;
-        this.partenaireId = partenaireId;
-        this.dateAffectation = dateAffectation;
-        this.statut = statut;
+        this.dateAffectation = LocalDate.now();
+        this.statut = StatutSinistre.EN_COURS;
     }
 
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -39,7 +32,6 @@ public class AffectationSinistre {
     public Long getSinistreId() {
         return sinistreId;
     }
-
     public void setSinistreId(Long sinistreId) {
         this.sinistreId = sinistreId;
     }
@@ -47,7 +39,6 @@ public class AffectationSinistre {
     public String getPartenaireId() {
         return partenaireId;
     }
-
     public void setPartenaireId(String partenaireId) {
         this.partenaireId = partenaireId;
     }
@@ -55,18 +46,13 @@ public class AffectationSinistre {
     public LocalDate getDateAffectation() {
         return dateAffectation;
     }
-
     public void setDateAffectation(LocalDate dateAffectation) {
         this.dateAffectation = dateAffectation;
     }
 
-    public String getStatut() {
-        return statut;
-    }
+    public StatutSinistre getStatut() { return this.statut; }
 
-    public void setStatut(String statut) {
-        this.statut = statut;
-    }
+    public void setStatut(StatutSinistre statut) { this.statut = statut; }
 
     @Override
     public String toString() {

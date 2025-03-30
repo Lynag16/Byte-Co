@@ -8,6 +8,8 @@ import {
 } from '@mui/material';
 import { Close } from '@mui/icons-material';
 import { motion } from 'framer-motion';
+import { frFR } from '@mui/x-data-grid/locales';
+
 
 import {
   FaCarCrash, FaShieldAlt, FaPhoneAlt, FaMedkit, FaBed
@@ -80,8 +82,6 @@ const StatutsSinistresBarChart = ({ sinistres }) => {
     </Box>
   );
 };
-
-
 
 const iconMap = {
   ACCIDENT_ROUTE: <FaCarCrash className="icon accident" />,
@@ -232,8 +232,10 @@ const MesSinistres = () => {
           rowsPerPageOptions={[8, 16, 24]}
           disableRowSelectionOnClick
           autoHeight
+          localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
           className="mes-sinistres-table"
         />
+
 
         {sinistres.length > 0 && (
           <>

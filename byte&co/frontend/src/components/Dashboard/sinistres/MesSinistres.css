@@ -64,3 +64,13 @@
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
+
+.chip-type {
+  font-weight: bold;
+  background-color: #f1f1f1;
+}
+
+.chip-statut {
+  text-transform: capitalize;
+}
+
