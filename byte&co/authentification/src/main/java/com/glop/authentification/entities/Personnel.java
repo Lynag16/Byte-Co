@@ -23,6 +23,20 @@ public class Personnel {
     private String departementpersonnel;
     private String adressepersonnel;
     private String motdepassepersonnel;
+
+	public Personnel() {}
+
+	public Personnel(String nompersonnel, String prenompersonnel, String emailpersonnel, String telephonepersonnel, String rolepersonnel, String departementpersonnel, String adressepersonnel, String motdepassepersonnel) {
+		this.nompersonnel = nompersonnel;
+		this.prenompersonnel = prenompersonnel;
+		this.emailpersonnel = emailpersonnel;
+		this.telephonepersonnel = telephonepersonnel;
+		this.rolepersonnel = rolepersonnel;
+		this.departementpersonnel = departementpersonnel;
+		this.adressepersonnel = adressepersonnel;
+		this.motdepassepersonnel = motdepassepersonnel;
+	}
+
 	public Long getIdpersonnel() {
 		return idpersonnel;
 	}
@@ -50,9 +64,7 @@ public class Personnel {
 	public String getTelephonepersonnel() {
 		return telephonepersonnel;
 	}
-	public void setTelephonepersonnel(String telephonepersonnel) {
-		this.telephonepersonnel = telephonepersonnel;
-	}
+	public void setTelephonepersonnel(String telephonepersonnel) {this.telephonepersonnel = telephonepersonnel;}
 	public String getRolepersonnel() {
 		return rolepersonnel;
 	}
@@ -71,13 +83,11 @@ public class Personnel {
 	public void setAdressepersonnel(String adressepersonnel) {
 		this.adressepersonnel = adressepersonnel;
 	}
-	public String getmotdepassepersonnel() {
+	public String setMotdepassepersonnel() {
 		return motdepassepersonnel;
 	}
-	public void setmotdepassepersonnel(String motdepassepersonnel) {
+	public void setMotdepassepersonnel(String motdepassepersonnel) {
 		this.motdepassepersonnel = motdepassepersonnel;
 	}
-    
-    
 
 }

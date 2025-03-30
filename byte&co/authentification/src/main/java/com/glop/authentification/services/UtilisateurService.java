@@ -27,7 +27,7 @@ public class UtilisateurService {
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setEmail(utilisateurDTO.getEmail());
         utilisateur.setMotDePasse(passwordEncoder.encode(utilisateurDTO.getMotDePasse())); // Encode password
-        utilisateur.setTypeUtilisateur(utilisateurDTO.getTypeUtilisateur() != null ? utilisateurDTO.getTypeUtilisateur() : "USER"); // Default to "USER"
+        utilisateur.setTypeUtilisateur(utilisateurDTO.getTypeUtilisateur() != null ? utilisateurDTO.getTypeUtilisateur() : "USER");// Default to "USER"
         utilisateur.setNom(utilisateurDTO.getNom());
         utilisateur.setPrenom(utilisateurDTO.getPrenom());
         utilisateur.setDateNaissance(utilisateurDTO.getDateNaissance());

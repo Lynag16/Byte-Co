@@ -11,5 +11,3 @@ import com.glop.authentification.entities.Personnel;
 	public interface PersonnelRepository extends JpaRepository<Personnel, Long> {
 	Personnel findByEmailpersonnel(String emailpersonnel);
 	}
-
-	

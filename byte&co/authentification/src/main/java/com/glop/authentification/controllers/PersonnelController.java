@@ -22,11 +22,10 @@ public class PersonnelController {
     private PersonnelService personnelService;
 
     // Endpoint pour enregistrer un nouveau personnel
-    @PostMapping("/register")
-
+    @PostMapping("/register-gestionnaire")
     public ResponseEntity<String> register(@RequestBody PersonnelDTO personnelDTO) {
         try {
-            PersonnelDTO savedPersonnelDTO = personnelService.registerPersonnel(personnelDTO);
+            PersonnelDTO savedPersonnelDTO = personnelService.registerGestionnaire(personnelDTO);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body("Personnel inscrit avec succès, ID: " + savedPersonnelDTO.getIdpersonnel());
 
@@ -42,7 +41,6 @@ public class PersonnelController {
         String motdepassepersonnel = loginDetails.get("motdepassepersonnel");
 
         try {
-
             PersonnelDTO authenticatedPersonnelDTO = personnelService.authenticatePersonnelAndGetPersonnel(emailpersonnel, motdepassepersonnel);
             if (authenticatedPersonnelDTO != null) {
                 return ResponseEntity.ok(authenticatedPersonnelDTO);  // Retourner le DTO du Personnel
@@ -54,7 +52,7 @@ public class PersonnelController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de l'authentification : " + e.getMessage());
         }
     }
-    
+
     // Endpoint pour réinitialiser le mot de passe
     @PostMapping("/reset-password")
     public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> resetDetails) {

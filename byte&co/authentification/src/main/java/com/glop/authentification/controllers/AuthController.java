@@ -1,11 +1,15 @@
 package com.glop.authentification.controllers;
 
+import com.glop.authentification.dto.PersonnelDTO;
 import com.glop.authentification.dto.UtilisateurDTO;
+import com.glop.authentification.entities.Personnel;
 import com.glop.authentification.entities.Utilisateur;
 import com.glop.authentification.security.JwtUtil;
+import com.glop.authentification.services.PersonnelService;
 import com.glop.authentification.services.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +23,9 @@ public class AuthController {
 
     @Autowired
     private UtilisateurService utilisateurService;
+
+    @Autowired
+    private PersonnelService personnelService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -48,13 +55,10 @@ public class AuthController {
     if (utilisateurDTO.getCodePostal() == null || utilisateurDTO.getCodePostal().isEmpty()) {
         errors.put("codePostal", "Le code postal est obligatoire !");
     }
-
-    // Vérifier si l'email existe déjà
     if (utilisateurService.utilisateurExists(utilisateurDTO.getEmail())) {
         errors.put("email", "Email déjà utilisé !");
     }
 
-    // Retourner les erreurs si elles existent
     if (!errors.isEmpty()) {
         return ResponseEntity.status(400).body(errors);
     }
@@ -96,6 +100,34 @@ public class AuthController {
         return ResponseEntity.ok("Client enregistré avec succès !");
     }
 
+    @PostMapping("/register-gestionnaire")
+    public ResponseEntity<?> registerGestionnaire(@RequestBody PersonnelDTO personnelDTO) {
+        Map<String, String> errors = new HashMap<>();
+
+        // Validation des champs spécifiques à un gestionnaire
+        if (personnelDTO.getNompersonnel() == null || personnelDTO.getNompersonnel().isEmpty()) {
+            errors.put("nompersonnel", "Le nom est obligatoire !");
+        }
+        if (personnelDTO.getPrenompersonnel() == null || personnelDTO.getPrenompersonnel().isEmpty()) {
+            errors.put("prenompersonnel", "Le prénom est obligatoire !");
+        }
+        if (personnelDTO.getEmailpersonnel() == null || personnelDTO.getEmailpersonnel().isEmpty()) {
+            errors.put("emailpersonnel", "L'email est obligatoire !");
+        }
+        if (personnelDTO.setMotdepassepersonnel() == null || personnelDTO.setMotdepassepersonnel().isEmpty()) {
+            errors.put("motdepassepersonnel", "Le mot de passe est obligatoire !");
+        }
+
+        if (!errors.isEmpty()) {
+            return ResponseEntity.status(400).body(errors);
+        }
+
+        // Créer un gestionnaire en tant que personnel
+        PersonnelDTO savedGestionnaire = personnelService.registerGestionnaire(personnelDTO);
+
+        return ResponseEntity.ok("Gestionnaire enregistré avec succès !");
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
         String email = credentials.get("email");
@@ -108,6 +140,17 @@ public class AuthController {
             response.put("token", token);
             response.put("email", utilisateur.getEmail());
             response.put("role", utilisateur.getTypeUtilisateur());
+            return ResponseEntity.ok(response);
+        }
+
+        PersonnelDTO personnelDTO = personnelService.authenticatePersonnelAndGetPersonnel(email, password);
+        if (personnelDTO != null) {
+            // Génération du token JWT pour l'utilisateur authentifié
+            String token = jwtUtil.generateToken(personnelDTO.getEmailpersonnel(), personnelDTO.getRolepersonnel());
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("email", personnelDTO.getEmailpersonnel());
+            response.put("role", personnelDTO.getRolepersonnel());
             return ResponseEntity.ok(response);
         }
 
@@ -174,5 +217,50 @@ public class AuthController {
         return ResponseEntity.status(404).body("Utilisateur introuvable !");
     }
 
-    
+    @GetMapping("/profile-personnel")
+    @PreAuthorize("hasAnyRole('GESTIONNAIRE', 'MEDECIN', 'MECANICIEN')")
+    public ResponseEntity<?> getProfilePersonnel(@RequestParam String email) {
+        // Recherche du personnel en fonction de l'email
+        PersonnelDTO personnelDTO = personnelService.findByEmailpersonnel(email);
+
+        if (personnelDTO != null) {
+            // Si personnel trouvé, retourner les détails
+            Map<String, Object> profile = new HashMap<>();
+            profile.put("email", personnelDTO.getEmailpersonnel());
+            profile.put("role", personnelDTO.getRolepersonnel());
+            profile.put("nom", personnelDTO.getNompersonnel());
+            profile.put("prenom", personnelDTO.getPrenompersonnel());
+            profile.put("telephone", personnelDTO.getTelephonepersonnel());
+            profile.put("departement", personnelDTO.getDepartementpersonnel());
+            profile.put("adresse", personnelDTO.getAdressepersonnel());
+            return ResponseEntity.ok(profile);
+        }
+
+        // Si personnel non trouvé
+        return ResponseEntity.status(404).body("Personnel introuvable !");
+    }
+
+    // TODO
+    /*
+    @PutMapping("/update-address")
+    public ResponseEntity<?> updateAddress(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        String newCodePostal = request.get("codePostal");
+
+        if (newCodePostal == null || newCodePostal.isEmpty()) {
+            return ResponseEntity.status(400).body("Le code postal est obligatoire !");
+        }
+
+        PersonnelDTO personnelDTO = personnelService.findByEmailpersonnel(email);
+        if (personnelDTO != null) {
+            personnelDTO.setCodePostal(newCodePostal);
+            personnelService.save(personnelDTO);
+
+            return ResponseEntity.ok("Adresse mise à jour avec succès !");
+        }
+
+        return ResponseEntity.status(404).body("Personnel introuvable !");
+    }
+     */
+
 }

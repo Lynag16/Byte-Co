@@ -1,10 +1,8 @@
 package com.glop.authentification.services;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import com.glop.authentification.entities.Personnel;
 
 import com.glop.authentification.dto.PersonnelDTO;
@@ -18,31 +16,56 @@ public class PersonnelService {
     @Autowired
     private PersonnelRepository personnelRepository;
 
-    // Méthode pour enregistrer un nouveau Personnel
-    public PersonnelDTO registerPersonnel(PersonnelDTO personnelDTO) {
-        Personnel personnel = PersonnelMapper.toEntity(personnelDTO); // Convertir le DTO en entité
-        Personnel savedPersonnel = personnelRepository.save(personnel); // Sauvegarder en base
-        return PersonnelMapper.toDTO(savedPersonnel); // Retourner le DTO
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public PersonnelDTO registerGestionnaire(PersonnelDTO personnelDTO) {
+        Personnel personnel = new Personnel();
+
+        // Mapping du PersonnelDTO vers Personnel
+        personnel.setNompersonnel(personnelDTO.getNompersonnel());
+        personnel.setPrenompersonnel(personnelDTO.getPrenompersonnel());
+        personnel.setEmailpersonnel(personnelDTO.getEmailpersonnel());
+        personnel.setTelephonepersonnel(personnelDTO.getTelephonepersonnel());
+        personnel.setDepartementpersonnel(personnelDTO.getDepartementpersonnel());
+        personnel.setAdressepersonnel(personnelDTO.getAdressepersonnel());
+        personnel.setMotdepassepersonnel(passwordEncoder.encode(personnelDTO.setMotdepassepersonnel())); // mot de passe crypté
+        personnel.setRolepersonnel("GESTIONNAIRE");
+
+        // Sauvegarder dans la base de données
+        Personnel savedPersonnel = personnelRepository.save(personnel);
+
+        return PersonnelMapper.toDTO(savedPersonnel);  // Retourner le DTO du personnel créé
     }
+
+    
 
     // Méthode pour authentifier un Personnel et retourner le PersonnelDTO en cas de succès
     public PersonnelDTO authenticatePersonnelAndGetPersonnel(String email, String motdepasse) {
         Personnel personnel = personnelRepository.findByEmailpersonnel(email);
-        if (personnel != null && motdepasse.equals(personnel.getmotdepassepersonnel())) {
-            return PersonnelMapper.toDTO(personnel); // Retourner le DTO si l'authentification réussie
+        if (personnel != null && passwordEncoder.matches(motdepasse, personnel.setMotdepassepersonnel())) {
+            return PersonnelMapper.toDTO(personnel);
         }
-        return null; // Retourner null si l'authentification échoue
+        return null;
     }
-    
+
     // Méthode pour réinitialiser le mot de passe d'un Personnel
     public boolean resetPassword(String email, String newPassword) {
         Personnel personnel = personnelRepository.findByEmailpersonnel(email);
         if (personnel != null) {
-            personnel.setmotdepassepersonnel(newPassword); // Met à jour le mot de passe
-            personnelRepository.save(personnel); // Sauvegarde le Personnel avec le nouveau mot de passe
+            personnel.setMotdepassepersonnel(newPassword);
+            personnelRepository.save(personnel);
 
             return true;
         }
         return false;
+    }
+
+    public PersonnelDTO findByEmailpersonnel(String emailpersonnel) {
+        Personnel personnel = personnelRepository.findByEmailpersonnel(emailpersonnel);
+        if (personnel != null) {
+            return PersonnelMapper.toDTO(personnel);  // Convertir l'entité Personnel en PersonnelDTO
+        }
+        return null;
     }
 }

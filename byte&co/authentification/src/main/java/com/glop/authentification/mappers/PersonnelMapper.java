@@ -17,7 +17,7 @@ public class PersonnelMapper {
         personnelDTO.setRolepersonnel(personnel.getRolepersonnel());
         personnelDTO.setDepartementpersonnel(personnel.getDepartementpersonnel());
         personnelDTO.setAdressepersonnel(personnel.getAdressepersonnel());
-        personnelDTO.setMotdepassepersonnel(personnel.getmotdepassepersonnel());
+        personnelDTO.setMotdepassepersonnel(personnel.setMotdepassepersonnel());
         return personnelDTO;
     }
 
@@ -32,7 +32,7 @@ public class PersonnelMapper {
         personnel.setRolepersonnel(personnelDTO.getRolepersonnel());
         personnel.setDepartementpersonnel(personnelDTO.getDepartementpersonnel());
         personnel.setAdressepersonnel(personnelDTO.getAdressepersonnel());
-        personnel.setmotdepassepersonnel(personnelDTO.getMotdepassepersonnel());
+        personnel.setMotdepassepersonnel(personnelDTO.setMotdepassepersonnel());
         return personnel;
     }
 }
