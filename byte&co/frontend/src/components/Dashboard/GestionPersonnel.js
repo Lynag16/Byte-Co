@@ -169,12 +169,28 @@ const GestionPersonnel = () => {
                 Gestion du personnel et partenaires
                 </motion.h2>
                 <Box mb={2}>
-        <Button variant="contained" color="primary" onClick={() => handleOpenDialog('personnel', {})}>
-          Ajouter un personnel
-        </Button>
-        <Button variant="contained" color="secondary" onClick={() => handleOpenDialog('partenaire', {})} style={{ marginLeft: '1rem' }}>
-          Ajouter un partenaire
-        </Button>
+                <Box className="ajout-buttons-container">
+        <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+  <Button
+    variant="contained"
+    color="primary"
+    size="small"
+    onClick={() => handleOpenDialog('personnel', {})}
+  >
+    Ajouter un personnel
+  </Button>
+  <Button
+    variant="contained"
+    color="secondary"
+    size="small"
+    onClick={() => handleOpenDialog('partenaire', {})}
+  >
+    Ajouter un partenaire
+  </Button>
+</Box>
+
+      </Box>
+
       </Box>
         <DataGrid
           rows={personnel}
