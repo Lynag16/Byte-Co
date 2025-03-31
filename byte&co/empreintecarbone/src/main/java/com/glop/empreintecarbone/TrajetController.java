@@ -40,4 +40,20 @@ public class TrajetController {
         trajetService.deleteTrajet(id);
         return ResponseEntity.noContent().build();
     }
+
+    // Mettre à jour un trajet
+    @PutMapping("/{id}")
+    public ResponseEntity<Trajet> updateTrajet(@PathVariable Long id, @RequestBody TrajetDTO trajetDTO) {
+        Trajet updatedTrajet = trajetService.updateTrajet(id, trajetDTO);
+        return ResponseEntity.ok(updatedTrajet);
+}
+
+
+    // Récupérer un trajet par ID de client
+    @GetMapping("/trajets/{idClient}")
+    public List<Trajet> getTrajetsByClientId(@PathVariable Long idClient) {
+        return trajetService.getTrajetByIdClient(idClient);  
+    }
+    
+
 }

@@ -153,4 +153,32 @@ public class TrajetService {
     public void deleteTrajet(Long id) {
         trajetRepository.deleteById(id);
     }
+    public Trajet updateTrajet(Long id, TrajetDTO trajetDTO) {
+        Trajet trajet = trajetRepository.findById(id).orElseThrow(() -> new RuntimeException("Trajet not found"));
+        
+        // Update the fields of trajet
+        trajet.setPointDepart(trajetDTO.getPointDepart());
+        trajet.setPointArrivee(trajetDTO.getPointArrivee());
+        trajet.setMoyenTransport(trajetDTO.getMoyenTransport());
+        trajet.setDistance(trajetDTO.getDistance());
+        trajet.setDateTrajet(trajetDTO.getDateTrajet());
+    
+        // Save the updated trajet
+        return trajetRepository.save(trajet);
+    }// Méthode pour obtenir un trajet par ID Client
+    // Méthode pour obtenir un trajet par ID Client
+// Méthode pour obtenir un trajet par ID Client
+    public List<Trajet> getTrajetByIdClient(Long idClient) {
+        List<Trajet> trajets = trajetRepository.findByIdClient(idClient);
+
+        if (trajets.isEmpty()) {
+            throw new RuntimeException("No trajet found for client ID " + idClient);
+        }
+        return trajets; // Retourne la liste de trajets si plusieurs résultats sont trouvés
+    }
+
+
+
+    
 }
+
