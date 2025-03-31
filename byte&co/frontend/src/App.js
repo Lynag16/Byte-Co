@@ -49,7 +49,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginRoute />} />
             <Route path="/offres" element={<Offres />} />
-            <Route path="/empreinte-carbone" element={<HomePage />} />
+            {/* <Route path="/empreinte-carbone" element={<EmpreinteCarbone />} /> */}
             <Route path="/register" element={<Register />} />
             <Route path="/AssistanceEtSinistre" element={<AssistanceEtSinistre />} />
             <Route path="/DeclarationSinistre" element={<DeclarationSinistre />} />

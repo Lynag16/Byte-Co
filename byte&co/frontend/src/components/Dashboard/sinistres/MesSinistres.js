@@ -1,267 +1,356 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
-import { Box, Button, Dialog, DialogTitle, DialogContent, IconButton, TextField, MenuItem } from '@mui/material';
+import { useAuth } from '../../auth/AuthContext';
+import {
+  Box, Chip, Typography, Button, Paper,
+  Dialog, DialogTitle, DialogContent, IconButton
+} from '@mui/material';
 import { Close } from '@mui/icons-material';
+import { motion } from 'framer-motion';
+import { frFR } from '@mui/x-data-grid/locales';
 
-const GestionPersonnel = () => {
-  const [personnel, setPersonnel] = useState([]);
-  const [partners, setPartners] = useState([]);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [dialogType, setDialogType] = useState('');
-  const [currentItem, setCurrentItem] = useState(null);
 
-  useEffect(() => {
-    // Fonction pour récupérer les données des personnels
-    const fetchPersonnelData = async () => {
-      try {
-        const response = await axios.get('http://localhost:8081/api/personnels');
-        console.log('Réponse des personnels :', response.data);
-        if (Array.isArray(response.data)) {
-          const personnelWithId = response.data.map(item => ({ ...item, id: item.idpersonnel }));
-          setPersonnel(personnelWithId);
-        } else {
-          console.error('Les données des personnels ne sont pas sous forme de tableau');
-        }
-      } catch (error) {
-        console.error('Erreur lors du chargement des personnels:', error);
-      }
-    };
+import {
+  FaCarCrash, FaShieldAlt, FaPhoneAlt, FaMedkit, FaBed
+} from 'react-icons/fa';
+import './MesSinistres.css';
+import { BarChart, Bar, XAxis, YAxis,  PieChart, Pie, Cell, Legend, ResponsiveContainer, Tooltip } from 'recharts';
 
-    // Fonction pour récupérer les données des partenaires
-    const fetchPartnersData = async () => {
-      try {
-        const response = await axios.get('http://localhost:8081/api/partenaires');
-        console.log('Réponse des partenaires :', response.data);
-        if (Array.isArray(response.data)) {
-          const partnersWithId = response.data.map(item => ({ ...item, id: item.idPartenaire }));
-          setPartners(partnersWithId);
-        } else {
-          console.error('Les données des partenaires ne sont pas sous forme de tableau');
-        }
-      } catch (error) {
-        console.error('Erreur lors du chargement des partenaires:', error);
-      }
-    };
 
-    fetchPersonnelData();
-    fetchPartnersData();
-  }, []);
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#ab47bc'];
 
-  const handleOpenDialog = (type, item) => {
-    setDialogType(type);
-    setCurrentItem(item);
-    setOpenDialog(true);
-  };
+const StatsSinistres = ({ sinistres }) => {
+  const countByType = sinistres.reduce((acc, s) => {
+    acc[s.type] = (acc[s.type] || 0) + 1;
+    return acc;
+  }, {});
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-    setCurrentItem(null);
-  };
+  const data = Object.entries(countByType).map(([type, count]) => ({
+    name: typeLabel[type] || type,
+    value: count,
+  }));
 
-  const handleSubmit = () => {
-    if (dialogType === 'personnel') {
-      if (currentItem?.id) {
-        axios.put(`http://localhost:8081/api/personnels/${currentItem.id}`, currentItem)
-        .then(response => {
-          setPersonnel(prev => prev.map(p => p.id === currentItem.id ? response.data : p));
-          handleCloseDialog();
-        })
-        .catch(error => console.error('Erreur lors de la mise à jour du personnel:', error));
-      } else {
-        axios.post('http://localhost:8081/api/personnels', currentItem)
-        .then(response => {
-          setPersonnel(prev => [...prev, response.data]);
-          handleCloseDialog();
-        })
-        .catch(error => console.error('Erreur lors de la création du personnel:', error));
-      }
-    } else if (dialogType === 'partenaire') {
-      if (currentItem?.idPartenaire) {
-        axios.put(`http://localhost:8081/api/partenaires/${currentItem.idPartenaire}`, currentItem)
-        .then(response => {
-          setPartners(prev => prev.map(p => p.idPartenaire === currentItem.idPartenaire ? response.data : p));
-          handleCloseDialog();
-        })
-        .catch(error => console.error('Erreur lors de la mise à jour du partenaire:', error));
-      } else {
-        axios.post('http://localhost:8081/api/partenaires', currentItem)
-        .then(response => {
-          setPartners(prev => [...prev, response.data]);
-          handleCloseDialog();
-        })
-        .catch(error => console.error('Erreur lors de la création du partenaire:', error));
-      }
+  return (
+    <Box className="stats-container">
+      <Typography variant="h6" gutterBottom>Répartition des sinistres</Typography>
+      <ResponsiveContainer width="100%" height={300}>
+        <PieChart>
+          <Pie
+            dataKey="value"
+            data={data}
+            cx="50%" cy="50%"
+            outerRadius={100}
+            fill="#8884d8"
+            label
+          >
+            {data.map((_, index) => (
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            ))}
+          </Pie>
+          <Tooltip />
+          <Legend verticalAlign="bottom" />
+        </PieChart>
+      </ResponsiveContainer>
+    </Box>
+  );
+};
+
+
+const StatutsSinistresBarChart = ({ sinistres }) => {
+  const countByStatut = sinistres.reduce((acc, s) => {
+    acc[s.statut] = (acc[s.statut] || 0) + 1;
+    return acc;
+  }, {});
+
+  const data = Object.entries(countByStatut).map(([statut, count]) => ({
+    statut,
+    nombre: count,
+  }));
+
+  return (
+    <Box className="stats-container">
+      <Typography variant="h6" gutterBottom>Répartition par statut</Typography>
+      <ResponsiveContainer width="100%" height={250}>
+        <BarChart layout="vertical" data={data}>
+          <XAxis type="number" allowDecimals={false} />
+          <YAxis dataKey="statut" type="category" />
+          <Tooltip />
+          <Bar dataKey="nombre" fill="#42a5f5" />
+        </BarChart>
+      </ResponsiveContainer>
+    </Box>
+  );
+};
+
+const iconMap = {
+  ACCIDENT_ROUTE: <FaCarCrash className="icon accident" />,
+  VOL_OU_PERTE_OBJET: <FaShieldAlt className="icon vol" />,
+  RETARD_TRANSPORT: <FaPhoneAlt className="icon retard" />,
+  INCIDENT_MEDICAL: <FaMedkit className="icon medical" />,
+  PROBLEME_HEBERGEMENT: <FaBed className="icon hebergement" />,
+};
+
+const typeLabel = {
+  ACCIDENT_ROUTE: 'Accident',
+  VOL_OU_PERTE_OBJET: 'Vol / Perte',
+  RETARD_TRANSPORT: 'Retard',
+  INCIDENT_MEDICAL: 'Médical',
+  PROBLEME_HEBERGEMENT: 'Hébergement',
+};
+
+const MesSinistres = () => {
+  const { user } = useAuth();
+  const [sinistres, setSinistres] = useState([]);
+  const [openDetails, setOpenDetails] = useState(false);
+  const [selectedSinistre, setSelectedSinistre] = useState(null);
+  const [openPreview, setOpenPreview] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState('');
+
+  const handleOpenPreview = (path, baseUrl) => {
+    const filename = path?.split('/').pop();
+    if (filename) {
+      setPreviewUrl(`${baseUrl}/${filename}`);
+      setOpenPreview(true);
     }
   };
 
-  const columnsPersonnel = [
-    { field: 'nompersonnel', headerName: 'Nom', flex: 1 },
-    { field: 'prenompersonnel', headerName: 'Prénom', flex: 1 },
-    { field: 'rolepersonnel', headerName: 'Rôle', flex: 1 },
-    { field: 'departementpersonnel', headerName: 'Département', flex: 1 },
-    { field: 'emailpersonnel', headerName: 'Email', flex: 1 },
-    { field: 'telephonepersonnel', headerName: 'Téléphone', flex: 1 },
+  const handleClosePreview = () => {
+    setOpenPreview(false);
+    setPreviewUrl('');
+  };
+
+  const renderDetails = () => {
+    if (!selectedSinistre) return null;
+    const { type } = selectedSinistre;
+    switch (type) {
+      case 'ACCIDENT_ROUTE':
+        return (
+          <>
+            <p><strong>Lieu :</strong> {selectedSinistre.lieuAccident}</p>
+            <p><strong>Immatriculation :</strong> {selectedSinistre.immatriculation}</p>
+          </>
+        );
+      case 'VOL_OU_PERTE_OBJET':
+        return (
+          <>
+            <p><strong>Lieu :</strong> {selectedSinistre.lieuVol}</p>
+            <p><strong>Objet :</strong> {selectedSinistre.descriptionObjetPerdu}</p>
+            <p><strong>Valeur :</strong> {selectedSinistre.valeurObjetPerdu} €</p>
+          </>
+        );
+      case 'INCIDENT_MEDICAL':
+        return (
+          <>
+            <p><strong>Symptômes :</strong> {selectedSinistre.symptomes}</p>
+            <p><strong>Type intervention :</strong> {selectedSinistre.typeIntervention}</p>
+            <p><strong>Coût :</strong> {selectedSinistre.coutIntervention} €</p>
+          </>
+        );
+      case 'RETARD_TRANSPORT':
+        return (
+          <>
+            <p><strong>Moyen de transport :</strong> {selectedSinistre.moyenTransport}</p>
+            <p><strong>Durée :</strong> {selectedSinistre.dureeRetardMinutes} minutes</p>
+          </>
+        );
+      case 'PROBLEME_HEBERGEMENT':
+        return (
+          <>
+            <p><strong>Hôtel :</strong> {selectedSinistre.nomHotel}</p>
+            <p><strong>Nature problème :</strong> {selectedSinistre.natureProbleme}</p>
+          </>
+        );
+      default:
+        return <p>Aucun détail disponible.</p>;
+    }
+  };
+
+  useEffect(() => {
+    const fetchSinistres = async () => {
+      try {
+        const response = await axios.get('http://localhost:8085/api/mes-sinistres', {
+          headers: { Authorization: `Bearer ${user?.token}` },
+        });
+        setSinistres(response.data);
+      } catch (err) {
+        console.error('Erreur lors du chargement des sinistres', err);
+      }
+    };
+    fetchSinistres();
+  }, [user]);
+
+  const handleOpenDetails = (row) => {
+    setSelectedSinistre(row);
+    setOpenDetails(true);
+  };
+
+  const handleCloseDetails = () => {
+    setOpenDetails(false);
+    setSelectedSinistre(null);
+  };
+
+  const columns = [
     {
-      field: 'actions', headerName: 'Actions', flex: 1,
+      field: 'type',
+      headerName: 'Type',
+      flex: 1,
       renderCell: (params) => (
-        <Button variant="outlined" size="small" onClick={() => handleOpenDialog('personnel', params.row)}>
-          Modifier
-        </Button>
+        <Chip
+          icon={iconMap[params.value]}
+          label={typeLabel[params.value] || params.value}
+          variant="outlined"
+          className="chip-type"
+        />
       ),
     },
-  ];
-
-  const columnsPartners = [
-    { field: 'nomPartenaire', headerName: 'Nom', flex: 1 },
-    { field: 'zonegeo', headerName: 'Zone Géographique', flex: 1 },
-    { field: 'emailPartenaire', headerName: 'Email', flex: 1 },
-    { field: 'telephonePartenaire', headerName: 'Téléphone', flex: 1 },
     {
-      field: 'actions', headerName: 'Actions', flex: 1,
+      field: 'dateDeclaration',
+      headerName: 'Date',
+      flex: 1,
+      headerAlign: 'center',
+      align: 'center',
+    },
+    {
+      field: 'description',
+      headerName: 'Description',
+      flex: 2,
+    },
+    {
+      field: 'statut',
+      headerName: 'Statut',
+      flex: 1,
       renderCell: (params) => (
-        <Button variant="outlined" size="small" onClick={() => handleOpenDialog('partenaire', params.row)}>
-          Modifier
-        </Button>
+        <Chip
+          label={params.value}
+          color={
+            params.value === 'EN_COURS' ? 'warning' :
+            params.value === 'CLOTURE' ? 'success' : 'default'
+          }
+          className="chip-statut"
+        />
       ),
+    },
+    {
+          field: 'voirDetails', headerName: 'Détails', flex: 1,
+          renderCell: ({ row }) => (
+            <Button variant="outlined" size="small" onClick={() => handleOpenDetails(row)}>
+              Voir détails
+            </Button>
+          ),
+        },
+    {
+      field: 'fichiers',
+      headerName: 'Pièces jointes',
+      flex: 1.5,
+      renderCell: ({ row }) => {
+        const fileLinks = {
+          ACCIDENT_ROUTE: row.constatFilePath && (
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={() => handleOpenPreview(row.constatFilePath, 'http://localhost:8085/api/sinistres/uploads/constats')}
+            >
+              📄 Constat
+            </Button>
+          ),
+          VOL_OU_PERTE_OBJET: row.declarationPoliceFilePath && (
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={() => handleOpenPreview(row.declarationPoliceFilePath, 'http://localhost:8085/api/sinistres/uploads/declarationPolices')}
+            >
+              📄 Déclaration
+            </Button>
+          ),
+          INCIDENT_MEDICAL: row.dossierMedicalFilePath && (
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={() => handleOpenPreview(row.dossierMedicalFilePath, 'http://localhost:8085/api/sinistres/uploads/dossierMedicaux')}
+            >
+              📄 Médical
+            </Button>
+          ),
+        };
+        return fileLinks[row.type] || <span className="aucun-lien">Aucun</span>;
+      },
     },
   ];
 
   return (
-    <Box>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => handleOpenDialog('personnel', {})}
-        style={{ marginBottom: '1rem' }}
-      >
-        Ajouter un personnel
-      </Button>
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={() => handleOpenDialog('partenaire', {})}
-        style={{ marginBottom: '1rem', marginLeft: '1rem' }}
-      >
-        Ajouter un partenaire
-      </Button>
-
-      <Box style={{ height: 400, width: '100%' }}>
-        <h3>Gestion des personnels</h3>
+    <Box className="mes-sinistres-wrapper">
+      <Paper className="mes-sinistres-paper">
+        <motion.h2
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="declaration-sinistre-title"
+        >
+          Mes Sinistres
+        </motion.h2>
         <DataGrid
-          rows={personnel}
-          columns={columnsPersonnel}
-          pageSize={5}
-          disableSelectionOnClick
+          rows={sinistres}
+          columns={columns}
           getRowId={(row) => row.id}
+          pageSize={8}
+          rowsPerPageOptions={[8, 16, 24]}
+          disableRowSelectionOnClick
+          autoHeight
+          localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
+          className="mes-sinistres-table"
         />
-      </Box>
 
-      <Box style={{ height: 400, width: '100%', marginTop: '2rem' }}>
-        <h3>Gestion des partenaires</h3>
-        <DataGrid
-          rows={partners}
-          columns={columnsPartners}
-          pageSize={5}
-          disableSelectionOnClick
-          getRowId={(row) => row.id}
-        />
-      </Box>
+        {sinistres.length > 0 && (
+          <>
+            <StatsSinistres sinistres={sinistres} />
+            <StatutsSinistresBarChart sinistres={sinistres} />
+          </>
+        )}
 
-      {/* Dialog pour ajouter ou modifier un personnel/partenaire */}
-      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
+      </Paper>
+
+      <Dialog open={openDetails} onClose={handleCloseDetails} maxWidth="sm" fullWidth>
+              <DialogTitle>
+                Détails du sinistre
+                <IconButton onClick={handleCloseDetails} sx={{ position: 'absolute', right: 8, top: 8 }}>
+                  <Close />
+                </IconButton>
+              </DialogTitle>
+              <DialogContent dividers>
+                {selectedSinistre && (
+                  <>
+                    <p><strong>Description :</strong> {selectedSinistre.description}</p>
+                    <p><strong>Date :</strong> {selectedSinistre.dateDeclaration}</p>
+                    {renderDetails()}
+                  </>
+                )}
+              </DialogContent>
+            </Dialog>
+
+      {/* Aperçu PDF */}
+      <Dialog open={openPreview} onClose={handleClosePreview} maxWidth="md" fullWidth>
         <DialogTitle>
-          {dialogType === 'personnel' ? (currentItem?.id ? 'Modifier un personnel' : 'Ajouter un personnel') :
-            (currentItem?.idPartenaire ? 'Modifier un partenaire' : 'Ajouter un partenaire')}
+          Aperçu du fichier
           <IconButton
-            edge="end"
-            color="inherit"
-            onClick={handleCloseDialog}
-            aria-label="close"
+            onClick={handleClosePreview}
             sx={{ position: 'absolute', right: 8, top: 8 }}
           >
             <Close />
           </IconButton>
         </DialogTitle>
-        <DialogContent>
-          <TextField
-            label="Nom"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={currentItem?.nompersonnel || currentItem?.nomPartenaire || ''}
-            onChange={(e) => setCurrentItem({ ...currentItem, nompersonnel: e.target.value, nomPartenaire: e.target.value })}
+        <DialogContent dividers sx={{ height: '80vh', p: 0 }}>
+          <iframe
+            src={previewUrl}
+            title="Aperçu PDF"
+            width="100%"
+            height="100%"
+            style={{ border: 'none' }}
           />
-          <TextField
-            label="Prénom"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={currentItem?.prenompersonnel || currentItem?.prenomPartenaire || ''}
-            onChange={(e) => setCurrentItem({ ...currentItem, prenompersonnel: e.target.value, prenomPartenaire: e.target.value })}
-          />
-          <TextField
-            label="Email"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={currentItem?.emailpersonnel || currentItem?.emailPartenaire || ''}
-            onChange={(e) => setCurrentItem({ ...currentItem, emailpersonnel: e.target.value, emailPartenaire: e.target.value })}
-          />
-          <TextField
-            label="Téléphone"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={currentItem?.telephonepersonnel || currentItem?.telephonePartenaire || ''}
-            onChange={(e) => setCurrentItem({ ...currentItem, telephonepersonnel: e.target.value, telephonePartenaire: e.target.value })}
-          />
-          <TextField
-            label="Adresse"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={currentItem?.adressepersonnel || currentItem?.adressePartenaire || ''}
-            onChange={(e) => setCurrentItem({ ...currentItem, adressepersonnel: e.target.value, adressePartenaire: e.target.value })}
-          />
-          {dialogType === 'personnel' ? (
-            <TextField
-              label="Rôle"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              select
-              value={currentItem?.rolepersonnel || ''}
-              onChange={(e) => setCurrentItem({ ...currentItem, rolepersonnel: e.target.value })}
-            >
-              <MenuItem value="MEDECIN">Médecin</MenuItem>
-              <MenuItem value="GESTIONNAIRE">Gestionnaire</MenuItem>
-              <MenuItem value="MECANICIEN">Mécanicien</MenuItem>
-            </TextField>
-          ) : (
-            <TextField
-              label="Type de Service"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              value={currentItem?.typeService || ''}
-              onChange={(e) => setCurrentItem({ ...currentItem, typeService: e.target.value })}
-            />
-          )}
-
-          <Button
-            onClick={handleSubmit}
-            variant="contained"
-            color="primary"
-            fullWidth
-            style={{ marginTop: '1rem' }}
-          >
-            {dialogType === 'personnel' ? 'Enregistrer Personnel' : 'Enregistrer Partenaire'}
-          </Button>
         </DialogContent>
       </Dialog>
     </Box>
   );
 };
 
-export default GestionPersonnel;
+export default MesSinistres;

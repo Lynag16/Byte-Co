@@ -4,14 +4,16 @@ import DashboardLayout from './DashboardLayout';
 import UserProfile from './UserProfile';
 import Parametres from './Parametres';
 import MesSinistres from './sinistres/MesSinistres';
+import Carbone from './Carbone';
 import DeclarationSinistre from './sinistres/DeclarationSinistre'
 
 const DashboardUser = ({ user, onLogout }) => {
   const menuItems = [
     { key: 'profil', label: 'Mes informations personnelles', icon: <FaUserCircle /> },
     { key: 'sinistre', label: 'Déclarer un sinistre', icon: <FaExclamationCircle /> },
-    { key: 'mes-sinistres', label: 'Mes Sinistres', icon: <FaFileContract /> },
+    { key: 'meSinistres', label: 'Mes Sinistres', icon: <FaFileContract /> },
     { key: 'assistance', label: 'Assistance', icon: <FaLifeRing /> },
+    { key: 'carbone', label: 'Calculer mon empreinte carbone', icon: <FaLifeRing /> },
     { key: 'documents', label: 'Documents', icon: <FaFilePdf /> },
     { key: 'notifications', label: 'Notifications', icon: <FaBell /> },
     { key: 'parametres', label: 'Paramètres', icon: <FaCogs /> }
@@ -23,8 +25,10 @@ const DashboardUser = ({ user, onLogout }) => {
         return <UserProfile user={user} />;
       case 'sinistre':
         return <DeclarationSinistre />;
-      case 'mes-sinistres':
+      case 'meSinistres':
         return <MesSinistres />;
+      case 'carbone':
+        return <Carbone />;
       case 'paiements':
         return <h2>Historique des paiements</h2>;
       case 'assistance':

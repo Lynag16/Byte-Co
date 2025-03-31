@@ -6,6 +6,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/trajet")
+@CrossOrigin(origins = "http://localhost:3000")
 public class TrajetController {
 
     private final TrajetService trajetService;
