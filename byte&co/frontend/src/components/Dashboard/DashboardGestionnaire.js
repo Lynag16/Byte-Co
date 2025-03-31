@@ -11,7 +11,6 @@ const DashboardGestionnaire = ({ user, onLogout }) => {
   const menuItems = [
     { key: 'profil', label: 'Mes informations personnelles', icon: <FaUserCircle /> },
     { key: 'personnel', label: 'Gestions du Personnel', icon: <FaUsers /> },
-    { key: 'partenaires', label: 'Gestion des Partenaires', icon: <FaHandshake /> },
     { key: 'sinistres', label: 'Tous les Sinistres', icon: <FaFileContract /> },
     { key: 'gestionOffres', label: 'Gestion des Offres', icon: <FaTools /> },
     { key: 'contrats', label: 'Contrats', icon: <FaFileContract /> },

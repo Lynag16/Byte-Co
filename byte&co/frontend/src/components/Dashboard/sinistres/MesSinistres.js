@@ -16,7 +16,7 @@ const GestionPersonnel = () => {
     const fetchPersonnelData = async () => {
       try {
         const response = await axios.get('http://localhost:8081/api/personnels');
-        console.log('Réponse des personnels :', response.data); // Ajout d'un log pour vérifier la structure de la réponse
+        console.log('Réponse des personnels :', response.data);
         if (Array.isArray(response.data)) {
           const personnelWithId = response.data.map(item => ({ ...item, id: item.idpersonnel }));
           setPersonnel(personnelWithId);
@@ -32,7 +32,7 @@ const GestionPersonnel = () => {
     const fetchPartnersData = async () => {
       try {
         const response = await axios.get('http://localhost:8081/api/partenaires');
-        console.log('Réponse des partenaires :', response.data); // Ajout d'un log pour vérifier la structure de la réponse
+        console.log('Réponse des partenaires :', response.data);
         if (Array.isArray(response.data)) {
           const partnersWithId = response.data.map(item => ({ ...item, id: item.idPartenaire }));
           setPartners(partnersWithId);
@@ -153,7 +153,7 @@ const GestionPersonnel = () => {
           columns={columnsPersonnel}
           pageSize={5}
           disableSelectionOnClick
-          getRowId={(row) => row.id} // Utilisation d'une clé unique 'id'
+          getRowId={(row) => row.id}
         />
       </Box>
 
@@ -164,7 +164,7 @@ const GestionPersonnel = () => {
           columns={columnsPartners}
           pageSize={5}
           disableSelectionOnClick
-          getRowId={(row) => row.id} // Utilisation d'une clé unique 'id'
+          getRowId={(row) => row.id}
         />
       </Box>
 

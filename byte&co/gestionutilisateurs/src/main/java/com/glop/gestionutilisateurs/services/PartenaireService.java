@@ -1,13 +1,17 @@
 package com.glop.gestionutilisateurs.services;
 
+import com.glop.gestionutilisateurs.dtos.PartenaireMapper;
+import com.glop.gestionutilisateurs.dtos.PersonnelDTO;
 import com.glop.gestionutilisateurs.entities.Partenaire;
 import com.glop.gestionutilisateurs.dtos.PartenaireDTO;
+import com.glop.gestionutilisateurs.entities.Personnel;
 import com.glop.gestionutilisateurs.repositories.PartenaireRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PartenaireService {
@@ -15,77 +19,41 @@ public class PartenaireService {
     @Autowired
     private PartenaireRepository partenaireRepository;
 
-    // Convert Partenaire to PartenaireDTO
-    private PartenaireDTO convertToDTO(Partenaire partenaire) {
-        PartenaireDTO dto = new PartenaireDTO();
-        dto.setIdPartenaire(partenaire.getIdPartenaire());
-        dto.setNomPartenaire(partenaire.getNomPartenaire());
-        dto.setzonegeo(partenaire.getzonegeo());
-        dto.setEmailPartenaire(partenaire.getEmailPartenaire());
-        dto.setTelephonePartenaire(partenaire.getTelephonePartenaire());
-        dto.setTypeService(partenaire.getTypeService());
-        dto.setAdressePartenaire(partenaire.getAdressePartenaire());
-        dto.setMotdepassePartenaire(partenaire.getMotdepassePartenaire());
-        return dto;
-    }
-
-    // Convert PartenaireDTO to Partenaire
-    private Partenaire convertToEntity(PartenaireDTO partenaireDTO) {
-        Partenaire partenaire = new Partenaire();
-        partenaire.setNomPartenaire(partenaireDTO.getNomPartenaire());
-        partenaire.setzonegeo(partenaireDTO.getzonegeo());
-        partenaire.setEmailPartenaire(partenaireDTO.getEmailPartenaire());
-        partenaire.setTelephonePartenaire(partenaireDTO.getTelephonePartenaire());
-        partenaire.setMotdepassePartenaire(partenaireDTO.getMotdepassePartenaire());
-        partenaire.setTypeService(partenaireDTO.getTypeService());
-        partenaire.setAdressePartenaire(partenaireDTO.getAdressePartenaire());
-        return partenaire;
-    }
-
-    // Fetch all partenaires and return DTOs
     public List<PartenaireDTO> getAllPartenaires() {
-        List<Partenaire> partenaires = partenaireRepository.findAll();
-        return partenaires.stream()
-                .map(this::convertToDTO)
-                .toList();
+        return partenaireRepository.findAll().stream()
+                .map(PartenaireMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    // Fetch partenaire by ID and return DTO
-    public PartenaireDTO getPartenaireById(int id) {
-        Partenaire partenaire = partenaireRepository.findById(id).orElse(null);
-        return (partenaire != null) ? convertToDTO(partenaire) : null;
+    public Optional<PartenaireDTO> getPartenaireById(int id) {
+        return partenaireRepository.findById(id)
+                .map(PartenaireMapper::toDTO);
     }
 
-    // Create a new partenaire and return the DTO
-    public PartenaireDTO createPartenaire(PartenaireDTO partenaireDTO) {
-        Partenaire partenaire = convertToEntity(partenaireDTO);
-        Partenaire savedPartenaire = partenaireRepository.save(partenaire);
-
-        PartenaireDTO dto = convertToDTO(savedPartenaire);
-        dto.setIdPartenaire(savedPartenaire.getIdPartenaire());
-        return dto;
+    public PartenaireDTO createPartenaire(PartenaireDTO dto) {
+        Partenaire partenaire = PartenaireMapper.toEntity(dto);
+        Partenaire saved = partenaireRepository.save(partenaire);
+        return PartenaireMapper.toDTO(saved);
     }
 
-    // Update a partenaire and return the updated DTO
-    public PartenaireDTO updatePartenaire(int id, PartenaireDTO partenaireDTO) {
-        Optional<Partenaire> existing = partenaireRepository.findById(id);
-        if (existing.isPresent()) {
-            Partenaire p = existing.get();
-            p.setNomPartenaire(partenaireDTO.getNomPartenaire());
-            p.setzonegeo(partenaireDTO.getzonegeo());
-            p.setEmailPartenaire(partenaireDTO.getEmailPartenaire());
-            p.setTelephonePartenaire(partenaireDTO.getTelephonePartenaire());
-            p.setMotdepassePartenaire(partenaireDTO.getMotdepassePartenaire());
-            p.setTypeService(partenaireDTO.getTypeService());
-            p.setAdressePartenaire(partenaireDTO.getAdressePartenaire());
-            Partenaire updatedPartenaire = partenaireRepository.save(p);
-            return convertToDTO(updatedPartenaire);
+    public Optional<PartenaireDTO> updatePartenaire(int id, PartenaireDTO dto) {
+        return partenaireRepository.findById(id).map(existing -> {
+            existing.setNomPartenaire(dto.getNomPartenaire());
+            existing.setzonegeo(dto.getZonegeo());
+            existing.setEmailPartenaire(dto.getEmailPartenaire());
+            existing.setTelephonePartenaire(dto.getTelephonePartenaire());
+            existing.setTypeService(dto.getTypeService());
+            existing.setAdressePartenaire(dto.getAdressePartenaire());
+            return PartenaireMapper.toDTO(partenaireRepository.save(existing));
+        });
+    }
+
+    public boolean deletePartenaire(int id) {
+        if (partenaireRepository.existsById(id)) {
+            partenaireRepository.deleteById(id);
+            return true;
         }
-        return null;
+        return false;
     }
 
-    // Delete partenaire by ID
-    public void deletePartenaire(int id) {
-        partenaireRepository.deleteById(id);
-    }
 }

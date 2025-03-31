@@ -2,7 +2,7 @@ package com.glop.gestionutilisateurs.controllers;
 
 import com.glop.gestionutilisateurs.dtos.PartenaireDTO;
 import com.glop.gestionutilisateurs.services.PartenaireService;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,47 +13,38 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 public class PartenaireController {
 
-    private final PartenaireService partenaireService;
+    @Autowired
+    private PartenaireService partenaireService;
 
-    public PartenaireController(PartenaireService partenaireService) {
-        this.partenaireService = partenaireService;
-    }
-
-    @GetMapping("/")
-    public ResponseEntity<List<PartenaireDTO>> getAllPartenaires() {
-        List<PartenaireDTO> partenaires = partenaireService.getAllPartenaires();
-        return new ResponseEntity<>(partenaires, HttpStatus.OK);
+    @GetMapping
+    public List<PartenaireDTO> getAllPartenaires() {
+        return partenaireService.getAllPartenaires();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PartenaireDTO> getPartenaireById(@PathVariable int id) {
-        PartenaireDTO partenaire = partenaireService.getPartenaireById(id);
-        if (partenaire != null) {
-            return new ResponseEntity<>(partenaire, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return partenaireService.getPartenaireById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<PartenaireDTO> registerPartenaire(@RequestBody PartenaireDTO partenaireDTO) {
-        PartenaireDTO createdPartenaire = partenaireService.createPartenaire(partenaireDTO);
-        return new ResponseEntity<>(createdPartenaire, HttpStatus.CREATED);
+    @PostMapping
+    public ResponseEntity<PartenaireDTO> createPartenaire(@RequestBody PartenaireDTO dto) {
+        return ResponseEntity.ok(partenaireService.createPartenaire(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PartenaireDTO> updatePartenaire(@PathVariable int id, @RequestBody PartenaireDTO partenaireDTO) {
-        PartenaireDTO updatedPartenaire = partenaireService.updatePartenaire(id, partenaireDTO);
-        if (updatedPartenaire != null) {
-            return new ResponseEntity<>(updatedPartenaire, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<PartenaireDTO> updatePartenaire(@PathVariable int id, @RequestBody PartenaireDTO dto) {
+        return partenaireService.updatePartenaire(id, dto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePartenaire(@PathVariable int id) {
-        partenaireService.deletePartenaire(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        if (partenaireService.deletePartenaire(id)) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

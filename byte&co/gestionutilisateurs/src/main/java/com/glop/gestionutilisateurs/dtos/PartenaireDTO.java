@@ -6,12 +6,10 @@ public class PartenaireDTO {
     private String zonegeo;
     private String emailPartenaire;
     private String telephonePartenaire;
-    private String motdepassePartenaire;
     private String typeService;
     private String adressePartenaire;
 
-    // Getters and Setters
-
+    // Getters et setters
     public int getIdPartenaire() {
         return idPartenaire;
     }
@@ -28,11 +26,11 @@ public class PartenaireDTO {
         this.nomPartenaire = nomPartenaire;
     }
 
-    public String getzonegeo() {
+    public String getZonegeo() {
         return zonegeo;
     }
 
-    public void setzonegeo(String zonegeo) {
+    public void setZonegeo(String zonegeo) {
         this.zonegeo = zonegeo;
     }
 
@@ -50,14 +48,6 @@ public class PartenaireDTO {
 
     public void setTelephonePartenaire(String telephonePartenaire) {
         this.telephonePartenaire = telephonePartenaire;
-    }
-
-    public String getMotdepassePartenaire() {
-        return motdepassePartenaire;
-    }
-
-    public void setMotdepassePartenaire(String motdepassePartenaire) {
-        this.motdepassePartenaire = motdepassePartenaire;
     }
 
     public String getTypeService() {
