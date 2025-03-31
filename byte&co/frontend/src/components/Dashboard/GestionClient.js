@@ -19,7 +19,6 @@ import { motion } from 'framer-motion';
 const GestionPersonnel = () => {
   const { user } = useAuth();
   const [personnel, setPersonnel] = useState([]);
-  const [partners, setPartners] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogType, setDialogType] = useState('');
   const [currentItem, setCurrentItem] = useState(null);
@@ -38,19 +37,7 @@ const GestionPersonnel = () => {
       }
     };
 
-    const fetchPartners = async () => {
-      try {
-        const res = await axios.get('http://localhost:8081/api/partenaires/', {
-          headers: { Authorization: `Bearer ${user.token}` },
-        });
-        setPartners(res.data.map(item => ({ ...item, id: item.idPartenaire })));
-      } catch (err) {
-        console.error('Erreur chargement partenaires:', err);
-      }
-    };
-
     fetchPersonnel();
-    fetchPartners();
   }, [user]);
 
   const handleOpenDialog = (type, item) => {
@@ -80,17 +67,7 @@ const GestionPersonnel = () => {
           setPersonnel(prev => [...prev, { ...res.data, id: res.data.idpersonnel }]);
         }
       } else {
-        if (currentItem?.idPartenaire) {
-          const res = await axios.put(`http://localhost:8081/api/partenaires/${currentItem.idPartenaire}`, currentItem, {
-            headers: { Authorization: `Bearer ${user.token}` },
-          });
-          setPartners(prev => prev.map(p => (p.idPartenaire === currentItem.idPartenaire ? res.data : p)));
-        } else {
-          const res = await axios.post('http://localhost:8081/api/partenaires', currentItem, {
-            headers: { Authorization: `Bearer ${user.token}` },
-          });
-          setPartners(prev => [...prev, { ...res.data, id: res.data.idPartenaire }]);
-        }
+        
       }
       handleCloseDialog();
     } catch (err) {
@@ -108,11 +85,6 @@ const GestionPersonnel = () => {
           headers: { Authorization: `Bearer ${user.token}` },
         });
         setPersonnel(prev => prev.filter(p => p.id !== item.id));
-      } else {
-        await axios.delete(`http://localhost:8081/api/partenaires/${item.idPartenaire}`, {
-          headers: { Authorization: `Bearer ${user.token}` },
-        });
-        setPartners(prev => prev.filter(p => p.idPartenaire !== item.idPartenaire));
       }
     } catch (err) {
       console.error('Erreur suppression :', err);
@@ -139,41 +111,20 @@ const GestionPersonnel = () => {
     },
   ];
 
-  const columnsPartners = [
-    { field: 'nomPartenaire', headerName: 'Nom', flex: 1 },
-    { field: 'zonegeo', headerName: 'Zone Géographique', flex: 1 },
-    { field: 'emailPartenaire', headerName: 'Email', flex: 1 },
-    { field: 'telephonePartenaire', headerName: 'Téléphone', flex: 1 },
-    {
-      field: 'actions',
-      headerName: 'Actions',
-      flex: 1,
-      renderCell: (params) => (
-        <>
-          <Button size="small" onClick={() => handleOpenDialog('partenaire', params.row)}>Modifier</Button>
-          <Button size="small" color="error" onClick={() => handleDelete('partenaire', params.row)}>Supprimer</Button>
-        </>
-      ),
-    },
-  ];
-
   return (
     <Box>
       <Box mb={4}>
         <motion.h2
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="declaration-sinistre-title"
-                >
-                Gestion du personnel et partenaires
-                </motion.h2>
-                <Box mb={2}>
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="declaration-sinistre-title"
+        >
+        Gestion des clients
+        </motion.h2>
+        <Box mb={2}>
         <Button variant="contained" color="primary" onClick={() => handleOpenDialog('personnel', {})}>
-          Ajouter un personnel
-        </Button>
-        <Button variant="contained" color="secondary" onClick={() => handleOpenDialog('partenaire', {})} style={{ marginLeft: '1rem' }}>
-          Ajouter un partenaire
+          Ajouter un client
         </Button>
       </Box>
         <DataGrid
@@ -184,18 +135,7 @@ const GestionPersonnel = () => {
           getRowId={(row) => row.id}
         />
       </Box>
-
-      <Box mb={4}>
-        <h3>Gestion des partenaires</h3>
-        <DataGrid
-          rows={partners}
-          columns={columnsPartners}
-          pageSize={5}
-          autoHeight
-          getRowId={(row) => row.id}
-        />
-      </Box>
-
+      
       <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
         <DialogTitle>
           {dialogType === 'personnel'
@@ -252,17 +192,6 @@ const GestionPersonnel = () => {
               telephonePartenaire: e.target.value,
             })}
           />
-          <TextField
-            label="Adresse"
-            fullWidth
-            margin="normal"
-            value={currentItem?.adressepersonnel || currentItem?.adressePartenaire || ''}
-            onChange={(e) => setCurrentItem({
-                ...currentItem,
-                adressepersonnel: e.target.value,
-                adressePartenaire: e.target.value,
-            })}
-            />
           {dialogType === 'personnel' ? (
             <>
               <TextField

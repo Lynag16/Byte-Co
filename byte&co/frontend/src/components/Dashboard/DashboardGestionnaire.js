@@ -4,13 +4,15 @@ import GestionOffres from '../GestionOffres/GestionOffres';
 import DashboardLayout from './DashboardLayout';
 import PersonnelProfile from './PersonnelProfile';
 import GestionPersonnel from './GestionPersonnel';
+import GestionClient from './GestionClient';
 import Parametres from './Parametres'
 import TousLesSinistresPersonnel from './sinistres/TousLesSinistresPersonnel';
 
 const DashboardGestionnaire = ({ user, onLogout }) => {
   const menuItems = [
     { key: 'profil', label: 'Mes informations personnelles', icon: <FaUserCircle /> },
-    { key: 'personnel', label: 'Gestions du Personnel', icon: <FaUsers /> },
+    { key: 'personnel', label: 'Gestions du Personnel', icon: <FaHandshake /> },
+    { key: 'clients', label: 'Gestions des Clients', icon: <FaUsers /> },
     { key: 'sinistres', label: 'Tous les Sinistres', icon: <FaFileContract /> },
     { key: 'gestionOffres', label: 'Gestion des Offres', icon: <FaTools /> },
     { key: 'contrats', label: 'Contrats', icon: <FaFileContract /> },
@@ -25,6 +27,8 @@ const DashboardGestionnaire = ({ user, onLogout }) => {
         return <TousLesSinistresPersonnel />;
       case 'personnel':
         return <GestionPersonnel />;
+      case 'clients':
+        return <GestionClient />;
       case 'contrats':
         return <h2>Contrats</h2>;
       case 'gestionOffres':
