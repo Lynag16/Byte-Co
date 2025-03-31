@@ -105,6 +105,9 @@ services:
       - "3000:3000"
     volumes:
       - ./frontend/src:/code/src
+      - ./frontend:/app
+      - /app/node_modules
+      - ./frontend/src:/code/src
       - /project/node_modules
     networks:
       - byteco-network
