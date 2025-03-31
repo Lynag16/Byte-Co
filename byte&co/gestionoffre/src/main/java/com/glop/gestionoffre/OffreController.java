@@ -1,12 +1,7 @@
 package com.glop.gestionoffre;
 
-
-import com.glop.gestionoffre.Offre;
-import com.glop.gestionoffre.OffreService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -17,28 +12,27 @@ public class OffreController {
     private OffreService offreService;
 
     @GetMapping
-    public List<Offre> getAllOffres() {
+    public List<OffreDTO> getAllOffres() {
         return offreService.getAllOffres();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Offre> getOffreById(@PathVariable Long id) {
-        return ResponseEntity.ok(offreService.getOffreById(id));
+    public OffreDTO getOffreById(@PathVariable Long id) {
+        return offreService.getOffreById(id);
     }
 
     @PostMapping
-    public ResponseEntity<Offre> createOffre(@RequestBody Offre offre) {
-        return ResponseEntity.ok(offreService.createOffre(offre));
+    public OffreDTO createOffre(@RequestBody OffreDTO offreDTO) {
+        return offreService.createOffre(offreDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Offre> updateOffre(@PathVariable Long id, @RequestBody Offre offre) {
-        return ResponseEntity.ok(offreService.updateOffre(id, offre));
+    public OffreDTO updateOffre(@PathVariable Long id, @RequestBody OffreDTO offreDTO) {
+        return offreService.updateOffre(id, offreDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteOffre(@PathVariable Long id) {
+    public void deleteOffre(@PathVariable Long id) {
         offreService.deleteOffre(id);
-        return ResponseEntity.noContent().build();
     }
 }

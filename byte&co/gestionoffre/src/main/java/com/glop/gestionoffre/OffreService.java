@@ -1,13 +1,20 @@
 package com.glop.gestionoffre;
 
-import com.glop.gestionoffre.Offre;
+
+
+import com.glop.gestionoffre.OffreDTO;
+
+
+
+
+
 
 import java.util.List;
 
 public interface OffreService {
-    List<Offre> getAllOffres();
-    Offre getOffreById(Long id);
-    Offre createOffre(Offre offre);
-    Offre updateOffre(Long id, Offre offre);
+    List<OffreDTO> getAllOffres();
+    OffreDTO getOffreById(Long id);
+    OffreDTO createOffre(OffreDTO offreDTO);
+    OffreDTO updateOffre(Long id, OffreDTO offreDTO);
     void deleteOffre(Long id);
 }
