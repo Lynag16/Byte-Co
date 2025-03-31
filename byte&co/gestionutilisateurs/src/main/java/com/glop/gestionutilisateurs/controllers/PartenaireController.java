@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/partenaires")
+@RequestMapping(value = {"/api/partenaires", "/api/partenaires/"})
 @CrossOrigin(origins = "http://localhost:3000")
 public class PartenaireController {
 

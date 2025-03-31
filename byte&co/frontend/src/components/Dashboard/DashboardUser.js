@@ -10,7 +10,7 @@ const DashboardUser = ({ user, onLogout }) => {
   const menuItems = [
     { key: 'profil', label: 'Mes informations personnelles', icon: <FaUserCircle /> },
     { key: 'sinistre', label: 'Déclarer un sinistre', icon: <FaExclamationCircle /> },
-    { key: 'sinistres', label: 'Mes Sinistres', icon: <FaFileContract /> },
+    { key: 'mes-sinistres', label: 'Mes Sinistres', icon: <FaFileContract /> },
     { key: 'assistance', label: 'Assistance', icon: <FaLifeRing /> },
     { key: 'documents', label: 'Documents', icon: <FaFilePdf /> },
     { key: 'notifications', label: 'Notifications', icon: <FaBell /> },
@@ -23,7 +23,7 @@ const DashboardUser = ({ user, onLogout }) => {
         return <UserProfile user={user} />;
       case 'sinistre':
         return <DeclarationSinistre />;
-      case 'sinistres':
+      case 'mes-sinistres':
         return <MesSinistres />;
       case 'paiements':
         return <h2>Historique des paiements</h2>;
