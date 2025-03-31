@@ -3,8 +3,11 @@ import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
 import { Box, Button, Dialog, DialogTitle, DialogContent, IconButton, TextField, MenuItem } from '@mui/material';
 import { Close } from '@mui/icons-material';
+import { useAuth } from '../auth/AuthContext';
+
 
 const GestionPersonnel = () => {
+  const { user } = useAuth();
   const [personnel, setPersonnel] = useState([]);
   const [partners, setPartners] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
@@ -12,17 +15,21 @@ const GestionPersonnel = () => {
   const [currentItem, setCurrentItem] = useState(null);
 
   useEffect(() => {
+    // Vérifier si l'utilisateur est authentifié (token JWT)
+    if (!user?.token) {
+      console.error("Utilisateur non authentifié !");
+      return;
+    }
+
+    else console.log('Utilisateur authentifié :', user);
+
     // Fonction pour récupérer les données des personnels
     const fetchPersonnelData = async () => {
       try {
-        const response = await axios.get('http://localhost:8081/api/personnels');
-        console.log('Réponse des personnels :', response.data); // Ajout d'un log pour vérifier la structure de la réponse
-        if (Array.isArray(response.data)) {
-          const personnelWithId = response.data.map(item => ({ ...item, id: item.idpersonnel }));
-          setPersonnel(personnelWithId);
-        } else {
-          console.error('Les données des personnels ne sont pas sous forme de tableau');
-        }
+        const response = await axios.get('http://localhost:8081/api/personnels', {
+          headers: { Authorization: `Bearer ${user.token}` },
+        });
+        setPersonnel(response.data);
       } catch (error) {
         console.error('Erreur lors du chargement des personnels:', error);
       }
@@ -31,14 +38,10 @@ const GestionPersonnel = () => {
     // Fonction pour récupérer les données des partenaires
     const fetchPartnersData = async () => {
       try {
-        const response = await axios.get('http://localhost:8081/api/partenaires');
-        console.log('Réponse des partenaires :', response.data); // Ajout d'un log pour vérifier la structure de la réponse
-        if (Array.isArray(response.data)) {
-          const partnersWithId = response.data.map(item => ({ ...item, id: item.idPartenaire }));
-          setPartners(partnersWithId);
-        } else {
-          console.error('Les données des partenaires ne sont pas sous forme de tableau');
-        }
+        const response = await axios.get('http://localhost:8081/api/partenaires', {
+          headers: { Authorization: `Bearer ${user.token}` },
+        });
+        setPartners(response.data);
       } catch (error) {
         console.error('Erreur lors du chargement des partenaires:', error);
       }
@@ -46,7 +49,7 @@ const GestionPersonnel = () => {
 
     fetchPersonnelData();
     fetchPartnersData();
-  }, []);
+  }, [user]);
 
   const handleOpenDialog = (type, item) => {
     setDialogType(type);
@@ -62,14 +65,18 @@ const GestionPersonnel = () => {
   const handleSubmit = () => {
     if (dialogType === 'personnel') {
       if (currentItem?.id) {
-        axios.put(`http://localhost:8081/api/personnels/${currentItem.id}`, currentItem)
+        axios.put(`http://localhost:8081/api/personnels/${currentItem.id}`, currentItem, {
+          headers: { Authorization: `Bearer ${user.token}` },
+        })
         .then(response => {
           setPersonnel(prev => prev.map(p => p.id === currentItem.id ? response.data : p));
           handleCloseDialog();
         })
         .catch(error => console.error('Erreur lors de la mise à jour du personnel:', error));
       } else {
-        axios.post('http://localhost:8081/api/personnels', currentItem)
+        axios.post('http://localhost:8081/api/personnels', currentItem, {
+          headers: { Authorization: `Bearer ${user.token}` },
+        })
         .then(response => {
           setPersonnel(prev => [...prev, response.data]);
           handleCloseDialog();
@@ -78,14 +85,18 @@ const GestionPersonnel = () => {
       }
     } else if (dialogType === 'partenaire') {
       if (currentItem?.idPartenaire) {
-        axios.put(`http://localhost:8081/api/partenaires/${currentItem.idPartenaire}`, currentItem)
+        axios.put(`http://localhost:8081/api/partenaires/${currentItem.idPartenaire}`, currentItem, {
+          headers: { Authorization: `Bearer ${user.token}` },
+        })
         .then(response => {
           setPartners(prev => prev.map(p => p.idPartenaire === currentItem.idPartenaire ? response.data : p));
           handleCloseDialog();
         })
         .catch(error => console.error('Erreur lors de la mise à jour du partenaire:', error));
       } else {
-        axios.post('http://localhost:8081/api/partenaires', currentItem)
+        axios.post('http://localhost:8081/api/partenaires', currentItem, {
+          headers: { Authorization: `Bearer ${user.token}` },
+        })
         .then(response => {
           setPartners(prev => [...prev, response.data]);
           handleCloseDialog();
@@ -153,7 +164,6 @@ const GestionPersonnel = () => {
           columns={columnsPersonnel}
           pageSize={5}
           disableSelectionOnClick
-          getRowId={(row) => row.id} // Utilisation d'une clé unique 'id'
         />
       </Box>
 
@@ -164,7 +174,6 @@ const GestionPersonnel = () => {
           columns={columnsPartners}
           pageSize={5}
           disableSelectionOnClick
-          getRowId={(row) => row.id} // Utilisation d'une clé unique 'id'
         />
       </Box>
 
