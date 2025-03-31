@@ -1,20 +1,9 @@
 package com.glop.gestionoffre;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-
 import java.util.List;
 
-@Entity
-public class Offre {
+public class OffreDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nomoffre;
     //private double prixoffre;
@@ -39,6 +28,7 @@ public class Offre {
     public void setNomoffre(String nomoffre) {
         this.nomoffre = nomoffre;
     }
+
 
 
     public String getDescriptionoffre() {
@@ -72,17 +62,4 @@ public class Offre {
     public void setAvantagesoffre(List<String> avantagesoffre) {
         this.avantagesoffre = avantagesoffre;
     }
-
-    public Offre() {
-    }
-
-    public Offre(Long id, String nomoffre, String descriptionoffre, String conditionseligibilite, String imageoffre, List<String> avantagesoffre) {
-        this.id = id;
-        this.nomoffre = nomoffre;
-        this.descriptionoffre = descriptionoffre;
-        this.conditionseligibilite = conditionseligibilite;
-        this.imageoffre = imageoffre;
-        this.avantagesoffre = avantagesoffre;
-}
-
 }
